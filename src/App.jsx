@@ -21,6 +21,7 @@ import SuportePage from "./projeto_reserva/pages/SuportePage/SuportePage.jsx";
 import LoginPagesReserva from "./projeto_reserva/pages/LoginPageReserva/LoginPagesReserva.jsx";
 import ProtectedRoute from './componentes/ProtectedRoute.jsx';
 import LoginPageAdmin from './projeto_admin/Pages/LoginPageAdmin/LoginPageAdmin.jsx';
+import NotFoundPage from "./componentes/NotFoundPage.jsx";
 
 function App() {
     localStorage.setItem('inDevelopment', 'false')
