@@ -1,5 +1,5 @@
 import './LoginPageAdmin.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { notifyError } from '../../components/Utils/msgToast.jsx';
@@ -15,6 +15,18 @@ const LoginPageAdmin = () => {
     const inDevelopment = localStorage.getItem('inDevelopment');
     
     const navigate = useNavigate();
+
+    const verificarAutenticacao = () => {
+        if (isAuthenticated()) {
+            console.log('Usuário autenticado');
+            navigate('/admin/inicioadmin');
+        }
+    }
+
+    useEffect(() => {
+        verificarAutenticacao();
+    }, []);
+
     var url = '';
     if (inDevelopment === 'true') {
         url = 'http://localhost:5236/api/';
@@ -45,7 +57,7 @@ const LoginPageAdmin = () => {
             localStorage.setItem('telefone', data.telefone);
             localStorage.setItem('ativo', data.ativo);
 
-            navigate('/admin/inicio');
+            navigate('/admin/inicioadmin');
 
         } catch (error) {
             notifyError("Usuário ou senha inválidos " + error)

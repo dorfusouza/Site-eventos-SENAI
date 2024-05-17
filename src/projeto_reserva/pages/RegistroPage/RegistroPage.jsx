@@ -17,7 +17,12 @@ const RegistroPage = () => {
     const [usuario, setUsuario] = useState({idUsuario:'0', email: '', nomeCompleto: '', senha: '', telefone: '', perfil: 'Usuario', ativo: 1 });
     const [confirmarSenha, setConfirmarSenha] = useState('');
     const inDevelopment = localStorage.getItem('inDevelopment');
-    const url = inDevelopment ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/'
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
+    }
 
     const notifyError = (msg) => 
     toast.error(msg, {
@@ -46,6 +51,7 @@ const RegistroPage = () => {
       const getCadastrar = async () => {
         try {
             const credencial = usuario
+            console.log(credencial)
             const response = await fetch(url + 'Usuario', {
                 method: 'POST',
                 headers: {
