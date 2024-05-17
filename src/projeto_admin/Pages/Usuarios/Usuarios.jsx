@@ -137,7 +137,7 @@ function Usuarios() {
                         <ButtonFiltro opcoes={["Ativo", "Inativo"]} handleFilter={handleFilter} handleClear={handleClear} />
                     </div>
                     <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                        <ButtonFiltro opcoes={["Usuario", "Administrador"]} handleFilter={handleFilter} handleClear={handleClear} />
+                        <ButtonFiltro opcoes={["Usuario", "Administrador", "Portaria"]} handleFilter={handleFilter} handleClear={handleClear} />
                     </div>
                 </div>
             </div>
