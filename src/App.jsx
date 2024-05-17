@@ -12,7 +12,7 @@ import ConfirmacaoPage from "./projeto_portaria/pages/ConfirmacaoPage/Confirmaca
 import InvalidoPage from "./projeto_portaria/pages/InvalidoPage/InvalidoPage.jsx";
 import TenteNovamentePage from "./projeto_portaria/pages/TenteNovamentePage/TenteNovamentePage.jsx";
 import QrPage from "./projeto_portaria/pages/QrPage/QrPage.jsx";
-import PerfilPage from "./projeto_reserva/pages/PerfilPage/PerfilPage.jsx";
+import PerfilPageReserva from "./projeto_reserva/pages/PerfilPageReserva/PerfilPageReserva.jsx";
 import MeusIngressos from "./projeto_reserva/pages/MeusIngressos/index.jsx";
 import InicioReservaPage from "./projeto_reserva/pages/InicioReservaPage/InicioReservaPage.jsx";
 import InicioPageReserva from "./projeto_reserva/pages/InicioPage/InicioPage.jsx";
@@ -32,7 +32,7 @@ function App() {
         <Route path="/">
             <Route path="/" element={<InicioPageReserva />} />
             <Route path="/Login" element={<LoginPagesReserva/>} />
-            <Route path="/Perfil" element={<PerfilPage />} />
+            <Route path="/Perfil" element={<PerfilPageReserva />} />
             <Route path="/MeusIngressos" element={<MeusIngressos/>} />
             <Route path="/InicioReserva/:eventoId" element={<InicioReservaPage />} />
             <Route path="/RegistrarAcesso" element={<RegistroPage />} />
@@ -105,7 +105,7 @@ function App() {
             } />
             <Route path="/admin/perfil" element={
                 <ProtectedRoute allowedProfiles={['Adminstrador']}>
-                    <PerfilPage/>
+                    <PerfilPageReserva/>
                 </ProtectedRoute>
             } />
         </Route>
