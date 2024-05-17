@@ -18,6 +18,18 @@ const EditarEvento = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [lotesRenderizar, setLotesRenderizar] = useState([])
+    const navigate = useNavigate();
+  
+    const verificarAutenticacao = () => {
+    if (!isAuthenticated()) {
+        console.log('Usuário não autenticado');
+        navigate('/admin/');
+    }
+    }
+
+    useEffect(() => {
+    verificarAutenticacao();
+    }, []);
 
     async function fetchEventos() {
         const url = 'https://www.senailp.com.br/eventos-api/api/evento';

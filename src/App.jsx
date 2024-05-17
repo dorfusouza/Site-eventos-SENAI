@@ -19,6 +19,7 @@ import InicioPageReserva from "./projeto_reserva/pages/InicioPage/InicioPage.jsx
 import RegistroPage from "./projeto_reserva/pages/RegistroPage/RegistroPage.jsx";
 import SuportePage from "./projeto_reserva/pages/SuportePage/SuportePage.jsx";
 import LoginPagesReserva from "./projeto_reserva/pages/LoginPageReserva/LoginPagesReserva.jsx";
+import LoginPageAdmin from "./projeto_admin/Pages/LoginPageAdmin/LoginPageAdmin.jsx";
 
 function App() {
     localStorage.setItem('inDevelopment', 'false')
@@ -44,7 +45,8 @@ function App() {
                   <Route path="/portaria/qrpage" element={<QrPage/>}/>
               </Route>
               <Route path="/admin">
-                  <Route path="/admin/" element={<InicioPageAdmin/>} />
+                  <Route path="/admin/" element={<LoginPageAdmin/>} />
+                  <Route path="/admin/inicio" element={<InicioPageAdmin/>} />
                   <Route path="/admin/editar_evento" element={<EditarEvento/>} />
                   <Route path="/admin/criar_evento" element={<CriarEvento />} />
                   <Route path="/admin/usuarios" element={<Usuarios />} />

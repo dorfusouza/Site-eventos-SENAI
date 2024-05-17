@@ -4,11 +4,26 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notifyError, notifySuccess } from '../../components/Utils/msgToast.jsx';
 
+import {useNavigate} from 'react-router-dom';
+import { isAuthenticated } from '../../components/Utils/auth.jsx';
 
 const CriarEvento = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [sucessMessage, setSucessMessage] = useState('');
     const today = new Date().toISOString().split('T')[0];
+    
+    const navigate = useNavigate();
+  
+    const verificarAutenticacao = () => {
+    if (!isAuthenticated()) {
+        console.log('Usuário não autenticado');
+        navigate('/admin/');
+    }
+    }
+
+    useEffect(() => {
+    verificarAutenticacao();
+    }, []);
 
     function handleSubmit(event) {
         event.preventDefault();

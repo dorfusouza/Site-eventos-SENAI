@@ -1,7 +1,7 @@
 import './InicioPageAdmin.css';
-import Menu from '../../components/Menu/';
-import Rodape from '../../components/Rodape/';
-import Eventos from '../../components/Eventos/Eventos';
+import Menu from '../../components/Menu/index.jsx';
+import Eventos from '../../components/Eventos/Eventos.jsx';
+import Rodape from '../../components/Rodape/index.jsx';
 
 
 const InicioPageAdmin = () => {
@@ -12,6 +12,9 @@ const InicioPageAdmin = () => {
         <Rodape />
       </div>
     )
-  }
   
-  export default InicioPageAdmin;
+
+}
+
+  
+export default InicioPageAdmin;
