@@ -39,7 +39,8 @@ function Pedidos(){
     }, []);
 
     const handleValidate = (id) => {
-        const url = 'https://www.senailp.com.br/eventos-api/api/Pedido/validar' + id + '?validacaoIdUsuario=30';
+        let idUsuario = localStorage.getItem('id')
+        const url = 'https://www.senailp.com.br/eventos-api/api/Pedido/validar/' + id + `?validacaoIdUsuario=${idUsuario}`;
         //const url = 'http://localhost:5236/api/Pedido/validar/' + id + '?validacaoIdUsuario=2';
         fetch(url, {
             method: 'PUT',
@@ -83,9 +84,10 @@ function Pedidos(){
 
     function renderizarDados(){
         return filteredPedidos.filter((item) => {
+            let nomeCompleto = usuarios.find((usuario) => usuario.idUsuario === item.usuariosId).nomeCompleto;
             if(filterText === ""){
                 return item;
-            } else if(item.nomeCompleto.toLowerCase().includes(filterText.toLowerCase())){
+            } else if(nomeCompleto.toLowerCase().includes(filterText.toLowerCase())){
                 return item;
             }
         }).filter((item) => {
@@ -101,23 +103,34 @@ function Pedidos(){
                 return item;
             }
         }).map((item) => {
-            item.nomeCompleto = usuarios.find((usuario) => usuario.idUsuario === item.usuariosId).nomeCompleto;
-            if (item.validacaoIdUsuario === 0) {
-                item.nomeAdmin = "Não validado";
+            let nomeCompleto = null
+            let nomeAdmin = null
+            if (usuarios === null || usuarios === undefined) {
+                nomeCompleto = null
+                nomeAdmin = null
             } else {
-                item.nomeAdmin = usuarios.find((usuario) => usuario.idUsuario === item.validacaoIdUsuario).nomeCompleto;
+                nomeCompleto = usuarios.find((usuario) => usuario.idUsuario === item.usuariosId).nomeCompleto;
+                if (item.validacaoIdUsuario === 0) {
+                    nomeAdmin = "Não validado";
+                } else {
+                    usuarios.forEach((usuario) => {
+                        if (usuario.idUsuario === item.validacaoIdUsuario) {
+                            nomeAdmin = usuario.nomeCompleto
+                        }
+                    })
+                }
             }
             return(
                 <>
                     <tr key={item.id}>
                         <td>{item.idPedido}</td>
-                        <td>{item.nomeCompleto}</td>
+                        <td>{nomeCompleto}</td>
                         <td>{item.dataCadastro}</td>
                         <td>{item.total}</td>
                         <td>{item.quantidade}</td>
                         <td>{item.formaPagamento}</td>
                         <td>{item.status}</td>
-                        <td>{item.nomeAdmin}</td>
+                        <td>{nomeAdmin}</td>
                         <td><ValidateButton id={item.idPedido} validate={   handleValidate} status={item.status} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage}/></td>
                     </tr>
                 </>
@@ -153,7 +166,7 @@ function Pedidos(){
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-12">
-                        <TabelaFiltro renderizarDados={renderizarDados} tableFields={tableFields} />
+                        <TabelaFiltro renderizarDados={renderizarDados} tableFields={tableFields} filteredData={filteredPedidos}/>
                     </div>
                 </div>
             </div>
