@@ -14,7 +14,6 @@ function MeusIngressos() {
     const [filteredIngresso, setFilteredIngressos] = useState([]);
     const [filtroDescricao, setFiltroDescricao] = useState(""); // Estado para o filtro
     const [descricoes, setDescricoes] = useState({}); // Estado para armazenar descrições
-    const inDevelopment = localStorage.getItem('inDevelopment');
     //Setando o ingresso via front end para testes
     // const ingressos = [
     //     {
@@ -29,14 +28,6 @@ function MeusIngressos() {
     //     "codigoQr": "",
     //     "ativo": 1
     //     },
-
-    var url = '';
-    if (inDevelopment === 'true') {
-        url = 'http://localhost:5236/api/';
-    } else {
-        url = 'https://www.senailp.com.br/eventos-api/api/';
-    }
-
     const verificarAutenticacao = () => {
         if (!isAuthenticated()) {
             console.log('Usuário não autenticado');
@@ -47,7 +38,7 @@ function MeusIngressos() {
     useEffect(() => {
         async function fetchIngressos() {
             try {
-                const response = await fetch(`${url}Ingresso/Usuario/${localStorage.getItem('id')}`);
+                const response = await fetch(`https://www.senailp.com.br/eventos-api/api/Ingresso/Usuario/${localStorage.getItem('id')}`);
                 const data = await response.json();
                 setIngressos(data);
                 setFilteredIngressos(data);

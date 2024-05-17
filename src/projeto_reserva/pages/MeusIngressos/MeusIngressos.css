@@ -27,7 +27,8 @@
 }
 
 #box-all{
-    height: 60vh;
+    min-height: 500px;
+    height: 100%;
     margin: 0 auto;
     width: 70%;
     margin-top: 50px;
