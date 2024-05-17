@@ -21,7 +21,6 @@ function Usuarios() {
     useEffect(() => {
         async function fetchUsuarios() {
             const url = 'https://www.senailp.com.br/eventos-api/api/Usuario';
-            //const url = 'http://localhost:5236/api/Usuario';
             const response = await fetch(url);
             const data = await response.json();
             setUsuarios(data);
@@ -102,7 +101,6 @@ function Usuarios() {
                 <tr key={item.idUsuario}>
                     <td>{item.nomeCompleto}</td>
                     <td>{item.email}</td>
-                    <td>{item.senha}</td>
                     <td>{item.telefone}</td>
                     <td>{item.perfil}</td>
                     <td>{item.ativo ? "Ativo" : "Inativo"}</td>
@@ -114,7 +112,7 @@ function Usuarios() {
         });
     }
 
-    const tableFields = ["Nome Completo", "Email", "Senha", "Telefone", "Perfil", "Ativo", ""]
+    const tableFields = ["Nome Completo", "Email", "Telefone", "Perfil", "Ativo", ""]
 
     useEffect(() => {
         if (errorMessage) {
