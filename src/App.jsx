@@ -41,32 +41,32 @@ function App() {
         <Route path="/portaria">
             <Route path="/portaria" element={<LoginPage/>} />
             <Route path="/portaria/validacao" element={
-                <ProtectedRoute allowedProfiles={['portaria']}>
+                <ProtectedRoute allowedProfiles={['Portaria']}>
                     <ValidacaoPage/>
                 </ProtectedRoute>
             }/>
             <Route path="/portaria/camera" element={
-                <ProtectedRoute allowedProfiles={['portaria']}>
+                <ProtectedRoute allowedProfiles={['Portaria']}>
                     <CameraPage/>
                 </ProtectedRoute>
             }/>
             <Route path="/portaria/confirmacao" element={
-                <ProtectedRoute allowedProfiles={['portaria']}>
+                <ProtectedRoute allowedProfiles={['Portaria']}>
                     <ConfirmacaoPage/>
                 </ProtectedRoute>
             }/>
             <Route path="/portaria/invalido" element={
-                <ProtectedRoute allowedProfiles={['portaria']}>
+                <ProtectedRoute allowedProfiles={['Portaria']}>
                     <InvalidoPage/>
                 </ProtectedRoute>
             }/>
             <Route path="/portaria/TenteNovamente" element={
-                <ProtectedRoute allowedProfiles={['portaria']}>
+                <ProtectedRoute allowedProfiles={['Portaria']}>
                     <TenteNovamentePage/>
                 </ProtectedRoute>
             }/>
             <Route path="/portaria/qrpage" element={
-                <ProtectedRoute allowedProfiles={['portaria']}>
+                <ProtectedRoute allowedProfiles={['Portaria']}>
                     <QrPage/>
                 </ProtectedRoute>
             }/>
@@ -74,37 +74,37 @@ function App() {
         <Route path="/admin">
             <Route path="/admin/" element={<LoginPageAdmin/>} />
             <Route path="/admin/inicioadmin" element={
-                <ProtectedRoute allowedProfiles={['admin']}>
+                <ProtectedRoute allowedProfiles={['Adminstrador']}>
                     <InicioPageAdmin/>
                 </ProtectedRoute>
             } />
             <Route path="/admin/editar_evento" element={
-                <ProtectedRoute allowedProfiles={['admin']}>
+                <ProtectedRoute allowedProfiles={['Adminstrador']}>
                     <EditarEvento/>
                 </ProtectedRoute>
             } />
             <Route path="/admin/criar_evento" element={
-                <ProtectedRoute allowedProfiles={['admin']}>
+                <ProtectedRoute allowedProfiles={['Adminstrador']}>
                     <CriarEvento />
                 </ProtectedRoute>
             } />
             <Route path="/admin/usuarios" element={
-                <ProtectedRoute allowedProfiles={['admin']}>
+                <ProtectedRoute allowedProfiles={['Adminstrador']}>
                     <Usuarios />
                 </ProtectedRoute>
             } />
             <Route path="/admin/pedidos" element={
-                <ProtectedRoute allowedProfiles={['admin']}>
+                <ProtectedRoute allowedProfiles={['Adminstrador']}>
                     <Pedidos />
                 </ProtectedRoute>
             } />
             <Route path="/admin/graficos/:idEvento" element={
-                <ProtectedRoute allowedProfiles={['admin']}>
+                <ProtectedRoute allowedProfiles={['Adminstrador']}>
                     <GraficosPage/>
                 </ProtectedRoute>
             } />
             <Route path="/admin/perfil" element={
-                <ProtectedRoute allowedProfiles={['admin']}>
+                <ProtectedRoute allowedProfiles={['Adminstrador']}>
                     <PerfilPage/>
                 </ProtectedRoute>
             } />
