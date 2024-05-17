@@ -5,6 +5,8 @@ import {TabelaFiltro} from "../../components/TabelaFiltro/TabelaFiltro.jsx";
 import {ValidateButton} from "../../components/Buttons/ValidateButton.jsx";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Rodape from "../../components/Rodape/index.jsx";
+import Menu from "../../components/Menu/index.jsx";
 
 function Pedidos(){
     const [errorMessage, setErrorMessage] = useState('');
@@ -135,7 +137,8 @@ function Pedidos(){
     }, [errorMessage, successMessage]);
     
     return (
-        <>
+        <div>
+            <Menu/>
             <div className="container">
                 <h3 className="text-center">Pedidos</h3>
                 <div className="row justify-content-center">
@@ -154,7 +157,8 @@ function Pedidos(){
                     </div>
                 </div>
             </div>
-        </>
+            <Rodape/>
+        </div>
     )
 }
 
