@@ -121,8 +121,6 @@ const InicioReservaPage = () => {
 
         //Iremos criar o pedido e anexar os ingressos ao pedido
 
-        console.log(localStorage.getItem('id'))
-
         //Criação do pedido
         const pedidoData = {
             idPedido: 0,
@@ -228,6 +226,7 @@ const InicioReservaPage = () => {
                         <div className="card" style={{backgroundColor: '#EEEEEE'}}>
                             <div className="card-body">
                                 <h3>Ingressos</h3>
+                                <p className="text-muted">{loteAtual.saldo} disponíveis</p>
                                 <hr />
                                 {tipoIngresso.map((tipo, index) => (
                                     <div key={index} className="mb-3">
@@ -238,7 +237,7 @@ const InicioReservaPage = () => {
                                                     style: 'currency',
                                                     currency: 'BRL'
                                                 }).format(loteAtual.valorUnitario * tipo.desconto)}</p>
-                                                <p className="text-muted">{loteAtual.saldo} disponíveis</p>
+                                                
                                             </div>
                                             <div className="d-flex align-items-center">
                                                 <button className="btn btn-outline-secondary btn-sm" onClick={
