@@ -33,7 +33,7 @@ const Eventos = () => {
             {eventos.length > 0 ? (
                 eventos.map((dados, index) => (
                     <div key={index} className='col-lg-4 col-md-6 mb-3'>
-                        <Link to={`./graficos/${dados.idEvento}`}>
+                        <Link to={`/admin/graficos/${dados.idEvento}`}>
                             <div className='card_inicio'>
                                 <img src={card2} />
                                 <p className='dados'>{dados.nomeEvento}</p>

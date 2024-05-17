@@ -2,6 +2,8 @@ import { Lote } from '../../components/Lote/Lote.jsx';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import { notifyError, notifySuccess } from '../../Components/Utils/msgToast.jsx';
 
 
 const CriarEvento = () => {
@@ -205,6 +207,7 @@ const CriarEvento = () => {
                 </fieldset>
 
                 <button type="submit" className={"btn btn-primary me-2"}>Criar evento</button>
+                <ToastContainer />
             </form>
         </>
     );
