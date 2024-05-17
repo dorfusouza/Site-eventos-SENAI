@@ -43,7 +43,7 @@ function App() {
                   <Route path="/portaria/TenteNovamente" element={<TenteNovamentePage/>}/>
                   <Route path="/portaria/qrpage" element={<QrPage/>}/>
               </Route>
-              <Route path="/admin">
+              <Route path="/admin" >
                   <Route path="/admin/" element={<InicioPageAdmin/>} />
                   <Route path="/admin/editar_evento" element={<EditarEvento/>} />
                   <Route path="/admin/criar_evento" element={<CriarEvento />} />

@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notifyError, notifySuccess } from '../../components/Utils/msgToast.jsx';
+import Rodape from "../../components/Rodape/index.jsx";
+import Cabecalho from "../../../projeto_reserva/Components/Cabecalho/Cabecalho.jsx";
+import Menu from "../../components/Menu/index.jsx";
 
 
 const CriarEvento = () => {
@@ -135,7 +138,8 @@ const CriarEvento = () => {
     }, [errorMessage, sucessMessage]);
 
     return (
-        <>
+        <div>
+            <Menu/>
             <form onSubmit={handleSubmit} className="p-4">
                 <h1 className="mb-4">Criar evento</h1>
                 <fieldset className="border border-primary rounded p-4 mb-4">
@@ -208,7 +212,8 @@ const CriarEvento = () => {
                 <button type="submit" className={"btn btn-primary me-2"}>Criar evento</button>
                 <ToastContainer />
             </form>
-        </>
+            <Rodape/>
+        </div>
     );
 }
 

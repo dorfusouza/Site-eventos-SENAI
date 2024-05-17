@@ -6,6 +6,8 @@ import {TabelaFiltro} from '../../components/TabelaFiltro/TabelaFiltro';
 import {CampoFiltro} from '../../components/CampoFiltro/CampoFiltro';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Menu from "../../components/Menu/index.jsx";
+import Rodape from "../../components/Rodape/index.jsx";
 
 const EditarEvento = () => {
     const [eventos, setEventos] = useState([]);
@@ -457,15 +459,19 @@ const EditarEvento = () => {
 
 
     return (
-        <div className="container">
-            <h3 className='text-center'>Eventos cadastrados</h3>
-            <div id="containerFiltro">
-                <CampoFiltro placeholder="Pesquisar evento por nome" handleFilter={setFilterText} />
+        <div>
+            <Menu/>
+            <div className="container">
+                <h3 className='text-center'>Eventos cadastrados</h3>
+                <div id="containerFiltro">
+                    <CampoFiltro placeholder="Pesquisar evento por nome" handleFilter={setFilterText} />
+                </div>
+                <TabelaFiltro renderizarDados={renderizarDados} tableFields={tableFields} />
+                <ModalEventos handleSalvar={handleSalvarEvento} handleDeletar={handleDeletarEvento} />
+                <ModalEditarLotes handleSalvar={handleSalvarLote} handleDeletar={handleDeletarLote} lotes={lotes} setSelectedLote={setSelectedLote} />
+                <ModalAdicionarLote handleAdicionar={handleAdicionarLote}/>
             </div>
-            <TabelaFiltro renderizarDados={renderizarDados} tableFields={tableFields} />
-            <ModalEventos handleSalvar={handleSalvarEvento} handleDeletar={handleDeletarEvento} />
-            <ModalEditarLotes handleSalvar={handleSalvarLote} handleDeletar={handleDeletarLote} lotes={lotes} setSelectedLote={setSelectedLote} />
-            <ModalAdicionarLote handleAdicionar={handleAdicionarLote}/>
+            <Rodape/>
         </div>
     );
 

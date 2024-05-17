@@ -6,6 +6,8 @@ import { ModalUsuarios } from "../../components/Modal/ModalUsuarios.jsx";
 import {EditButton} from "../../components/Buttons/EditButton.jsx";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Rodape from "../../components/Rodape/index.jsx";
+import Menu from "../../components/Menu/index.jsx";
 
 function Usuarios() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -124,6 +126,8 @@ function Usuarios() {
     }, [errorMessage, successMessage]);
     
    return (
+       <div>
+           <Menu/>
         <div className="container">
             <h3 className="text-center">Usuários cadastrados</h3>
             <div className="row justify-content-center">
@@ -143,6 +147,8 @@ function Usuarios() {
                 </div>
             </div>
             <ModalUsuarios modalData={modalData} setModalData={setModalData} usuarios={usuarios} setUsuarios={setUsuarios} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />
+            </div>
+            <Rodape/>
         </div>
     );
 }
