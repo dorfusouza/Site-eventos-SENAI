@@ -7,7 +7,7 @@ export function ButtonFiltro(props) {
     };
 
     const handleClick = () => {
-        props.handleClear(document.getElementById(`select-${props.opcoes[0]}`).value);
+        props.handleClear(props.type);
         document.getElementById(`btn-${props.opcoes[0]}`).style.display = "none";
         document.getElementById(`select-${props.opcoes[0]}`).selectedIndex = 0;
     }

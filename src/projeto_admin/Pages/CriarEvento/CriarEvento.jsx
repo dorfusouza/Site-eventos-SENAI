@@ -78,6 +78,7 @@ const CriarEvento = () => {
             ativo: 1,
             nomeEvento: formData.get('nomeEvento'),
             totalIngressos: lotes.reduce((acc, lote) => acc + parseInt(lote.quantidadeIngressos), 0),
+            imagem: 0
         };
         const url = "https://www.senailp.com.br/eventos-api/api/evento"
         //const url = "http://localhost:5236/api/evento"

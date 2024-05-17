@@ -135,8 +135,6 @@ const InicioReservaPage = () => {
             validacaoIdUsuario: 0
         }
 
-        console.log(pedidoData)
-        let id_pedido = 0
         await fetch('https://www.senailp.com.br/eventos-api/api/Pedido', {
             method: 'POST',
             headers: {
@@ -146,49 +144,44 @@ const InicioReservaPage = () => {
         }).then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                id_pedido = data.idPedido
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        console.log(id_pedido)
-        //Teste
-        id_pedido = 50
-        const ingressos = []
-        valoresIngressosSelecionados.map((valor, index) => {
-            for (let i = 0; i < valor; i++) {
-                ingressos.push({
-                    idIngresso: 0,
-                    pedidosId: id_pedido,
-                    pedidosUsuariosId: parseInt(localStorage.getItem('id')),
-                    loteId: loteAtual.idLote,
-                    status: 'Pendente',
-                    tipo: tipoIngresso[index].nome,
-                    valor: loteAtual.valorUnitario * tipoIngresso[index].desconto,
-                    dataUtilizacao: "2024-05-15T00:00:00",
-                    codigoQr: '',
-                    ativo: 1
+                //Criação dos ingressos
+                let ingressos = []
+                valoresIngressosSelecionados.map((valor, index) => {
+                    for (let i = 0; i < valor; i++) {
+                        ingressos.push({
+                            idIngresso: 0,
+                            pedidosId: data.idPedido,
+                            pedidosUsuariosId: parseInt(localStorage.getItem('id')),
+                            loteId: loteAtual.idLote,
+                            status: 'Pendente',
+                            tipo: tipoIngresso[index].nome,
+                            valor: loteAtual.valorUnitario * tipoIngresso[index].desconto,
+                            dataUtilizacao: "2024-05-15T00:00:00",
+                            codigoQr: '',
+                            ativo: 1
+                        })
+                        console.log(ingressos)
+                    }
                 })
-                console.log(ingressos)
-            }
-        })
-        console.log(JSON.stringify(ingressos))
-        //Vamos mandar todos os ingressos de uma vez
-        fetch('https://www.senailp.com.br/eventos-api/api/Ingresso', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(ingressos)
-            }).then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
+                console.log(JSON.stringify(ingressos))
+                //Vamos mandar todos os ingressos de uma vez
+                fetch('https://www.senailp.com.br/eventos-api/api/Ingresso', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(ingressos)
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-
-        console.log(ingressos)
 
     }
 
@@ -248,30 +241,30 @@ const InicioReservaPage = () => {
                                                 <p className="text-muted">{loteAtual.saldo} disponíveis</p>
                                             </div>
                                             <div className="d-flex align-items-center">
-                                                <button className="btn btn-outline-secondary btn-sm">
-                                                    <i className="bi bi-patch-minus" onClick={
-                                                        () => {
-                                                            if (valoresIngressosSelecionados[index] > 0 && valoresIngressosSelecionados[index] <= loteAtual.saldo) {
-                                                                let valores = [...valoresIngressosSelecionados]
-                                                                valores[index] -= 1
-                                                                setValoresIngressosSelecionados(valores)
-                                                                loteAtual.saldo += 1
-                                                            }
+                                                <button className="btn btn-outline-secondary btn-sm" onClick={
+                                                    () => {
+                                                        if (valoresIngressosSelecionados[index] > 0 && valoresIngressosSelecionados[index] <= loteAtual.saldo) {
+                                                            let valores = [...valoresIngressosSelecionados]
+                                                            valores[index] -= 1
+                                                            setValoresIngressosSelecionados(valores)
+                                                            loteAtual.saldo += 1
                                                         }
-                                                    }></i>
+                                                    }
+                                                }>
+                                                    <i className="bi bi-patch-minus"></i>
                                                 </button>
                                                 <span className="mx-2">{valoresIngressosSelecionados[index]}</span>
-                                                <button className="btn btn-outline-secondary btn-sm">
-                                                    <i className="bi bi-patch-plus" onClick={
-                                                        () => {
-                                                            if (valoresIngressosSelecionados[index] < loteAtual.saldo && valoresIngressosSelecionados[index] < 5) {
-                                                                let valores = [...valoresIngressosSelecionados]
-                                                                valores[index] += 1
-                                                                setValoresIngressosSelecionados(valores)
-                                                                loteAtual.saldo -= 1
-                                                            }
+                                                <button className="btn btn-outline-secondary btn-sm" onClick={
+                                                    () => {
+                                                        if (valoresIngressosSelecionados[index] < loteAtual.saldo && valoresIngressosSelecionados[index] < 5) {
+                                                            let valores = [...valoresIngressosSelecionados]
+                                                            valores[index] += 1
+                                                            setValoresIngressosSelecionados(valores)
+                                                            loteAtual.saldo -= 1
                                                         }
-                                                    }></i>
+                                                    }
+                                                }>
+                                                    <i className="bi bi-patch-plus" ></i>
                                                 </button>
                                             </div>
                                         </div>

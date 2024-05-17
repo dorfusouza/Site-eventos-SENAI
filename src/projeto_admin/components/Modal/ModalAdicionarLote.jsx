@@ -40,10 +40,6 @@ export const ModalAdicionarLote = ({ handleAdicionar }) => {
                                 <input type="number" className="form-control" id="quantidadeTotalAdicionarLote" name="quantidadeTotalAdicionarLote" required/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="saldoAdicionarLote" className="form-label">Saldo</label>
-                                <input type="number" className="form-control" id="saldoAdicionarLote" name="saldoAdicionarLote" required/>
-                            </div>
-                            <div className="mb-3">
                                 <label htmlFor="valorUnitarioAdicionarLote" className="form-label">Valor Unitário</label>
                                 <input type="number" className="form-control" id="valorUnitarioAdicionarLote" name="valorUnitarioAdicionarLote" required/>
                             </div>

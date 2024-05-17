@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 
-export function TabelaFiltro({ renderizarDados, tableFields }) {
+export function TabelaFiltro({ renderizarDados, tableFields, filteredData }) {
     return (
         <div className='container'>
             <div className="table-responsive">
@@ -13,7 +13,13 @@ export function TabelaFiltro({ renderizarDados, tableFields }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {renderizarDados()}
+                        {filteredData.length === 0 ? (
+                            <tr>
+                                <td colSpan={tableFields.length}>Nenhum dado encontrado</td>
+                            </tr>
+                        ) : (
+                            renderizarDados()
+                        )}
                     </tbody>
                 </table>
             </div>

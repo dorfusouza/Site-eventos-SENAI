@@ -92,8 +92,8 @@ export const ModalEditarLotes = ({handleSalvar, handleDeletar, lotes, setSelecte
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-danger" onClick={handleDeletar} id="deletarLote">Deletar</button>
-                            <button type="submit" className="btn btn-primary" onClick={handleSalvar} id="salvarLote">Salvar</button>
+                            <button type="button" className="btn btn-danger" onClick={handleDeletar} data-bs-dismiss="modal" id="deletarLote">Deletar</button>
+                            <button type="submit" className="btn btn-primary" onClick={handleSalvar} data-bs-dismiss="modal" id="salvarLote">Salvar</button>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" id="fecharModalLotes">Fechar</button>
                         </div>
                     </div>

@@ -8,6 +8,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Menu from "../../components/Menu/index.jsx";
 import Rodape from "../../components/Rodape/index.jsx";
+import { useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../../components/Utils/auth.jsx';
+
 
 const EditarEvento = () => {
     const [eventos, setEventos] = useState([]);
@@ -81,19 +84,17 @@ const EditarEvento = () => {
 
         dataEvento = new Date(dataEvento).toISOString();
 
-        const data = {
-            idEvento: idEvento,
+        const dataInput = {
+            idEvento: parseInt(idEvento),
             nomeEvento: nome,
             dataEvento: dataEvento,
             local: local,
             descricao: descricao,
             ativo: ativo,
-            imagemUrl: imagemUrl,
+            imagemUrl: "",
             totalIngressos: 0,
-            imagem: ""
+            imagem: null
         }
-
-        console.log(data)
 
         //const url = 'http://localhost:5236/api/Evento/' + idEvento;
         const url = 'https://www.senailp.com.br/eventos-api/api/Evento/' + idEvento;
@@ -102,27 +103,33 @@ const EditarEvento = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(dataInput)
         })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
                 setSuccessMessage('Evento editado com sucesso!');
+                console.log(eventos)
+                eventos.map((evento) => {
+                    if (evento.idEvento === parseInt(idEvento)) {
+                        evento.nomeEvento = data.nomeEvento;
+                        evento.dataEvento = data.dataEvento;
+                        evento.local = data.local;
+                        evento.descricao = data.descricao;
+                        evento.ativo = data.ativo;
+                        evento.imagemUrl = data.imagemUrl;
+                        evento.totalIngressos = data.totalIngressos;
+                    }
+                    return evento;
+                })
+                setEventos(eventos);
+                setFilteredEventos(eventos);
+                console.log(eventos)
             })
             .catch((error) => {
                 console.error('Error:', error);
                 setErrorMessage('Erro ao editar evento!');
             });
-
-        const newEventos = eventos.map((evento) => {
-            if (evento.idEvento === idEvento) {
-                return data;
-            }
-            return evento;
-        });
-
-        setEventos(newEventos);
-        setFilteredEventos(newEventos);
     }
 
     function handleDeletarEvento() {
@@ -348,17 +355,12 @@ const EditarEvento = () => {
     function handleAdicionarLote() {
         const valorUnitario = parseFloat(document.getElementById('valorUnitarioAdicionarLote').value);
         const quantidadeTotal = parseInt(document.getElementById('quantidadeTotalAdicionarLote').value);
-        const saldo = parseInt(document.getElementById('saldoAdicionarLote').value);
         let ativo = document.getElementById('ativo_loteAdicionarLote').checked;
         let dataInicio = document.getElementById('dataInicioAdicionarLote').value;
         let dataFinal = document.getElementById('dataFinalAdicionarLote').value;
         const tipo = document.getElementById('tipoAdicionarLote').value;
         const nome = document.getElementById('nomeLoteAdicionarLote').value;
 
-        if (saldo > quantidadeTotal) {
-            setErrorMessage('O saldo não pode ser maior que a quantidade total!');
-            return;
-        }
 
         ativo = ativo ? 1 : 0;
 
@@ -372,7 +374,7 @@ const EditarEvento = () => {
             eventoId: localStorage.getItem('idEvento'),
             valorUnitario: valorUnitario,
             quantidadeTotal: quantidadeTotal,
-            saldo: saldo,
+            saldo: quantidadeTotal,
             ativo: ativo,
             dataInicio: dataInicio,
             dataFinal: dataFinal,
@@ -446,7 +448,6 @@ const EditarEvento = () => {
         })
 
         setLotes(newLotes);
-        //Tira as informações do lote do modal
         document.getElementById('valorUnitario').value = "";
         document.getElementById('quantidadeTotal').value = "";
         document.getElementById('saldo').value = "";
@@ -459,6 +460,10 @@ const EditarEvento = () => {
     }
 
     const tableFields = ["Nome", "Data", "Ativo", "Local", "Descrição", "Quantidade de ingressos", "Quantidade de lotes", "Editar Evento", "Editar Lotes", "Adicionar Lote"]
+
+    useEffect(() => {
+        setFilteredEventos(eventos);
+    }, [eventos]);
 
     useEffect(() => {
         if (errorMessage) {
@@ -478,12 +483,13 @@ const EditarEvento = () => {
                 <div id="containerFiltro">
                     <CampoFiltro placeholder="Pesquisar evento por nome" handleFilter={setFilterText} />
                 </div>
-                <TabelaFiltro renderizarDados={renderizarDados} tableFields={tableFields} />
+                <TabelaFiltro renderizarDados={renderizarDados} tableFields={tableFields} filteredData={filteredEventos} />
                 <ModalEventos handleSalvar={handleSalvarEvento} handleDeletar={handleDeletarEvento} />
                 <ModalEditarLotes handleSalvar={handleSalvarLote} handleDeletar={handleDeletarLote} lotes={lotes} setSelectedLote={setSelectedLote} />
                 <ModalAdicionarLote handleAdicionar={handleAdicionarLote}/>
             </div>
             <Rodape/>
+            <ToastContainer />
         </div>
     );
 
