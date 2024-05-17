@@ -19,42 +19,92 @@ import InicioPageReserva from "./projeto_reserva/pages/InicioPage/InicioPage.jsx
 import RegistroPage from "./projeto_reserva/pages/RegistroPage/RegistroPage.jsx";
 import SuportePage from "./projeto_reserva/pages/SuportePage/SuportePage.jsx";
 import LoginPagesReserva from "./projeto_reserva/pages/LoginPageReserva/LoginPagesReserva.jsx";
-import LoginPageAdmin from "./projeto_admin/Pages/LoginPageAdmin/LoginPageAdmin.jsx";
+import ProtectedRoute from './componentes/ProtectedRoute.jsx';
+import LoginPageAdmin from './projeto_admin/Pages/LoginPageAdmin/LoginPageAdmin.jsx';
 
 function App() {
     localStorage.setItem('inDevelopment', 'false')
+    const perfil = localStorage.getItem('perfil');
   return (
-      <Router>
-          <Routes>
-              <Route path="/">
-                  <Route path="/" element={<InicioPageReserva />} />
-                  <Route path="/Login" element={<LoginPagesReserva/>} />
-                  <Route path="/Perfil" element={<PerfilPage />} />
-                  <Route path="/MeusIngressos" element={<MeusIngressos/>} />
-                  <Route path="/InicioReserva/:eventoId" element={<InicioReservaPage />} />
-                  <Route path="/RegistrarAcesso" element={<RegistroPage />} />
-                  <Route path="/suporte" element={<SuportePage/>} />
-              </Route>
-              <Route path="/portaria">
-                  <Route path="/portaria" element={<LoginPage/>} />
-                  <Route path="/portaria/validacao" element={<ValidacaoPage/>}/>
-                  <Route path="/portaria/camera" element={<CameraPage/>}/>
-                  <Route path="/portaria/confirmacao" element={<ConfirmacaoPage/>}/>
-                  <Route path="/portaria/invalido" element={<InvalidoPage/>}/>
-                  <Route path="/portaria/TenteNovamente" element={<TenteNovamentePage/>}/>
-                  <Route path="/portaria/qrpage" element={<QrPage/>}/>
-              </Route>
-              <Route path="/admin">
-                  <Route path="/admin/" element={<LoginPageAdmin/>} />
-                  <Route path="/admin/inicio" element={<InicioPageAdmin/>} />
-                  <Route path="/admin/editar_evento" element={<EditarEvento/>} />
-                  <Route path="/admin/criar_evento" element={<CriarEvento />} />
-                  <Route path="/admin/usuarios" element={<Usuarios />} />
-                  <Route path="/admin/pedidos" element={<Pedidos />} />
-                  <Route path="/admin/graficos/:idEvento" element={<GraficosPage/>} />
-              </Route>
-          </Routes>
-      </Router>
+    <Router>
+    <Routes>
+        <Route path="/">
+            <Route path="/" element={<InicioPageReserva />} />
+            <Route path="/Login" element={<LoginPagesReserva/>} />
+            <Route path="/Perfil" element={<PerfilPage />} />
+            <Route path="/MeusIngressos" element={<MeusIngressos/>} />
+            <Route path="/InicioReserva/:eventoId" element={<InicioReservaPage />} />
+            <Route path="/RegistrarAcesso" element={<RegistroPage />} />
+            <Route path="/suporte" element={<SuportePage/>} />
+        </Route>
+        <Route path="/portaria">
+            <Route path="/portaria" element={<LoginPage/>} />
+            <Route path="/portaria/validacao" element={
+                <ProtectedRoute allowedProfiles={['portaria']}>
+                    <ValidacaoPage/>
+                </ProtectedRoute>
+            }/>
+            <Route path="/portaria/camera" element={
+                <ProtectedRoute allowedProfiles={['portaria']}>
+                    <CameraPage/>
+                </ProtectedRoute>
+            }/>
+            <Route path="/portaria/confirmacao" element={
+                <ProtectedRoute allowedProfiles={['portaria']}>
+                    <ConfirmacaoPage/>
+                </ProtectedRoute>
+            }/>
+            <Route path="/portaria/invalido" element={
+                <ProtectedRoute allowedProfiles={['portaria']}>
+                    <InvalidoPage/>
+                </ProtectedRoute>
+            }/>
+            <Route path="/portaria/TenteNovamente" element={
+                <ProtectedRoute allowedProfiles={['portaria']}>
+                    <TenteNovamentePage/>
+                </ProtectedRoute>
+            }/>
+            <Route path="/portaria/qrpage" element={
+                <ProtectedRoute allowedProfiles={['portaria']}>
+                    <QrPage/>
+                </ProtectedRoute>
+            }/>
+        </Route>
+        <Route path="/admin">
+            <Route path="/admin/" element={<LoginPageAdmin/>} />
+            <Route path="/admin/inicioadmin" element={
+                <ProtectedRoute allowedProfiles={['admin']}>
+                    <InicioPageAdmin/>
+                </ProtectedRoute>
+            } />
+            <Route path="/admin/editar_evento" element={
+                <ProtectedRoute allowedProfiles={['admin']}>
+                    <EditarEvento/>
+                </ProtectedRoute>
+            } />
+            <Route path="/admin/criar_evento" element={
+                <ProtectedRoute allowedProfiles={['admin']}>
+                    <CriarEvento />
+                </ProtectedRoute>
+            } />
+            <Route path="/admin/usuarios" element={
+                <ProtectedRoute allowedProfiles={['admin']}>
+                    <Usuarios />
+                </ProtectedRoute>
+            } />
+            <Route path="/admin/pedidos" element={
+                <ProtectedRoute allowedProfiles={['admin']}>
+                    <Pedidos />
+                </ProtectedRoute>
+            } />
+            <Route path="/admin/graficos/:idEvento" element={
+                <ProtectedRoute allowedProfiles={['admin']}>
+                    <GraficosPage/>
+                </ProtectedRoute>
+            } />
+        </Route>
+    </Routes>
+</Router>
   )
 }
 

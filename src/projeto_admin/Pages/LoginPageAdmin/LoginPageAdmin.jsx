@@ -8,7 +8,7 @@ import Rodape from '../../components/Rodape/index.jsx';
 import { isAuthenticated } from '../../components/Utils/auth.jsx';
 
 
-const InicioPageAdmin = () => {  
+const LoginPageAdmin = () => {  
 
     // const navigate = useNavigate();
   
@@ -135,4 +135,4 @@ const InicioPageAdmin = () => {
 }
 
   
-export default InicioPageAdmin;
+export default LoginPageAdmin;
