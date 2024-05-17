@@ -108,6 +108,7 @@ function App() {
                 </ProtectedRoute>
             } />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
     </Routes>
 </Router>
   )
