@@ -208,7 +208,7 @@ const CriarEvento = () => {
                         <input type="number" value={quantidadeLotes} min={1} onChange={(e) => setQuantidadeLotes(e.target.value)} required name={"quantidadeLotes"} className={"form-control QuantidadeLote w-25"} />
                     </div>
 
-                    <button onClick={handleAddLotes} className="btn btn-primary AdicionarLote mb-4">Adicioner lote</button>
+                    <button onClick={handleAddLotes} className="btn btn-primary AdicionarLote mb-4">Adicionar lote</button>
 
                     {lotes.map((lote, index) => (
                         <Lote key={index} tipo={lote.tipo} />
