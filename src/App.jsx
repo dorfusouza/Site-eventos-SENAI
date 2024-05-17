@@ -33,7 +33,7 @@ function App() {
         <Route path="/">
             <Route path="/" element={<InicioPageReserva />} />
             <Route path="/Login" element={<LoginPagesReserva/>} />
-            <Route path="/Perfil" element={<PerfilPageReserva />} />
+            <Route path="/Perfil" element={<PerfilPageReserva/>} />
             <Route path="/MeusIngressos" element={<MeusIngressos/>} />
             <Route path="/InicioReserva/:eventoId" element={<InicioReservaPage />} />
             <Route path="/RegistrarAcesso" element={<RegistroPage />} />
@@ -75,37 +75,37 @@ function App() {
         <Route path="/admin">
             <Route path="/admin/" element={<LoginPageAdmin/>} />
             <Route path="/admin/inicioadmin" element={
-                <ProtectedRoute allowedProfiles={['Adminstrador']}>
+                <ProtectedRoute allowedProfiles={['Administrador']}>
                     <InicioPageAdmin/>
                 </ProtectedRoute>
             } />
             <Route path="/admin/editar_evento" element={
-                <ProtectedRoute allowedProfiles={['Adminstrador']}>
+                <ProtectedRoute allowedProfiles={['Administrador']}>
                     <EditarEvento/>
                 </ProtectedRoute>
             } />
             <Route path="/admin/criar_evento" element={
-                <ProtectedRoute allowedProfiles={['Adminstrador']}>
+                <ProtectedRoute allowedProfiles={['Administrador']}>
                     <CriarEvento />
                 </ProtectedRoute>
             } />
             <Route path="/admin/usuarios" element={
-                <ProtectedRoute allowedProfiles={['Adminstrador']}>
+                <ProtectedRoute allowedProfiles={['Administrador']}>
                     <Usuarios />
                 </ProtectedRoute>
             } />
             <Route path="/admin/pedidos" element={
-                <ProtectedRoute allowedProfiles={['Adminstrador']}>
+                <ProtectedRoute allowedProfiles={['Administrador']}>
                     <Pedidos />
                 </ProtectedRoute>
             } />
             <Route path="/admin/graficos/:idEvento" element={
-                <ProtectedRoute allowedProfiles={['Adminstrador']}>
+                <ProtectedRoute allowedProfiles={['Administrador']}>
                     <GraficosPage/>
                 </ProtectedRoute>
             } />
             <Route path="/admin/perfil" element={
-                <ProtectedRoute allowedProfiles={['Adminstrador']}>
+                <ProtectedRoute allowedProfiles={['Administrador']}>
                     <PerfilPage/>
                 </ProtectedRoute>
             } />

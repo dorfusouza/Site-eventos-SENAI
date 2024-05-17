@@ -3,14 +3,14 @@ import React from 'react';
 import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { isAuthenticated } from '../../Components/Utils/auth.jsx';
+import { isAuthenticated } from '../../components/Utils/auth.jsx';
 
 import { ToastContainer, toast } from 'react-toastify';
-import { notifyError, notifySuccess } from '../../Components/Utils/msgToast.jsx';
+import { notifyError, notifySuccess } from '../../components/Utils/msgToast.jsx';
 
-import Cabecalho from '../../Components/Menu/index.jsx'
-import Rodape from '../../Components/Rodape/index.jsx'
-import perfil_grande from '../../../assets/Images/perfilimg.png'
+import Rodape from '../../components/Rodape/index.jsx'
+import perfil_grande from '../../../assets/Images/perfil_grande.png'
+import Menu from "../../components/Menu/index.jsx";
 
 const PerfilPage = () => {
   const navigate = useNavigate();
@@ -35,12 +35,12 @@ const PerfilPage = () => {
   return (
     <div>
 
-      <Cabecalho />
+      <Menu/>
 
       <div className='body'>
         <div className='imagem_lado_esquerdo'>
           <h1 className='perfil'>Perfil</h1>
-          <img src={perfil_grande} />
+          <img src={perfil_grande} className={'img'}/>
         </div>
         <div className='line'></div>
         <div className='lado_direito'>

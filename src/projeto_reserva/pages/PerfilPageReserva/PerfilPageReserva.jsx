@@ -36,7 +36,7 @@ const PerfilPageReserva = () => {
   return (
     <div>
 
-      <Menu/>
+      <Cabecalho/>
 
       <div className='body'>
         <div className='imagem_lado_esquerdo'>
