@@ -102,7 +102,13 @@ function App() {
                     <GraficosPage/>
                 </ProtectedRoute>
             } />
+            <Route path="/admin/perfil" element={
+                <ProtectedRoute allowedProfiles={['admin']}>
+                    <PerfilPage/>
+                </ProtectedRoute>
+            } />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
     </Routes>
 </Router>
   )

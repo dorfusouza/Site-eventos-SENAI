@@ -85,7 +85,7 @@ const LoginPage = () => {
                 <div className='row justify-content-center'>
                     <div className='col-md-6 login_inicio'>
                         <div className='login_titulo text-center'>
-                            <h1>Acesso Restrito</h1>
+                            <h1>Faça o Login</h1>
                             <p>Preencha seus dados para continuar</p>
                         </div>
 

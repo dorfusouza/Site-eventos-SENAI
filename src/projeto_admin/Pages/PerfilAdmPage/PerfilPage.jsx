@@ -8,10 +8,9 @@ import { isAuthenticated } from '../../Components/Utils/auth.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import { notifyError, notifySuccess } from '../../Components/Utils/msgToast.jsx';
 
-import Cabecalho from '../../Components/Cabecalho/Cabecalho.jsx'
-import Rodape from '../../Components/Rodape/Rodape.jsx'
-import perfil_grande from '../../../assets/Images/perfil_grande.png'
-import Menu from "../../../projeto_admin/components/Menu/index.jsx";
+import Cabecalho from '../../Components/Menu/index.jsx'
+import Rodape from '../../Components/Rodape/index.jsx'
+import perfil_grande from '../../../assets/Images/perfilimg.png'
 
 const PerfilPage = () => {
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ const PerfilPage = () => {
   return (
     <div>
 
-      <Menu/>
+      <Cabecalho />
 
       <div className='body'>
         <div className='imagem_lado_esquerdo'>

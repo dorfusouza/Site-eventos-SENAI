@@ -1,6 +1,7 @@
 import './Rodape.css'
 import { Link } from 'react-router-dom'
-import imgBanner from '../../../assets/Images/senailogo.png'
+import imgBanner from '../../../assets/Images/banner_logo.png'
+//import Banner from '../../Components/Banner_Rodape'
 import './Rodape.css'
 
 function Rodape() {
