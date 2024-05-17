@@ -31,6 +31,9 @@ function Menu() {
                 <nav>
                 <ul>
                     <li>
+                        <Link to='/admin'>Home</Link>
+                    </li>
+                    <li>
                         <Link to='/admin/pedidos'>Pedidos</Link>
                     </li>
                     <li>
@@ -41,9 +44,6 @@ function Menu() {
                     </li>
                     <li>
                         <Link to='/admin/editar_evento'>Editar Evento</Link>
-                    </li>
-                    <li>
-                        <Link to='/admin'>Home</Link>
                     </li>
                 </ul>
                 </nav>
