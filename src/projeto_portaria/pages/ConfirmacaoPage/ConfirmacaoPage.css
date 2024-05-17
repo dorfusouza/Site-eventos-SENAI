@@ -1,0 +1,48 @@
+.bloco_vd {
+  background-color: #90f477;
+  width: 200px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: 70px;
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.botaov {
+  width: 150px;
+  height: 40px;
+  background-color: #eeeeee;
+  border-color: #eeeeee;
+  border-radius: 20px;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.bloco_czc {
+  display: flex;
+  justify-content: center;
+
+  background-color: #e1dfdf;
+  width: 450px;
+  margin-left: 417px;
+  height: 500px;
+  border-radius: 5px;
+}
+
+@media (max-width: 450px) {
+  .bloco_vd {
+    width: 200px;
+    height: 250px;
+    margin-top: 70px;
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 450px) {
+  .bloco_czc {
+    margin-left: 20px;
+    width: 300px;
+  }
+}

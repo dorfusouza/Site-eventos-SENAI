@@ -1,0 +1,44 @@
+.bloco_cz {
+  display: flex;
+  justify-content: center;
+
+  background-color: #e1dfdf;
+  width: 450px;
+  margin-left: 417px;
+  height: 500px;
+  border-radius: 5px;
+}
+
+.bloco_czc {
+  display: flex;
+  justify-content: center;
+
+  background-color: #e1dfdf;
+  width: 450px;
+  margin-left: 417px;
+  height: 500px;
+  border-radius: 5px;
+}
+
+@media (max-width: 450px) {
+  .bloco_czc {
+    margin-right:  500px;
+    width: 250px;
+  }
+}
+
+@media (max-width: 450px) {
+  .cabecalho {
+    margin-right: 1500px;
+    margin-left: -15px;
+    width: 250px;
+  }
+}
+
+@media (max-width: 450px) {
+  .logv {
+    text-size-adjust: 15px;
+    width: 50px;
+    margin-left: 70px;
+  }
+}
