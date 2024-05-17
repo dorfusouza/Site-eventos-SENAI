@@ -10,22 +10,11 @@ import { isAuthenticated } from '../../components/Utils/auth.jsx';
 
 const LoginPageAdmin = () => {  
 
-    // const navigate = useNavigate();
-  
-    // const verificarAutenticacao = () => {
-    // if (isAuthenticated()) {
-    //     console.log('Usuário autenticado');
-    //     navigate('/admin/inicio');
-    // }
-    // }
-
-    // useEffect(() => {
-    // verificarAutenticacao();
-    // }, []);
-
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');    
     const inDevelopment = localStorage.getItem('inDevelopment');
+    
+    const navigate = useNavigate();
     var url = '';
     if (inDevelopment === 'true') {
         url = 'http://localhost:5236/api/';
@@ -38,8 +27,6 @@ const LoginPageAdmin = () => {
             'email': email,
             'senha': senha
         }
-
-        //console.log(JSON.stringify(credencial))
         try { 
             const response = await fetch(url + 'Usuario/login', {
 
@@ -58,7 +45,7 @@ const LoginPageAdmin = () => {
             localStorage.setItem('telefone', data.telefone);
             localStorage.setItem('ativo', data.ativo);
 
-            navigate('/admin/dash');
+            navigate('/admin/inicio');
 
         } catch (error) {
             notifyError("Usuário ou senha inválidos " + error)
