@@ -133,6 +133,10 @@ const InicioReservaPage = () => {
             validacaoIdUsuario: 0
         }
 
+        useEffect(() => {
+            console.log(valoresIngressosSelecionados)
+        }, [valoresIngressosSelecionados]);
+
         await fetch('https://www.senailp.com.br/eventos-api/api/Pedido', {
             method: 'POST',
             headers: {
