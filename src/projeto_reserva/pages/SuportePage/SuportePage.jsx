@@ -1,8 +1,8 @@
 import './SuportePage.css'
 import Cabecalho from '../../Components/Cabecalho/Cabecalho.jsx'
 import Rodape from '../../Components/Rodape/Rodape.jsx'
-import imgBanner from '../../../assets/Images/logo_zap.png'
-import imgSuport from '../../../assets/Images/suporte_img.png'
+import imgBanner from '../../assets/Images/logo_zap.png'
+import imgSuport from '../../assets/Images/suporte_img.png'
 //import ReactModal from 'react-modal'
 import React, { useState } from 'react'
 import Modal from 'react-modal'
@@ -79,7 +79,7 @@ const SuportePage = () => {
                         <button onClick={() => {
                             openModal(2)
                         }}  >
-                            <h1>Porque reservar seu ingresso?</h1>
+                            <h1>Por que reservar seu ingresso?</h1>
                         </button>
                     </div>
                     <div className='faq_frequentes'>
