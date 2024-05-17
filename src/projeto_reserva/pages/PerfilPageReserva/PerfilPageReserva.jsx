@@ -13,7 +13,7 @@ import Rodape from '../../Components/Rodape/Rodape.jsx'
 import perfil_grande from '../../../assets/Images/perfil_grande.png'
 import Menu from "../../../projeto_admin/components/Menu/index.jsx";
 
-const PerfilPage = () => {
+const PerfilPageReserva = () => {
   const navigate = useNavigate();
   
   const verificarAutenticacao = () => {
@@ -63,4 +63,4 @@ const PerfilPage = () => {
   )
 }
 
-export default PerfilPage;
+export default PerfilPageReserva;

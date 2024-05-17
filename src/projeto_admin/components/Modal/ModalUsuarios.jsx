@@ -115,6 +115,7 @@ export const ModalUsuarios = ({setModalData, usuarios, setUsuarios, setSuccessMe
                                     <label htmlFor="perfil" className="form-label">Perfil</label>
                                     <select className="form-select" id="perfil">
                                         <option value="Administrador">Administrador</option>
+                                        <option value="Portaria">Portaria</option>
                                         <option value="Usuario">Usuario</option>
                                     </select>
                                 </div>
