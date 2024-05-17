@@ -22,6 +22,7 @@ import LoginPagesReserva from "./projeto_reserva/pages/LoginPageReserva/LoginPag
 import ProtectedRoute from './componentes/ProtectedRoute.jsx';
 import LoginPageAdmin from './projeto_admin/Pages/LoginPageAdmin/LoginPageAdmin.jsx';
 import NotFoundPage from "./componentes/NotFoundPage.jsx";
+import PerfilPage from "./projeto_admin/Pages/PerfilAdmPage/PerfilPage.jsx";
 
 function App() {
     localStorage.setItem('inDevelopment', 'false')
@@ -105,7 +106,7 @@ function App() {
             } />
             <Route path="/admin/perfil" element={
                 <ProtectedRoute allowedProfiles={['Adminstrador']}>
-                    <PerfilPageReserva/>
+                    <PerfilPage/>
                 </ProtectedRoute>
             } />
         </Route>
