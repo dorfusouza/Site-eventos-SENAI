@@ -16,19 +16,22 @@ function Pedidos(){
     const [filterText, setFilterText] = useState("");
     const [filtrosSelecionados, setFiltrosSelecionados] = useState([]);
     const [filteredPedidos, setFilteredPedidos] = useState([]);
+    const inDevelopment = localStorage.getItem('inDevelopment');
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
+    }
 
     async function fetchPedidos() {
-        const url = 'https://www.senailp.com.br/eventos-api/api/Pedido';
-        //const url = 'http://localhost:5236/api/Pedido';
-        const response = await fetch(url);
+        const response = await fetch(url + 'Pedido');
         const data = await response.json();
         setPedidos(data);
         setFilteredPedidos(data);
     }
     async function fetchUsuarios() {
-        const url = 'https://www.senailp.com.br/eventos-api/api/Usuario';
-        //const url = 'http://localhost:5236/api/Usuario';
-        const response = await fetch(url);
+        const response = await fetch(url + 'Usuario');
         const data = await response.json();
         setUsuarios(data);
     }
@@ -40,9 +43,7 @@ function Pedidos(){
 
     const handleValidate = (id) => {
         let idUsuario = localStorage.getItem('id')
-        const url = 'https://www.senailp.com.br/eventos-api/api/Pedido/validar/' + id + `?validacaoIdUsuario=${idUsuario}`;
-        //const url = 'http://localhost:5236/api/Pedido/validar/' + id + '?validacaoIdUsuario=2';
-        fetch(url, {
+        fetch(url + 'Pedido/validar/' + id + `?validacaoIdUsuario=${idUsuario}`, {
             method: 'PUT',
         })
             .then(response => response.json())

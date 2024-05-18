@@ -10,21 +10,28 @@ import Menu from "../../components/Menu/index.jsx";
 import Rodape from "../../components/Rodape/index.jsx";
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../components/Utils/auth.jsx';
-
+import 'bootstrap'
 
 const EditarEvento = () => {
     const [eventos, setEventos] = useState([]);
     const [filterText, setFilterText] = useState("");
     const [filtrosSelecionados, setFiltrosSelecionados] = useState([]);
+    const [formData, setFormData] = useState(null);
+
     const [filteredEventos, setFilteredEventos] = useState([]);
     const [lotes, setLotes] = useState([]);
     const [selectedLote, setSelectedLote] = useState(0);
-    const loteSelect = document.getElementById('lote');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [lotesRenderizar, setLotesRenderizar] = useState([])
     const navigate = useNavigate();
-  
+    const inDevelopment = localStorage.getItem('inDevelopment');
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
+    }
     const verificarAutenticacao = () => {
     if (!isAuthenticated()) {
         console.log('Usuário não autenticado');
@@ -37,20 +44,26 @@ const EditarEvento = () => {
     }, []);
 
     async function fetchEventos() {
-        const url = 'https://www.senailp.com.br/eventos-api/api/evento';
-        //const url = 'http://localhost:5236/api/Evento';
-        const response = await fetch(url);
+        const response = await fetch(url + 'Evento');
         const data = await response.json();
         setEventos(data);
         setFilteredEventos(data);
     }
 
     async function fetchLotes() {
-        //const url = 'http://localhost:5236/api/Lote/evento/' + idEvento;
-        const url = 'https://www.senailp.com.br/eventos-api/api/Lote/';
-        const response = await fetch(url);
+        const response = await fetch(url + 'Lote');
         const data = await response.json();
         setLotesRenderizar(data);
+    }
+
+    async function fetchImagem(idEvento) {
+        const response = await fetch(url + `Evento/${idEvento}/image`);
+        let data = await response.blob();
+        const urlImage = URL.createObjectURL(data);
+        document.getElementById('imagem-preview').src = urlImage;
+        data = new Blob([data], { type: 'image/png' });
+        const file = new File([data], 'imagem.png', { type: 'image/png' });
+        return file;
     }
 
     useEffect(() => {
@@ -58,85 +71,73 @@ const EditarEvento = () => {
         fetchLotes()
     }, []);
 
-
-    const handleFilter = (value) => {
-        if (filtrosSelecionados.includes(value)) {
-            setFiltrosSelecionados(filtrosSelecionados.filter((item) => item !== value));
-        } else {
-            setFiltrosSelecionados([...filtrosSelecionados, value]);
-        }
-    }
-
-    const handleClear = (value) => {
-        setFiltrosSelecionados(filtrosSelecionados.filter((item) => item !== value));
-    }
-
     function handleSalvarEvento() {
-        const nome = document.getElementById('nome').value;
-        let dataEvento = document.getElementById('data').value;
-        const local = document.getElementById('local').value;
-        const descricao = document.getElementById('descricao').value;
-        let ativo = document.getElementById('ativo').checked;
-        const idEvento = localStorage.getItem('idEvento');
-        const imagemUrl = document.getElementById('imagem').value;
-
-        ativo = ativo ? 1 : 0;
-
-        dataEvento = new Date(dataEvento).toISOString();
-
-        const dataInput = {
-            idEvento: parseInt(idEvento),
-            nomeEvento: nome,
-            dataEvento: dataEvento,
-            local: local,
-            descricao: descricao,
-            ativo: ativo,
-            imagemUrl: "",
-            totalIngressos: 0,
-            imagem: null
+        const idEvento = parseInt(localStorage.getItem('idEvento'));
+        const nome = formData.get('nome');
+        let dataEvento = formData.get('data');
+        const local = formData.get('local');
+        const descricao = formData.get('descricao');
+        let ativo = formData.get('ativo');
+        let imagem = formData.get('imagem');
+        
+        if (ativo === 'true') {
+            ativo = 1;
+        } else {
+            ativo = 0;
         }
-
-        //const url = 'http://localhost:5236/api/Evento/' + idEvento;
-        const url = 'https://www.senailp.com.br/eventos-api/api/Evento/' + idEvento;
-        fetch(url, {
+    
+        // Format date to ISO string
+        dataEvento = new Date(dataEvento).toISOString();
+    
+        // Create FormData object
+        const dataInput = new FormData();
+        dataInput.append('id', 0)
+        dataInput.append('idEvento', idEvento);
+        dataInput.append('nomeEvento', nome);
+        dataInput.append('dataEvento', dataEvento);
+        dataInput.append('local', local);
+        dataInput.append('descricao', descricao);
+        dataInput.append('ativo', ativo);
+        dataInput.append('imagemUrl', '');
+        dataInput.append('totalIngressos', parseInt(0));
+        dataInput.append('imagem', imagem);
+        console.log(dataInput);
+        fetch(url + 'Evento/' + idEvento, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dataInput)
+            body: dataInput, // Use FormData object
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                setSuccessMessage('Evento editado com sucesso!');
-                console.log(eventos)
-                eventos.map((evento) => {
-                    if (evento.idEvento === parseInt(idEvento)) {
-                        evento.nomeEvento = data.nomeEvento;
-                        evento.dataEvento = data.dataEvento;
-                        evento.local = data.local;
-                        evento.descricao = data.descricao;
-                        evento.ativo = data.ativo;
-                        evento.imagemUrl = data.imagemUrl;
-                        evento.totalIngressos = data.totalIngressos;
-                    }
-                    return evento;
-                })
-                setEventos(eventos);
-                setFilteredEventos(eventos);
-                console.log(eventos)
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                setErrorMessage('Erro ao editar evento!');
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            setSuccessMessage('Evento editado com sucesso!');
+            const updatedEventos = eventos.map(evento => {
+                if (evento.idEvento === parseInt(idEvento)) {
+                    return {
+                        ...evento,
+                        nomeEvento: data.nomeEvento,
+                        dataEvento: data.dataEvento,
+                        local: data.local,
+                        descricao: data.descricao,
+                        ativo: data.ativo,
+                        imagemUrl: data.imagemUrl,
+                        totalIngressos: data.totalIngressos,
+                    };
+                }
+                return evento;
             });
+            setEventos(updatedEventos);
+            setFilteredEventos(updatedEventos);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            setErrorMessage('Erro ao editar evento!');
+        });
     }
+    
 
     function handleDeletarEvento() {
         const idEvento = localStorage.getItem('idEvento');
-        //const url = 'http://localhost:5236/api/Lote/evento/' + idEvento;
-        const url = 'https://www.senailp.com.br/eventos-api/api/Lote/evento/' + idEvento;
-        fetch(url, {
+        fetch(url + 'Lote/evento/' + idEvento, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -152,9 +153,7 @@ const EditarEvento = () => {
                 setErrorMessage('Erro ao deletar lotes!');
             });
 
-        //const urlEvento = 'http://localhost:5236/api/Evento/' + idEvento;
-        const urlEvento = 'https://www.senailp.com.br/eventos-api/api/Evento/' + idEvento;
-        fetch(urlEvento, {
+        fetch(url + 'Evento/' + idEvento, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -180,9 +179,7 @@ const EditarEvento = () => {
 
     function handleModalLotes(idEvento) {
         localStorage.setItem('idEvento', idEvento);
-        //const url = 'http://localhost:5236/api/Lote/evento/' + idEvento;
-        const url = 'https://www.senailp.com.br/eventos-api/api/Lote/evento/' + idEvento;
-        fetch(url)
+        fetch(url + 'Lote/evento/' + idEvento)
             .then(response => response.json())
             .then(data => {
                 setLotes(data);
@@ -224,6 +221,22 @@ const EditarEvento = () => {
         document.getElementById('descricao').value = item.descricao;
         document.getElementById('ativo').checked = item.ativo;
         document.getElementById('totalIngressos').value = item.totalIngressos;
+        
+
+
+        const formData = new FormData();
+        //Pega a imagem do evento do servidor e coloca ela no modal
+        formData.append('id', item.idEvento);
+        formData.append('image', fetchImagem(item.idEvento))
+        formData.append('nome', item.nomeEvento);
+        formData.append('data', data);
+        formData.append('local', item.local);
+        formData.append('descricao', item.descricao);
+        formData.append('ativo', item.ativo.toString()); // Convert boolean to string
+        formData.append('totalIngressos', item.totalIngressos.toString()); // Convert to string
+        
+        setFormData(formData);
+
         myModal.show();
     }
 
@@ -484,7 +497,7 @@ const EditarEvento = () => {
                     <CampoFiltro placeholder="Pesquisar evento por nome" handleFilter={setFilterText} />
                 </div>
                 <TabelaFiltro renderizarDados={renderizarDados} tableFields={tableFields} filteredData={filteredEventos} />
-                <ModalEventos handleSalvar={handleSalvarEvento} handleDeletar={handleDeletarEvento} />
+                <ModalEventos handleSalvar={handleSalvarEvento} handleDeletar={handleDeletarEvento} fetchImagem={fetchImagem} />
                 <ModalEditarLotes handleSalvar={handleSalvarLote} handleDeletar={handleDeletarLote} lotes={lotes} setSelectedLote={setSelectedLote} />
                 <ModalAdicionarLote handleAdicionar={handleAdicionarLote}/>
             </div>

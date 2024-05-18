@@ -15,21 +15,21 @@ const Grafico = () => {
     url = 'https://www.senailp.com.br/eventos-api/api/';
   }
 
-  useEffect(() => {
-    async function fetchQuantidadeIngressos() {
-      try {
-        const response = await fetch(url + 'Ingresso/quantidadeByTipoByEvento/' + idEvento);
-        const data = await response.json();
+  async function fetchQuantidadeIngressos() {
+    try {
+      const response = await fetch(url + 'Ingresso/quantidadeByTipoByEvento/' + idEvento);
+      const data = await response.json();
 
-        // Converter objeto em array de objetos
-        const dataArray = Object.entries(data).map(([name, value]) => ({ name, value }));
+      // Converter objeto em array de objetos
+      const dataArray = Object.entries(data).map(([name, value]) => ({ name, value }));
 
-        setQuantidadeIngressos(dataArray);
-      } catch (error) {
-        console.error('Erro ao buscar quantidade de ingressos por tipo:', error);
-      }
+      setQuantidadeIngressos(dataArray);
+    } catch (error) {
+      console.error('Erro ao buscar quantidade de ingressos por tipo:', error);
     }
+  }
 
+  useEffect(() => {
     fetchQuantidadeIngressos();
   }, []);
 

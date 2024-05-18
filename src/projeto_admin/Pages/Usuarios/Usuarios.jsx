@@ -20,12 +20,18 @@ function Usuarios() {
     });
     const [filteredUsuarios, setFilteredUsuarios] = useState([]);
     const [modalData, setModalData] = useState();
-    const tiposPerfil = ["Usuario", "Administrador", "Portaria"];
+
+    const inDevelopment = localStorage.getItem('inDevelopment');
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
+    }
 
     useEffect(() => {
         async function fetchUsuarios() {
-            const url = 'https://www.senailp.com.br/eventos-api/api/Usuario';
-            const response = await fetch(url);
+            const response = await fetch(url + 'Usuario');
             const data = await response.json();
             setUsuarios(data);
             setFilteredUsuarios(data);

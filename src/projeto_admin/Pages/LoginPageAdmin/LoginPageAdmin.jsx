@@ -117,12 +117,6 @@ const LoginPageAdmin = () => {
                     </div>
                 </div>
 
-                <div className='row justify-content-center'>
-                    <div className='col-md-6 registro-link-dv'>
-                        <p className='registro-link text-center'>Ainda não tem uma conta? <a href="/RegistrarAcesso">Registre-se aqui.</a></p>
-                    </div>
-                </div>
-
             </div>
 
             <Rodape />

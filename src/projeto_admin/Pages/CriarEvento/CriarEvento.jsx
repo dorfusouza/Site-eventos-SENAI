@@ -4,34 +4,73 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notifyError, notifySuccess } from '../../components/Utils/msgToast.jsx';
 import Rodape from "../../components/Rodape/index.jsx";
-import Cabecalho from "../../../projeto_reserva/Components/Cabecalho/Cabecalho.jsx";
 import Menu from "../../components/Menu/index.jsx";
-
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../components/Utils/auth.jsx';
+import { Modal, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CriarEvento = () => {
     const [errorMessage, setErrorMessage] = useState('');
-    const [sucessMessage, setSucessMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [formData, setFormData] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
     const today = new Date().toISOString().split('T')[0];
-    
-    const navigate = useNavigate();
-  
-    const verificarAutenticacao = () => {
-    if (!isAuthenticated()) {
-        console.log('Usuário não autenticado');
-        navigate('/admin/');
+    const inDevelopment = localStorage.getItem('inDevelopment');
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
     }
+    const navigate = useNavigate();
+
+    const verificarAutenticacao = () => {
+        if (!isAuthenticated()) {
+            console.log('Usuário não autenticado');
+            navigate('/admin/');
+        }
     }
 
     useEffect(() => {
-    verificarAutenticacao();
+        verificarAutenticacao();
     }, []);
 
-    function handleSubmit(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
+    const criarLotes = (lotes, idEvento) => {
+        lotes.forEach(lote => {
+            const loteData = {
+                idLote: 0,
+                eventoId: idEvento,
+                valorUnitario: lote.preco ? lote.preco : 0,
+                quantidadeTotal: lote.quantidadeIngressos,
+                saldo: lote.quantidadeIngressos,
+                ativo: 1,
+                dataFinal: lote.dataTermino ? lote.dataTermino : null,
+                dataInicio: lote.dataInicio ? lote.dataInicio : null,
+                tipo: lote.tipoLote,
+                nome: lote.nomeLote,
+            };
 
+            fetch(url + 'lote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loteData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                setSuccessMessage('Evento criado com sucesso!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmit() {
         const lotes = [];
         for (let i = 0; i < formData.get("quantidadeLotes"); i++) {
             const tipoLote = formData.get('tipoLote');
@@ -78,58 +117,26 @@ const CriarEvento = () => {
             ativo: 1,
             nomeEvento: formData.get('nomeEvento'),
             totalIngressos: lotes.reduce((acc, lote) => acc + parseInt(lote.quantidadeIngressos), 0),
-            imagem: 0
+            imagem: file,
         };
-        const url = "https://www.senailp.com.br/eventos-api/api/evento"
-        //const url = "http://localhost:5236/api/evento"
-        fetch(url, {
+
+        fetch(url + 'evento', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
             },
             body: JSON.stringify(eventoData),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                lotes.forEach(lote => {
-                    const loteData = {
-                        idLote: 0,
-                        eventoId: data,
-                        valorUnitario: lote.preco ? lote.preco : 0,
-                        quantidadeTotal: lote.quantidadeIngressos,
-                        saldo: lote.quantidadeIngressos,
-                        ativo: 1,
-                        dataFinal: lote.dataTermino ? lote.dataTermino : null,
-                        dataInicio: lote.dataInicio ? lote.dataInicio : null,
-                        tipo: lote.tipoLote,
-                        nome: lote.nomeLote,
-                    };
-                    console.log(loteData)
-                    console.log(`Data: ${data}`)
-                    const loteUrl = "https://www.senailp.com.br/eventos-api/api/lote"
-                    //const loteUrl = "http://localhost:5236/api/lote"
-                    fetch(loteUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(loteData),
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                            setSucessMessage('Evento criado com sucesso!');
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
-                });
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-            
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            if (lotes.length !== 0) {
+                criarLotes(lotes, data.idEvento);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
 
     const [lotes, setLotes] = useState([]);
@@ -138,7 +145,6 @@ const CriarEvento = () => {
 
     const handleAddLotes = (event) => {
         event.preventDefault();
-
         const newLotes = Array.from({ length: quantidadeLotes }, () => ({ tipo: tipoLote }));
         setLotes(newLotes);
         toast.info('Lote adicionado com sucesso!');
@@ -148,21 +154,52 @@ const CriarEvento = () => {
         if (errorMessage) {
             toast.error(errorMessage);
         }
-        if (sucessMessage) {
-            toast.success(sucessMessage);
+
+    }, [errorMessage]);
+
+    useEffect(() => {
+        if (successMessage) {
+            toast.success(successMessage);
+            setSuccessMessage('');
+            setTimeout(() => {
+                navigate('/admin/editar_eventos');
+            }, 2000);
         }
-    }, [errorMessage, sucessMessage]);
+    }, [successMessage, navigate]);
+
+    const confirmSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        setFormData(data);
+        const file = data.get('imagemDivulgacao');
+
+        if (file && file.size > 0) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setImagePreview('');
+        }
+        setShowModal(true);
+    }
+
+    const handleConfirm = () => {
+        setShowModal(false);
+        handleSubmit();
+    }
 
     return (
         <div>
             <Menu/>
-            <form onSubmit={handleSubmit} className="p-4">
+            <form onSubmit={confirmSubmit} className="p-4">
                 <h1 className="mb-4">Criar evento</h1>
                 <fieldset className="border border-primary rounded p-4 mb-4">
                     <legend className="text-primary fs-3">1. Informações básicas</legend>
                     <p>Adicione as principais informações do evento</p>
                     <div className="mb-3">
-                        <label htmlFor="nomeEvento" className="form-label">Nome do evento <strong style={{color: 'red', fontWeight: 'normal' }}>*</strong></label>
+                        <label htmlFor="nomeEvento" className="form-label">Nome do evento <strong style={{ color: 'red', fontWeight: 'normal' }}>*</strong></label>
                         <input type="text" className="form-control w-25" placeholder="Nome do evento" required name={"nomeEvento"} />
                     </div>
 
@@ -177,7 +214,7 @@ const CriarEvento = () => {
                     <legend className="text-primary fs-3">2. Descrição do evento</legend>
                     <p>Adicione informações detalhadas sobre o evento</p>
                     <div className="mb-3">
-                        <label htmlFor="descricao" className="form-label">Descrição <strong style={{color: 'red', fontWeight: 'normal' }}>*</strong></label>
+                        <label htmlFor="descricao" className="form-label">Descrição <strong style={{ color: 'red', fontWeight: 'normal' }}>*</strong></label>
                         <textarea className="form-control" placeholder="Descrição do evento" required name={"descricao"}></textarea>
                     </div>
                 </fieldset>
@@ -186,7 +223,7 @@ const CriarEvento = () => {
                     <legend className="text-primary fs-3">3. Data do evento</legend>
                     <p>Quando o seu evento irá acontecer?</p>
                     <div className="mb-3">
-                        <label htmlFor="dataEvento" className="form-label">Data <strong style={{color: 'red', fontWeight: 'normal' }}>*</strong></label>
+                        <label htmlFor="dataEvento" className="form-label">Data <strong style={{ color: 'red', fontWeight: 'normal' }}>*</strong></label>
                         <input type="date" min={today} required name={"dataEvento"} className={"form-control DataInput w-25"} />
                     </div>
                 </fieldset>
@@ -220,7 +257,7 @@ const CriarEvento = () => {
                     <legend className="text-primary fs-3">5. Local do evento</legend>
                     <p>Onde o seu evento irá acontecer?</p>
                     <div className="mb-3">
-                        <label htmlFor="local" className="form-label">Local <strong style={{color: 'red', fontWeight: 'normal' }}>*</strong></label>
+                        <label htmlFor="local" className="form-label">Local <strong style={{ color: 'red', fontWeight: 'normal' }}>*</strong></label>
                         <input type="text" className="form-control w-50" placeholder="Local do evento" name={"local"} required />
                     </div>
                 </fieldset>
@@ -229,8 +266,52 @@ const CriarEvento = () => {
                 <ToastContainer />
             </form>
             <Rodape/>
+
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmação de Submissão</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Tem certeza de que deseja criar este evento?</p>
+                    <ul className="list-group">
+                        <li className="list-group-item"><strong>Nome do evento:</strong> {formData?.get('nomeEvento')}</li>
+                        <li className="list-group-item"><strong>Descrição:</strong> {formData?.get('descricao')}</li>
+                        <li className="list-group-item"><strong>Data do evento:</strong> {formData?.get('dataEvento')}</li>
+                        <li className="list-group-item"><strong>Local:</strong> {formData?.get('local')}</li>
+                        <li className="list-group-item">
+                            <strong>Lotes:</strong>
+                            {lotes.map((lote, index) => (
+                                <div key={index} className="mb-2">
+                                    <strong>Nome do lote:</strong> {formData?.getAll('nomeLote')[index]}
+                                    <ul className="list-group mt-2">
+                                        <li className="list-group-item"><strong>Tipo:</strong> {lote.tipo}</li>
+                                        <li className="list-group-item"><strong>Preço:</strong> {formData?.getAll('valorIngresso')[index]}</li>
+                                        <li className="list-group-item"><strong>Quantidade de ingressos:</strong> {formData?.getAll('quantidadeIngressos')[index]}</li>
+                                        <li className="list-group-item"><strong>Data de início:</strong> {formData?.getAll('dataInicio')[index]}</li>
+                                        <li className="list-group-item"><strong>Data de término:</strong> {formData?.getAll('dataTermino')[index]}</li>
+                                    </ul>
+                                </div>
+                            ))}
+                        </li>
+                    </ul>
+                    {imagePreview && (
+                        <div className="text-center mt-3 mb-3 d-flex flex-column align-items-center" style={{gap: '1rem'}}>
+                            <strong>Imagem de divulgação:</strong>
+                            <img src={imagePreview} alt="Imagem de Divulgação" className="img-fluid rounded shadow" style={{ maxHeight: '300px' }} />
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={handleConfirm}>
+                        Confirmar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
 
-export default CriarEvento
+export default CriarEvento;
