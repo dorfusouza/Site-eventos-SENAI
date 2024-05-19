@@ -275,11 +275,11 @@ const InicioReservaPage = () => {
                                     </div>
                                 ))}
                                 <div className="d-flex justify-content-between align-items-center mt-4">
-                                    <h4>Total</h4>
-                                    <h4>{Intl.NumberFormat('pt-BR', {
+                                    <h2>Total</h2>
+                                    <h2>{Intl.NumberFormat('pt-BR', {
                                         style: 'currency',
                                         currency: 'BRL'
-                                    }).format(getSum(valoresIngressosSelecionados))}</h4>
+                                    }).format(getSum(valoresIngressosSelecionados))}</h2>
                                 </div>
                                 <button className="btn btn-success w-100 mt-3 botaoVerde" onClick={handleSubmit}>Reservar Ingresso</button>
                             </div>
