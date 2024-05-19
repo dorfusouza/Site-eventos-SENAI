@@ -45,11 +45,11 @@ const CriarEvento = () => {
                 valorUnitario: lote.preco ? lote.preco : 0,
                 quantidadeTotal: lote.quantidadeIngressos,
                 saldo: lote.quantidadeIngressos,
-                ativo: 1,
                 dataFinal: lote.dataTermino ? lote.dataTermino : null,
                 dataInicio: lote.dataInicio ? lote.dataInicio : null,
                 tipo: lote.tipoLote,
                 nome: lote.nomeLote,
+                ativo: lote.ativo,
             };
 
             fetch(url + 'lote', {
@@ -79,6 +79,10 @@ const CriarEvento = () => {
             const dataInicio = formData.getAll('dataInicio')[i];
             const dataTermino = formData.getAll('dataTermino')[i];
             const nomeLote = formData.getAll('nomeLote')[i];
+            const ativo = i === 0 ? 1 : 0;
+            
+            //Se for o primeiro lote o ativo vai com 1, se não, vai com 0
+
             if (tipoLote === 'quantidade' && (quantidadeIngressos === '' || preco === '')) {
                 setErrorMessage('Por favor preencha todos os campos dos lotes.');
                 window.scrollTo(0, document.body.scrollHeight);
@@ -91,6 +95,7 @@ const CriarEvento = () => {
                     dataInicio,
                     dataTermino,
                     nomeLote,
+                    ativo,
                 });
             }
         }
@@ -102,30 +107,12 @@ const CriarEvento = () => {
             setErrorMessage('');
         }
 
-        const file = formData.get('imagemDivulgacao');
-        if (file.size > 2 * 1024 * 1024) {
-            setErrorMessage('A imagem deve ter no máximo 2MB.');
-            return;
-        }
-
-        const eventoData = {
-            idEvento: 0,
-            dataEvento: formData.get('dataEvento'),
-            descricao: formData.get('descricao'),
-            imagemUrl: "",
-            local: formData.get('local'),
-            ativo: 1,
-            nomeEvento: formData.get('nomeEvento'),
-            totalIngressos: lotes.reduce((acc, lote) => acc + parseInt(lote.quantidadeIngressos), 0),
-            imagem: file,
-        };
+        const formularioData = new FormData(document.getElementById('form'));
+        
 
         fetch(url + 'evento', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            body: JSON.stringify(eventoData),
+            body: formularioData,
         })
         .then(response => response.json())
         .then(data => {
@@ -162,7 +149,7 @@ const CriarEvento = () => {
             toast.success(successMessage);
             setSuccessMessage('');
             setTimeout(() => {
-                navigate('/admin/editar_eventos');
+                navigate('/admin/editar_evento');
             }, 2000);
         }
     }, [successMessage, navigate]);
@@ -193,7 +180,7 @@ const CriarEvento = () => {
     return (
         <div>
             <Menu/>
-            <form onSubmit={confirmSubmit} className="p-4">
+            <form onSubmit={confirmSubmit} className="p-4" id="form">
                 <h1 className="mb-4">Criar evento</h1>
                 <fieldset className="border border-primary rounded p-4 mb-4">
                     <legend className="text-primary fs-3">1. Informações básicas</legend>
@@ -205,7 +192,7 @@ const CriarEvento = () => {
 
                     <h3>Imagem de divulgação (opcional)</h3>
                     <div className="mb-3">
-                        <input type="file" accept="image/*" className="form-control w-25" name="imagemDivulgacao" />
+                        <input type="file" accept="image/*" className="form-control w-25" name="imagem" />
                         <p>A dimensão recomendada é de 1600 x 838 (mesma proporção do formato utilizado nas páginas de evento no Facebook). Formato JPEG, GIF ou PNG de no máximo 2MB. Imagens com dimensões diferentes serão redimensionadas.</p>
                     </div>
                 </fieldset>
@@ -261,7 +248,11 @@ const CriarEvento = () => {
                         <input type="text" className="form-control w-50" placeholder="Local do evento" name={"local"} required />
                     </div>
                 </fieldset>
-
+                
+                <input type="hidden" name="ativo" value="1" />
+                <input type="hidden" name="totalIngressos" value="0" />
+                <input type="hidden" name="imagemUrl" value="" />
+                <input type="hidden" name="idEvento" value="0" />
                 <button type="submit" className={"btn btn-primary me-2"}>Criar evento</button>
                 <ToastContainer />
             </form>

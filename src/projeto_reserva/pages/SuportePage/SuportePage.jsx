@@ -1,17 +1,13 @@
-import './SuportePage.css'
-import Cabecalho from '../../Components/Cabecalho/Cabecalho.jsx'
-import Rodape from '../../Components/Rodape/Rodape.jsx'
-import imgBanner from '../../../assets/Images/logo_zap.png'
-import imgSuport from '../../../assets/Images/suporte_img.png'
-//import ReactModal from 'react-modal'
-import React, { useState } from 'react'
-import Modal from 'react-modal'
-import ModalConteudo from '../../Components/ModalConteudo/ModalConteudo.jsx'
-
+import { useState } from 'react';
+import Cabecalho from '../../Components/Cabecalho/Cabecalho.jsx';
+import Rodape from '../../Components/Rodape/Rodape.jsx';
+import imgBanner from '../../../assets/Images/logo_zap.png';
+import imgSuport from '../../../assets/Images/suporte_img.png';
+import 'bootstrap'
 const SuportePage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [itemFrase, setItemFrase] = useState('');
 
-    const frase = [
+    const frases = [
         `Somos uma equipe de alunos de Desenvolvimento de Sistemas apaixonados por criar soluções inovadoras. 
          Desenvolvemos um site de eventos para tornar a experiência de organizadores e participantes ainda mais fácil e divertida. 
          Estamos aqui para ajudar e garantir que sua experiência seja a melhor possível.`,
@@ -27,95 +23,76 @@ const SuportePage = () => {
         `Após reservar seu ingresso, por favor, procure um aluno da administração presente na Escola Senai Lençóis Paulista para validar sua reserva.
          Eles estarão prontos para ajudá-lo e garantir que sua participação seja registrada corretamente.
          Estamos ansiosos para recebê-lo e tornar sua experiência no evento ainda mais especial!`,
-    ]
-    const [itemFrase, setItemFrase] = useState('')
+    ];
 
-    const customModalStyle = {
-        content: {
-            width: '50%',
-            height: '60%',
-            margin: 'auto',
-
-        },
+    const openModal = (index) => {
+        setItemFrase(frases[index]);
+        let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+            keyboard: false
+        });
+        myModal.show();
     }
 
-    const openModal = (item) => {
-        setItemFrase(frase[item]);
-        setIsModalOpen(true);
-    }
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    }
 
 
     return (
         <div>
             <Cabecalho />
-            <div className='tela'>
-                <div className='esquerda_suporte'>
-                    <div className='fundo_suporte'>
-                        <div className='text_faq'>
+            <div className='container'>
+                <div className='row'>
+                    <div className='col-lg-6 mt-5'>
+                        <div className='bg-primary text-center text-white py-3 rounded mb-4'>
                             <h2>DUVIDAS FREQUENTES</h2>
                         </div>
-                    </div>
-                    <div className='faq_frequentes'>
-                        <button onClick={
-                            () => {
-                                openModal(0)
-                            }
-                        }>
-                            <h1>Quem somos nós?</h1>
-                        </button>
-                    </div>
-                    <div className='faq_frequentes'>
-                        <button onClick={() => {
-                            openModal(1)
-                        }}>
-                            <h1>Quais as formas de pagamento aceitas?</h1>
-                        </button>
-                    </div>
-                    <div className='faq_frequentes'>
-                        <button onClick={() => {
-                            openModal(2)
-                        }}  >
-                            <h1>Por que reservar seu ingresso?</h1>
-                        </button>
-                    </div>
-                    <div className='faq_frequentes'>
-                        <button onClick={() => {
-                            openModal(3)
-                        }}>
-                            <h1>Com quem falar após a reserva do ingresso?</h1>
-                        </button>
-                    </div>
-                </div>
-                <div className='direita_suporte'>
-                    <img className='ImageSuport' src={imgSuport} />
-                    <div className='whats_faq'>
-                        <div className='text_whats'>
-                            <a href="https://api.whatsapp.com/send?phone=+5514996551609">FALE CONOSCO</a>
+                        <div className='list-group'>
+                            <button className='list-group-item list-group-item-action' onClick={() => openModal(0)}>
+                                <h1 className='h5'>Quem somos nós?</h1>
+                            </button>
+                            <button className='list-group-item list-group-item-action' onClick={() => openModal(1)}>
+                                <h1 className='h5'>Quais as formas de pagamento aceitas?</h1>
+                            </button>
+                            <button className='list-group-item list-group-item-action' onClick={() => openModal(2)}>
+                                <h1 className='h5'>Por que reservar seu ingresso?</h1>
+                            </button>
+                            <button className='list-group-item list-group-item-action' onClick={() => openModal(3)}>
+                                <h1 className='h5'>Com quem falar após a reserva do ingresso?</h1>
+                            </button>
                         </div>
-
-                        <img className='img_zap' src={imgBanner} />
+                    </div>
+                    <div className='col-lg-6 text-center'>
+                        <img className='img-fluid' src={imgSuport} alt='Suporte' />
+                        <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-5'
+                            href="https://api.whatsapp.com/send?phone=+5514996551609" target="_blank" rel="noreferrer">
+                            <div className='d-flex align-items-center justify-content-center' style={{ fontSize: '1.5rem', gap: '10px', fontWeight: 'bold' }}>
+                                FALE CONOSCO
+                                <img className='img-fluid' src={imgBanner} alt='WhatsApp Logo' style={{ height: '30px' }} />
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
-            <Modal
-                keyboard={false}
-                backdrop="static"
-                ariaHideApp={false}
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                style={customModalStyle}
-                contentLabel="Adicionar/Editar Acompanhamento"
-            >
-                <ModalConteudo texto={itemFrase} closeModal={closeModal} />
-            </Modal>
+
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h1 className="modal-title fs-2" id="exampleModalLabel">FAQ - Perguntas Frequentes</h1>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <p className="fs-5">
+                                    {itemFrase}</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary fs-5" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             <Rodape />
-        </div >
-    )
+        </div>
+    );
 }
 
-export default SuportePage
+export default SuportePage;

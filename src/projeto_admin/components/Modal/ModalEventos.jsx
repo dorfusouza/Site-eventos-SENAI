@@ -1,27 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from 'react';
 
-export const ModalEventos = ({handleSalvar, handleDeletar, fetchImagem}) => {
-
-    const [imagem, setImagem] = useState(null)
+export const ModalEventos = ({ handleSalvar, handleDeletar, fetchImagem }) => {
+    const [imagem, setImagem] = useState(null);
 
     const handleImagem = async (e) => {
-        const file = e.target.files[0]
-        const base64 = await convertBase64(file)
-        setImagem(base64)
-    }
+        const file = e.target.files[0];
+        const base64 = await convertBase64(file);
+        setImagem(base64);
+    };
 
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
-            const fileReader = new FileReader()
-            fileReader.readAsDataURL(file)
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
             fileReader.onload = () => {
-                resolve(fileReader.result)
-            }
+                resolve(fileReader.result);
+            };
             fileReader.onerror = (error) => {
-                reject(error)
-            }
-        })
-    }
+                reject(error);
+            };
+        });
+    };
 
     return (
         <div className="modal fade" id="modal" tabIndex="-1" aria-labelledby="modal" aria-hidden="true">
@@ -32,7 +31,8 @@ export const ModalEventos = ({handleSalvar, handleDeletar, fetchImagem}) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <form>
+                        <form onSubmit={handleSalvar} encType="multipart/form-data">
+                            <input type="hidden" id="idEvento" name="idEvento"/>
                             <div className="mb-3">
                                 <label htmlFor="nome" className="form-label">Nome</label>
                                 <input type="text" className="form-control" id="nome" name="nome"/>
@@ -62,23 +62,15 @@ export const ModalEventos = ({handleSalvar, handleDeletar, fetchImagem}) => {
                                 <input type="checkbox" className="form-check-input" id="ativo" name="ativo"/>
                                 <label className="form-check-label" htmlFor="ativo">Ativo</label>
                             </div>
-                            <div className="mb-3">
-                                <label htmlFor="tipoLote" className="form-label">Tipo Lote</label>
-                                <select className="form-select" id="tipoLote" name="tipoLote">
-                                    <option value="Quantidade">Por quantidade</option>
-                                    <option value="Tempo">Por tempo</option>
-                                    <option value="Gratis">De graça</option>
-                                </select>    
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <button type="submit" className="btn btn-primary">Salvar</button>
+                                <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={handleDeletar}>Deletar</button>
                             </div>
                         </form>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleSalvar}>Salvar</button>
-                        <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={handleDeletar}>Deletar</button>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

@@ -11,13 +11,11 @@ import Rodape from "../../components/Rodape/index.jsx";
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../components/Utils/auth.jsx';
 import 'bootstrap'
+import axios from 'axios'
 
 const EditarEvento = () => {
     const [eventos, setEventos] = useState([]);
     const [filterText, setFilterText] = useState("");
-    const [filtrosSelecionados, setFiltrosSelecionados] = useState([]);
-    const [formData, setFormData] = useState(null);
-
     const [filteredEventos, setFilteredEventos] = useState([]);
     const [lotes, setLotes] = useState([]);
     const [selectedLote, setSelectedLote] = useState(0);
@@ -61,9 +59,6 @@ const EditarEvento = () => {
         let data = await response.blob();
         const urlImage = URL.createObjectURL(data);
         document.getElementById('imagem-preview').src = urlImage;
-        data = new Blob([data], { type: 'image/png' });
-        const file = new File([data], 'imagem.png', { type: 'image/png' });
-        return file;
     }
 
     useEffect(() => {
@@ -71,66 +66,39 @@ const EditarEvento = () => {
         fetchLotes()
     }, []);
 
-    function handleSalvarEvento() {
+    function handleSalvarEvento(event) {
+        event.preventDefault(); // Prevent default form submission
+        const formData = new FormData(event.target);
         const idEvento = parseInt(localStorage.getItem('idEvento'));
-        const nome = formData.get('nome');
-        let dataEvento = formData.get('data');
-        const local = formData.get('local');
-        const descricao = formData.get('descricao');
-        let ativo = formData.get('ativo');
-        let imagem = formData.get('imagem');
-        
-        if (ativo === 'true') {
-            ativo = 1;
-        } else {
-            ativo = 0;
-        }
+        let ativo = formData.get('ativo') === 'on' ? 1 : 0; // Checkbox returns 'on' if checked
     
-        // Format date to ISO string
-        dataEvento = new Date(dataEvento).toISOString();
+        let date = formData.get('data');
+        date = new Date(date).toISOString();
     
-        // Create FormData object
-        const dataInput = new FormData();
-        dataInput.append('id', 0)
-        dataInput.append('idEvento', idEvento);
-        dataInput.append('nomeEvento', nome);
-        dataInput.append('dataEvento', dataEvento);
-        dataInput.append('local', local);
-        dataInput.append('descricao', descricao);
-        dataInput.append('ativo', ativo);
-        dataInput.append('imagemUrl', '');
-        dataInput.append('totalIngressos', parseInt(0));
-        dataInput.append('imagem', imagem);
-        console.log(dataInput);
-        fetch(url + 'Evento/' + idEvento, {
-            method: 'PUT',
-            body: dataInput, // Use FormData object
+        // Ensure the idEvento is added to FormData
+        formData.set('idEvento', idEvento);
+        formData.set('dataEvento', date);
+        formData.set('imagemUrl', "0"); // Placeholder
+        formData.set('ativo', ativo);
+    
+        axios.put(`${url}Evento/${idEvento}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            setSuccessMessage('Evento editado com sucesso!');
-            const updatedEventos = eventos.map(evento => {
-                if (evento.idEvento === parseInt(idEvento)) {
-                    return {
-                        ...evento,
-                        nomeEvento: data.nomeEvento,
-                        dataEvento: data.dataEvento,
-                        local: data.local,
-                        descricao: data.descricao,
-                        ativo: data.ativo,
-                        imagemUrl: data.imagemUrl,
-                        totalIngressos: data.totalIngressos,
-                    };
-                }
-                return evento;
-            });
-            setEventos(updatedEventos);
-            setFilteredEventos(updatedEventos);
+        .then(response => {
+            console.log('Success:', response.data);
+            setSuccessMessage('Evento salvo com sucesso!');
+            fetchEventos(); // Refresh the event list
         })
         .catch(error => {
             console.error('Error:', error);
-            setErrorMessage('Erro ao editar evento!');
+            if (error.response) {
+                console.log('Response data:', error.response.data);
+                console.log('Response status:', error.response.status);
+                console.log('Response headers:', error.response.headers);
+            }
+            setErrorMessage('Erro ao salvar evento!');
         });
     }
     
@@ -223,19 +191,7 @@ const EditarEvento = () => {
         document.getElementById('totalIngressos').value = item.totalIngressos;
         
 
-
-        const formData = new FormData();
-        //Pega a imagem do evento do servidor e coloca ela no modal
-        formData.append('id', item.idEvento);
-        formData.append('image', fetchImagem(item.idEvento))
-        formData.append('nome', item.nomeEvento);
-        formData.append('data', data);
-        formData.append('local', item.local);
-        formData.append('descricao', item.descricao);
-        formData.append('ativo', item.ativo.toString()); // Convert boolean to string
-        formData.append('totalIngressos', item.totalIngressos.toString()); // Convert to string
-        
-        setFormData(formData);
+        fetchImagem(item.idEvento);
 
         myModal.show();
     }
@@ -290,6 +246,7 @@ const EditarEvento = () => {
                     </td>
                     <td>
                         <button onClick={() => {
+                            localStorage.setItem('idEvento', item.idEvento);
                             handleModalAdicionarLote(item.idEvento);
                         }} className='btn btn-success'
                         >Adicionar Lote</button>
@@ -335,10 +292,7 @@ const EditarEvento = () => {
             nome: nome
         }
 
-        console.log(data);
-        //const url = 'http://localhost:5236/api/Lote/' + idLote;
-        const url = 'https://www.senailp.com.br/eventos-api/api/Lote/' + idLote;
-        fetch(url, {
+        fetch(url + 'Lote/' + idLote, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -384,7 +338,7 @@ const EditarEvento = () => {
 
         const data = {
             idLote: 0,
-            eventoId: localStorage.getItem('idEvento'),
+            eventoId: parseInt(localStorage.getItem('idEvento')),
             valorUnitario: valorUnitario,
             quantidadeTotal: quantidadeTotal,
             saldo: quantidadeTotal,
@@ -396,9 +350,8 @@ const EditarEvento = () => {
         }
 
         console.log(data);
-        //const url = 'http://localhost:5236/api/Lote';
-        const url = 'https://www.senailp.com.br/eventos-api/api/Lote';
-        fetch(url, {
+
+        fetch(url + 'Lote', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -409,14 +362,26 @@ const EditarEvento = () => {
             .then(data => {
                 console.log('Success:', data);
                 setSuccessMessage('Lote adicionado com sucesso!');
+                const newLotes = [...lotes, data];
+                setLotes(newLotes);
+
+                document.getElementById('valorUnitarioAdicionarLote').value = "";
+                document.getElementById('quantidadeTotalAdicionarLote').value = "";
+                document.getElementById('ativo_loteAdicionarLote').checked = false;
+                document.getElementById('dataInicioAdicionarLote').value = "";
+                document.getElementById('dataFinalAdicionarLote').value = "";
+                document.getElementById('tipoAdicionarLote').value = "quantidade";
+                document.getElementById('nomeLoteAdicionarLote').value = "";
+
+                fetchLotes();
+                fetchEventos();
+
             })
             .catch((error) => {
                 console.error('Error:', error);
                 setErrorMessage('Erro ao adicionar lote!');
             });
 
-        const newLotes = [...lotes, data];
-        setLotes(newLotes);
     }
 
     useEffect(() => {

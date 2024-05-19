@@ -1,57 +1,49 @@
-import './RegistroPage.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { ToastContainer, toast } from 'react-toastify';
-import { notifyError, notifySuccess } from '../../Components/Utils/msgToast.jsx';
-
-import CampoTexto from '../../Components/CampoTexto/CampoTexto.jsx';
+import 'react-toastify/dist/ReactToastify.css';
+import InputMask from 'react-input-mask';
 import Cabecalho from '../../Components/Cabecalho/Cabecalho.jsx';
 import Rodape from '../../Components/Rodape/Rodape.jsx';
-import Botao from '../../Components/Botao/Botao.jsx';
 
 const RegistroPage = () => {
-
     const navigate = useNavigate();
 
-    const [usuario, setUsuario] = useState({idUsuario:'0', email: '', nomeCompleto: '', senha: '', telefone: '', perfil: 'Usuario', ativo: 1 });
+    const [usuario, setUsuario] = useState({ idUsuario: '0', email: '', nomeCompleto: '', senha: '', telefone: '', perfil: 'Usuario', ativo: 1 });
     const [confirmarSenha, setConfirmarSenha] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const inDevelopment = localStorage.getItem('inDevelopment');
-    var url = '';
-    if (inDevelopment === 'true') {
-        url = 'http://localhost:5236/api/';
-    } else {
-        url = 'https://www.senailp.com.br/eventos-api/api/';
-    }
+    var url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
 
     const notifyError = (msg) => 
-    toast.error(msg, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+        toast.error(msg, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
   
     const notifySuccess = (msg) =>
-      toast.success(msg, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+        toast.success(msg, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
 
-      const getCadastrar = async () => {
+    const getCadastrar = async () => {
         try {
-            const credencial = usuario
-            console.log(credencial)
+            const credencial = usuario;
+            console.log(credencial);
             const response = await fetch(url + 'Usuario', {
                 method: 'POST',
                 headers: {
@@ -59,75 +51,93 @@ const RegistroPage = () => {
                 },
                 body: JSON.stringify(credencial)
             });
-    
-            // Exibe a notificação de sucesso
+
             notifySuccess("Usuário registrado com sucesso");
-    
-            // Aguarda 2 segundos (2000 milissegundos) antes de navegar para a tela de login
+
             setTimeout(() => {
                 navigate('/login');
-            }, 2000); // Ajuste o tempo conforme necessário
-    
+            }, 2000); 
+
         } catch (error) {
-            // Em caso de erro, exibe a notificação de erro
             notifyError("Falha no registro de usuário");
         }
     };
-    
 
     const onAlterar = (event) => {
         const { name, value } = event.target;
-        setUsuario( usuario => ({...usuario, [name]: value })); 
-        
+        setUsuario(usuario => ({ ...usuario, [name]: value }));
+
         if (name === 'confirmarSenha') {
-            setConfirmarSenha(value);           
-        }     
+            setConfirmarSenha(value);
+        }
     };
 
     const onEnviar = () => {
-          
         if (usuario.email === '' || usuario.nomeCompleto === '' || usuario.senha === '' || usuario.telefone === '') {
-            notifyError("Preencha todos os campos")
+            notifyError("Preencha todos os campos");
             return;
         }
         if (usuario.senha !== confirmarSenha) {
-            notifyError("As senhas não conferem")
+            notifyError("As senhas não conferem");
             return;
         }
 
         getCadastrar();
     };
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleShowConfirmPassword = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
 
     return (
         <>
             <Cabecalho />
-            <div className='tudo_login'>
-
-
-                <div className='login_inicio'>
-                    <div className='login_titulo'>
-                        <h1>Registro de Acesso</h1>
-                        <p>Preenche todos os dados</p>
-                    </div>                   
-                        
-                    <CampoTexto label='' place='Nome Completo' nome='nomeCompleto' aoAlterar={onAlterar} />
-                    <CampoTexto label='' place='Telefone' nome='telefone' aoAlterar={onAlterar} />
-                    <CampoTexto label='' place='E-mail' nome='email' aoAlterar={onAlterar} />
-                    <CampoTexto label='' place='Senha' tipo='password'  nome='senha' aoAlterar={onAlterar} />
-                    <CampoTexto label='' place='Confirmar Senha' tipo='password'  nome='confirmarSenha' aoAlterar={onAlterar} />                    
-
-                    <div className='botao_login'>
-                        <Botao children="Cadastrar" onClick={onEnviar} />
+            <div className='container mt-4 mb-4 shadow-lg p-5 bg-body rounded' style={{ maxWidth: '400px' }}>
+                <div className='row justify-content-center'>
+                    <div className='col'>
+                        <div className='text-center'>
+                            <h1 className='fs-1'>Registro</h1>
+                            <p className='lead'>Preencha os campos abaixo</p>
+                        </div>
+                        <div className='mb-3'>
+                            <input type='text' className='form-control' id='nomeCompleto' placeholder='Nome Completo' name='nomeCompleto' onChange={onAlterar} />
+                        </div>
+                        <div className='mb-3'>
+                            <InputMask mask="+55 (99) 99999-9999" maskChar=" " className='form-control' id='telefone' placeholder='Telefone' name='telefone' onChange={onAlterar} />
+                        </div>
+                        <div className='mb-3'>
+                            <input type='email' className='form-control' id='email' placeholder='E-mail' name='email' onChange={onAlterar} />
+                        </div>
+                        <div className='mb-3 input-group'>
+                            <input type={showPassword ? 'text' : 'password'} className='form-control' id='senha' placeholder='Senha' name='senha' onChange={onAlterar} />
+                            <span className='input-group-text btn btn-outline-secondary' onClick={toggleShowPassword}>
+                                <i className={`bi bi-eye${showPassword ? '-slash' : ''}`}></i>
+                            </span>
+                        </div>
+                        <div className='mb-3 input-group'>
+                            <input type={showConfirmPassword ? 'text' : 'password'} className='form-control' id='confirmarSenha' placeholder='Confirmar Senha' name='confirmarSenha' onChange={onAlterar} />
+                            <span className='input-group-text btn btn-outline-secondary' onClick={toggleShowConfirmPassword}>
+                                <i className={`bi bi-eye${showConfirmPassword ? '-slash' : ''}`}></i>
+                            </span>
+                        </div>
+                        <div className='d-grid gap-2'>
+                            <button type='button' className='btn btn-primary fs-5' onClick={onEnviar}>Cadastrar</button>
+                        </div>
                     </div>
-                
                 </div>
-
+                <div className='row justify-content-center'>
+                    <div className='col d-flex justify-content-center flex-column'>
+                        <p className='text-center'>Já tem uma conta?</p>
+                        <a href="/login" className='text-center text-decoration-none m-0 p-0 btn btn-link'>Faça login aqui.</a>
+                    </div>
+                </div>
             </div>
             <Rodape />
-
             <ToastContainer />
-
         </>
     );
 }

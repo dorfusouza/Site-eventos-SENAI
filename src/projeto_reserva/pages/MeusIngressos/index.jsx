@@ -1,8 +1,6 @@
-// MeusIngressos.js
 import { useState, useEffect } from 'react';
-import './MeusIngressos.css';
 import CampoFiltro from '../../Components/CampoFiltro/CampoFiltro';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../Components/Utils/auth.jsx';
 import Ingresso from '../../Components/Ingresso';
 import Cabecalho from '../../Components/Cabecalho/Cabecalho';
@@ -11,23 +9,17 @@ import Rodape from '../../Components/Rodape/Rodape';
 function MeusIngressos() {
     const navigate = useNavigate();
     const [ingressos, setIngressos] = useState([]);
-    const [filteredIngresso, setFilteredIngressos] = useState([]);
-    const [filtroDescricao, setFiltroDescricao] = useState(""); // Estado para o filtro
-    const [descricoes, setDescricoes] = useState({}); // Estado para armazenar descrições
-    //Setando o ingresso via front end para testes
-    // const ingressos = [
-    //     {
-//             "idIngresso": 4,
-    //     "pedidosId": 2,
-    //     "pedidosUsuariosId": 1,
-    //     "loteId": 31,
-    //     "status": "Pendente",
-    //     "tipo": "Colaborador",
-    //     "valor": 20,
-    //     "dataUtilizacao": "2024-05-15T00:00:00",
-    //     "codigoQr": "",
-    //     "ativo": 1
-    //     },
+    const [filteredIngressos, setFilteredIngressos] = useState([]);
+    const [filtroDescricao, setFiltroDescricao] = useState("");
+    const [filtroStatus, setFiltroStatus] = useState(null); // Estado para o filtro de status
+    const inDevelopment = localStorage.getItem('inDevelopment');
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
+    }
+
     const verificarAutenticacao = () => {
         if (!isAuthenticated()) {
             console.log('Usuário não autenticado');
@@ -35,77 +27,78 @@ function MeusIngressos() {
         }
     }
 
-    useEffect(() => {
-        async function fetchIngressos() {
-            try {
-                const response = await fetch(`https://www.senailp.com.br/eventos-api/api/Ingresso/Usuario/${localStorage.getItem('id')}`);
-                const data = await response.json();
-                setIngressos(data);
-                setFilteredIngressos(data);
-            } catch (error) {
-                console.error('Erro ao buscar ingressos:', error);
-            }
+    async function fetchIngressos() {
+        try {
+            const response = await fetch(url + `Ingresso/Usuario/${localStorage.getItem('id')}`);
+            const data = await response.json();
+            setIngressos(data);
+            setFilteredIngressos(data);
+        } catch (error) {
+            console.error('Erro ao buscar ingressos:', error);
         }
+    }
 
+    useEffect(() => {
         verificarAutenticacao();
         fetchIngressos();
     }, []);
 
-    // Função para atualizar descrições recebidas do componente Ingresso
-    const atualizarDescricoes = (id, descricao) => {
-        setDescricoes(prevState => ({
-            ...prevState,
-            [id]: descricao
-        }));
+    useEffect(() => {
+        applyFilters();
+    }, [filtroDescricao, filtroStatus, ingressos]);
+
+    const applyFilters = () => {
+        let filtered = ingressos;
+
+        if (filtroDescricao) {
+            filtered = filtered.filter((ingresso) =>
+                ingresso.tipo.toLowerCase().includes(filtroDescricao.toLowerCase())
+            );
+        }
+
+        if (filtroStatus) {
+            filtered = filtered.filter((ingresso) => ingresso.status === filtroStatus);
+        }
+
+        setFilteredIngressos(filtered);
+    };
+
+    const handleStatusFilter = (status) => {
+        setFiltroStatus(status === filtroStatus ? null : status); // Toggle the status filter
     };
 
     return (
         <>
-        <Cabecalho/>
-            <div id='box-all'>
-                <h3>Ingressos</h3>
-                <div id="campo-filtro">
-                    {/* Passando a função de atualização do filtro como prop */}
+            <Cabecalho />
+            <div className='container'>
+                <h3 className='mt-5'>Ingressos</h3>
+                <div className="mb-3">
                     <CampoFiltro placeholder="Pesquisar ingressos por evento" handleFilter={setFiltroDescricao} />
                 </div>
-    
-                {filteredIngresso.length === 0 ? (
-                    <p className='texto-aviso'>Nenhum ingresso disponível</p>
+                <div className="mb-3 d-flex justify-content-start flex-wrap"
+                 style={{ gap: '20px' }}>
+                    <button className={`btn btn-outline-primary ${filtroStatus === 'Pendente' ? 'active' : ''}`} onClick={() => handleStatusFilter('Pendente')}>Pendente</button>
+                    <button className={`btn btn-outline-primary ${filtroStatus === 'Utilizado' ? 'active' : ''}`} onClick={() => handleStatusFilter('Utilizado')}>Utilizado</button>
+                    <button className={`btn btn-outline-primary ${filtroStatus === 'Validado' ? 'active' : ''}`} onClick={() => handleStatusFilter('Validado')}>Validado</button>
+                    <button className="btn btn-outline-danger" onClick={() => {
+                        setFiltroDescricao("");
+                        setFiltroStatus(null);
+                    }}>Limpar filtros</button>
+                </div>
+
+                {filteredIngressos.length === 0 ? (
+                    <p className='text-warning'>Nenhum ingresso disponível</p>
                 ) : (
-                    <>
-                        {filteredIngresso.filter((item) => {
-                            if (filtroDescricao === "") {
-                                return item;
-                            } else if (descricoes[item.idIngresso].toLowerCase().includes(filtroDescricao.toLowerCase())) {
-                                return item;
-                            }
-                        }).length === 0 ? (
-                            <p className="texto-aviso">Nenhum ingresso encontrado</p>
-                        ) : (
-                            <ul>
-                                {/* Renderiza os ingressos filtrados */}
-                                {filteredIngresso.filter((item) => {
-                                    if (filtroDescricao === "") {
-                                        return item;
-                                    } else if (descricoes[item.idIngresso].toLowerCase().includes(filtroDescricao.toLowerCase())) {
-                                        return item;
-                                    }
-                                }).map((item, index) => (
-                                    <li key={index}>
-                                        {/* Passa a descrição do evento como prop para o componente Ingresso */}
-                                        <Ingresso obj={item} descricao={descricoes[item.idIngresso]} onUpdateDescricao={atualizarDescricoes} />
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </>
+                    <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4'>
+                        {filteredIngressos.map((item, index) => (
+                            <Ingresso obj={item} key={index} />
+                        ))}
+                    </div>
                 )}
             </div>
-            <Rodape/>
+            <Rodape />
         </>
     );
-    
-    
 }
 
 export default MeusIngressos;

@@ -1,42 +1,47 @@
-import './LoginPageReserva.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import { notifyError } from '../../Components/Utils/msgToast.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Cabecalho from '../../Components/Cabecalho/Cabecalho.jsx';
 import Rodape from '../../Components/Rodape/Rodape.jsx';
 
 const LoginPage = () => {
-
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');    
+    const [senha, setSenha] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const inDevelopment = localStorage.getItem('inDevelopment');
-    var url = '';
-    if (inDevelopment === 'true') {
-        url = 'http://localhost:5236/api/';
-    } else {
-        url = 'https://www.senailp.com.br/eventos-api/api/';
-    }
+    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+
+    const notifyError = (msg) => 
+        toast.error(msg, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
     const getLogin = async () => {
-        
         const credencial = {
             'email': email,
             'senha': senha
         }
 
-        //console.log(JSON.stringify(credencial))
         try { 
             const response = await fetch(url + 'Usuario/login', {
-
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(credencial)
-            }).then(response => response.json())
-        const data = await response;
+            });
+
+            const data = await response.json();
 
             localStorage.setItem('email', data.email);
             localStorage.setItem('id', data.idUsuario);
@@ -48,8 +53,7 @@ const LoginPage = () => {
             navigate('/');
 
         } catch (error) {
-            notifyError("Usuário ou senha inválidos " + error)
-            console.log('Usuário ou senha inválidos ' + error)
+            notifyError("Usuário ou senha inválidos");
         }
     };
 
@@ -64,59 +68,55 @@ const LoginPage = () => {
 
     const onEnviar = () => {
         if (email === '' || senha === '') {
-            notifyError("Preencha todos os campos!")
-            console.log('Preencha todos os campos')   
+            notifyError("Preencha todos os campos!");
         } else {            
-            getLogin()
-        }        
+            getLogin();
+        }
     };
 
     const HandleKeyDown = (event) => {
         if(event.key === 'Enter') {
             onEnviar();
         }
-    }
+    };
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
         <>
             <Cabecalho />
-            <div className='container mt-3 mb-5'>
+            <div className='container mt-5 mb-5 shadow-lg p-5 bg-body rounded' style={{ maxWidth: '400px' }}>
                 <div className='row justify-content-center'>
-                    <div className='col-md-6 login_inicio'>
-                        <div className='login_titulo text-center'>
-                            <h1>Faça o Login</h1>
-                            <p>Preencha seus dados para continuar</p>
-                        </div>
-
-                        <div className='mb-3'>
-                            <label htmlFor='email' className='form-label'></label>
-                            <input type='text' className='form-control' id='email' placeholder='E-mail'  onChange={onAlterar} onKeyDown={HandleKeyDown}/>
+                    <div className='col'>
+                        <div className='text-center'>
+                            <h1 className='fs-1'>Login</h1>
+                            <p className='lead'>Preencha os campos abaixo</p>
                         </div>
                         <div className='mb-3'>
-                            <label htmlFor='senha' className='form-label'></label>
-                            <input type='password' className='form-control' id='senha' placeholder='Senha'  onChange={onAlterar} onKeyDown={HandleKeyDown}/>
+                            <input type='text' className='form-control' id='email' placeholder='E-mail' onChange={onAlterar} onKeyDown={HandleKeyDown} />
                         </div>
-
-                        <div className='d-grid'>
-                            <button type='button' className='btn btn-primary' onClick={onEnviar}>Acessar</button>
+                        <div className='mb-3 input-group'>
+                            <input type={showPassword ? 'text' : 'password'} className='form-control' id='senha' placeholder='Senha' onChange={onAlterar} onKeyDown={HandleKeyDown} />
+                            <span className='input-group-text btn btn-outline-secondary' onClick={toggleShowPassword}>
+                                <i className={`bi bi-eye${showPassword ? '-slash' : ''}`}></i>
+                            </span>
                         </div>
-
+                        <div className='d-grid gap-2'>
+                            <button type='button' className='btn btn-primary fs-5' onClick={onEnviar}>Acessar</button>
+                        </div>
                     </div>
                 </div>
-
                 <div className='row justify-content-center'>
-                    <div className='col-md-6 registro-link-dv'>
-                        <p className='registro-link text-center'>Ainda não tem uma conta? <a href="/RegistrarAcesso">Registre-se aqui.</a></p>
+                    <div className='col d-flex justify-content-center flex-column'>
+                        <p className='text-center'>Ainda não tem uma conta?</p>
+                        <a href="/RegistrarAcesso" className='text-center text-decoration-none m-0 p-0 btn btn-link'>Registre-se aqui.</a>
                     </div>
                 </div>
-
             </div>
-
             <Rodape />
-
             <ToastContainer />
-
         </>
     );
 }

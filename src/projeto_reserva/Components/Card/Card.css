@@ -1,36 +1,37 @@
 .card_inicio {
     padding: 16px;
     margin: auto;
-    background-color: #EEEEEE;
+    background-color: #f8f9fa; /* Light gray background */
     border-radius: 20px;
     color: black;
     margin-bottom: 20px;
     transition: 0.2s;
     cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    max-width: 330px; /* Adjust maximum width */
 }
 
 .card_inicio:hover {
     transform: scale(1.05);
-
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1); /* Increase box shadow on hover */
 }
 
-.card_inicio>img {
-    margin: 20px 20px;
-    width: 90%;
+.card-image {
+    width: 100%;
     height: auto;
-    gap: 50px;
+    border-radius: 20px 20px 0 0; /* Round the top corners */
 }
 
-.card_inicio {
-    background-color: #EEEEEE;
-    height: 440px;
-    width: 330px;
-    align-items: center;
-    margin: 10px auto;
-    border-radius: 5%;
+.card-content {
+    padding: 16px;
 }
 
-a {
+.dados {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.text-decoration-none {
     text-decoration: none;
-    color: black;
 }

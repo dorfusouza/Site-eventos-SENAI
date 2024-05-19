@@ -2,20 +2,20 @@ import { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import Modal from 'bootstrap/js/dist/modal';
 
-export const ValidateButton = ({ id, validate, status, pedido}) => {
+export const CancelButton = ({ id, cancel, status, pedido }) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
-    const handleValidate = () => {
+    const handleCancel = () => {
         setShowConfirmationModal(true);
     };
 
-    const handleConfirmValidation = () => {
-        validate(id);
+    const handleConfirmCancel = () => {
+        cancel(id);
         setShowConfirmationModal(false);
     };
 
     useEffect(() => {
-        const modal = new Modal(document.getElementById(`confirmationModal-${id}`));
+        const modal = new Modal(document.getElementById(`confirmationModalCancel-${id}`));
         if (showConfirmationModal) {
             modal.show();
         } else {
@@ -28,28 +28,29 @@ export const ValidateButton = ({ id, validate, status, pedido}) => {
             <button
                 type="button"
                 className={
-                    status === 'Validado' ? 'btn btn-success' : status === 'Pendente' ? 'btn btn-warning' : 'btn btn-danger'
+                    `btn btn-${status === 'Cancelado' ? 'info' : 'danger'}`
                 }
                 id={id}
-                onClick={handleValidate}
-                disabled={status === 'Cancelado'}>
-                {status === 'Validado' ? 'Validado' : status === 'Pendente' ? 'Pendente' : 'Cancelado'}
+                onClick={handleCancel}>
+                {
+                    status === 'Cancelado' ? 'Reverter' : 'Cancelar'
+                }
             </button>
 
-            <div className="modal fade" id={`confirmationModal-${id}`} tabIndex="-1" aria-labelledby={`confirmationModalLabel-${id}`} aria-hidden="true">
+            <div className="modal fade" id={`confirmationModalCancel-${id}`} tabIndex="-1" aria-labelledby={`confirmationModalLabel-${id}`} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id={`confirmationModalLabel-${id}`}>Confirmar {
-                                status === 'Validado' ? 'Invalidação' : status === 'Pendente' ? 'Validação' : 'Invalidação'
+                                status === 'Validado' ? 'Cancelamento' : status === 'Pendente' ? 'Cancelamento' : 'Cancelamento'
                             }</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <p>
-                            Tem certeza de que deseja {
-                                status === 'Validado' ? 'invalidar' : status === 'Pendente' ? 'validar ' : 'invalidar '
-                            } o pedido?
+                                Tem certeza de que deseja {
+                                    status === 'Cancelado' ? 'reverter ' : 'cancelar '
+                                } o pedido?
                             </p>
                             <div className="card">
                                 <div className="card-body">
@@ -62,22 +63,22 @@ export const ValidateButton = ({ id, validate, status, pedido}) => {
                                     <p className="card-text">Forma de pagamento: {pedido.formaPagamento}</p>
                                 </div>
                             </div>
-                            
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" className="btn btn-primary" onClick={handleConfirmValidation} data-bs-dismiss="modal">Confirmar</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button type="button" className="btn btn-danger" onClick={handleConfirmCancel} data-bs-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
                 </div>
             </div>
         </>
     );
-};
+}
 
-ValidateButton.propTypes = {
+CancelButton.propTypes = {
     id: propTypes.number.isRequired,
-    validate: propTypes.func.isRequired,
+    cancel: propTypes.func.isRequired,
     status: propTypes.string.isRequired,
     pedido: propTypes.object.isRequired
 };
+// Path: src/projeto_admin/components/Buttons/CancelButton.jsx

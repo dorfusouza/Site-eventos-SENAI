@@ -1,10 +1,10 @@
 import React from 'react';
 import './Botao.css';
 
-const Botao = ({ children, onClick }) => {
+const Botao = ({ text, onClick }) => {
     return (
         <button className='botao' onClick={onClick}>
-            {children}
+            {text}
         </button>
     );
 }
