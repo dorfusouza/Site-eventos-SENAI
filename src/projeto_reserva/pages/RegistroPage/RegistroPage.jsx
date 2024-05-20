@@ -42,8 +42,16 @@ const RegistroPage = () => {
 
     const getCadastrar = async () => {
         try {
-            const credencial = usuario;
-            console.log(credencial);
+            let credencial = usuario;
+            // Iremos verificar se o email está de acordo com o padrão
+            //Padrão: (qualquer coisa)@(qualquer coisa).(qualquer coisa)
+            let email = usuario.email;
+            let padraoEmail = /\S+@\S+\.\S+/;
+            if (!padraoEmail.test(email)) {
+                notifyError("Email inválido");
+                return;
+            }
+            
             const response = await fetch(url + 'Usuario', {
                 method: 'POST',
                 headers: {
@@ -93,6 +101,7 @@ const RegistroPage = () => {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
+
     return (
         <>
             <Cabecalho />
@@ -110,17 +119,18 @@ const RegistroPage = () => {
                             <InputMask mask="+55 (99) 99999-9999" maskChar=" " className='form-control' id='telefone' placeholder='Telefone' name='telefone' onChange={onAlterar} />
                         </div>
                         <div className='mb-3'>
-                            <input type='email' className='form-control' id='email' placeholder='E-mail' name='email' onChange={onAlterar} />
+                            <input type='email' className='form-control' id='email' placeholder='E-mail' name='email' onChange={onAlterar}/>
                         </div>
                         <div className='mb-3 input-group'>
                             <input type={showPassword ? 'text' : 'password'} className='form-control' id='senha' placeholder='Senha' name='senha' onChange={onAlterar} />
-                            <span className='input-group-text btn btn-outline-secondary' onClick={toggleShowPassword}>
+                            <span className={`input-group-text btn btn-outline-secondary border border-1 ${showPassword ? 'border-danger' : ''}`} onClick={toggleShowPassword}>
                                 <i className={`bi bi-eye${showPassword ? '-slash' : ''}`}></i>
                             </span>
                         </div>
                         <div className='mb-3 input-group'>
                             <input type={showConfirmPassword ? 'text' : 'password'} className='form-control' id='confirmarSenha' placeholder='Confirmar Senha' name='confirmarSenha' onChange={onAlterar} />
-                            <span className='input-group-text btn btn-outline-secondary' onClick={toggleShowConfirmPassword}>
+                            <span className={`input-group-text btn btn-outline-secondary border border-1 ${showConfirmPassword ? 'border-danger' : ''}`}
+                             onClick={toggleShowConfirmPassword}>
                                 <i className={`bi bi-eye${showConfirmPassword ? '-slash' : ''}`}></i>
                             </span>
                         </div>

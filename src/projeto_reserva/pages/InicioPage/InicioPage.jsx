@@ -61,7 +61,7 @@ const InicioPageReserva = () => {
     return (
         <>
             <Cabecalho />
-            <div className='container mt-4'>
+            <div className='container mt-4 mb-4'>
                 <h1 className='InicioPageTitulo text-center mb-4'>Eventos Disponíveis</h1>
                 {loading ? (
                     <div className="d-flex justify-content-center align-items-center">

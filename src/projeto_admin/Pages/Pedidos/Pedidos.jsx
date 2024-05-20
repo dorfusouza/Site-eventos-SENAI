@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Rodape from "../../components/Rodape/index.jsx";
 import Menu from "../../components/Menu/index.jsx";
 import { CancelButton } from "../../components/Buttons/CancelButton.jsx";
+import InputMask from 'react-input-mask';
+
 
 function Pedidos() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -22,21 +24,21 @@ function Pedidos() {
     const [filteredPedidos, setFilteredPedidos] = useState([]);
     const inDevelopment = localStorage.getItem('inDevelopment');
     const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+    
+    async function fetchPedidos() {
+        const response = await fetch(url + 'Pedido');
+        const data = await response.json();
+        setPedidos(data);
+        setFilteredPedidos(data);
+    }
+
+    async function fetchUsuarios() {
+        const response = await fetch(url + 'Usuario');
+        const data = await response.json();
+        setUsuarios(data);
+    }
 
     useEffect(() => {
-        async function fetchPedidos() {
-            const response = await fetch(url + 'Pedido');
-            const data = await response.json();
-            setPedidos(data);
-            setFilteredPedidos(data);
-        }
-
-        async function fetchUsuarios() {
-            const response = await fetch(url + 'Usuario');
-            const data = await response.json();
-            setUsuarios(data);
-        }
-
         fetchUsuarios();
         fetchPedidos();
     }, []);
@@ -44,7 +46,7 @@ function Pedidos() {
     const handleFilter = (type, value) => {
         setFilters((prevFilters) => ({
             ...prevFilters,
-            [type]: prevFilters[type] === value ? null : value,
+            [type]: value,
         }));
     };
 
@@ -60,16 +62,15 @@ function Pedidos() {
             const matchesText = filterText === "" || usuarios.find((usuario) => usuario.idUsuario === item.usuariosId).nomeCompleto.toLowerCase().includes(filterText.toLowerCase());
             const matchesStatus = filters.status === null || item.status === filters.status;
 
+            //Irá mostrar somente os pedidos que atrasarem o pagamento a mais de 24 horas e que ainda não foram cancelados ou validados para termos maior precisão na validação iremos considerar por horas e não dias
             let matchesPendingYesterday = true;
             if (filters.pendingYesterday) {
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                const itemDate = new Date(item.dataCadastro);
-                matchesPendingYesterday = item.status === 'Pendente' && 
-                                          itemDate.getDate() === yesterday.getDate() &&
-                                          itemDate.getMonth() === yesterday.getMonth() &&
-                                          itemDate.getFullYear() === yesterday.getFullYear();
+                const dataCadastro = new Date(item.dataCadastro);
+                const dataAtual = new Date();
+                const diferencaHoras = Math.abs(dataAtual - dataCadastro) / 36e5;
+                matchesPendingYesterday = diferencaHoras > 24 && item.status !== 'Cancelado' && item.status !== 'Validado';
             }
+            
 
             return matchesText && matchesStatus && matchesPendingYesterday;
         });
@@ -94,9 +95,7 @@ function Pedidos() {
         .then(response => response.json())
         .then(data => {
             setSuccessMessage(`Pedido ${id} validado com sucesso!`);
-            const newPedidos = pedidos.map((pedido) => pedido.idPedido === id ? data : pedido);
-            setPedidos(newPedidos);
-            setFilteredPedidos(newPedidos);
+            fetchPedidos();
         })
         .catch((error) => {
             setErrorMessage("Erro ao validar pedido!");
@@ -104,15 +103,14 @@ function Pedidos() {
     }
 
     const handleCancel = (id) => {
-        fetch(url + 'Pedido/cancelar/' + id, {
-            method: 'PUT',
+        let idUsuario = localStorage.getItem('id');
+        fetch(url + 'Pedido/cancelar/' + id + `?cancelamentoIdUsuario=${idUsuario}`, {
+            method: 'PUT'
         })
         .then(response => response.json())
         .then(data => {
             setSuccessMessage(`Pedido ${id} cancelado com sucesso!`);
-            const newPedidos = pedidos.map((pedido) => pedido.idPedido === id ? data : pedido);
-            setPedidos(newPedidos);
-            setFilteredPedidos(newPedidos);
+            fetchPedidos();
         })
         .catch((error) => {
             setErrorMessage("Erro ao cancelar pedido!");
@@ -121,14 +119,37 @@ function Pedidos() {
 
     const renderizarDados = () => {
         return filteredPedidos.map((item) => {
-            const nomeCompleto = usuarios.find((usuario) => usuario.idUsuario === item.usuariosId).nomeCompleto;
-            const nomeAdmin = item.validacaoIdUsuario === 0 ? "Não validado" : usuarios.find((usuario) => usuario.idUsuario === item.validacaoIdUsuario).nomeCompleto;
+            let nomeCompleto = 'Usuário não encontrado'
+            let nomeAdmin = 'Nenhuma ação realizada'
+
+            usuarios.forEach((usuario) => {
+                if (usuario.idUsuario === item.usuariosId) {
+                    nomeCompleto = usuario.nomeCompleto;
+                }
+                if (usuario.idUsuario === item.validacaoIdUsuario) {
+                    nomeAdmin = usuario.nomeCompleto;
+                }
+            });
+
+            const dataCadastro = new Date(item.dataCadastro).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+
+            const totalMasked = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(item.total);
+
             return (
                 <tr key={item.idPedido}>
                     <td>{item.idPedido}</td>
                     <td>{nomeCompleto}</td>
-                    <td>{item.dataCadastro}</td>
-                    <td>{item.total}</td>
+                    <td>{dataCadastro}</td>
+                    <td>{totalMasked}</td>
                     <td>{item.quantidade}</td>
                     <td>{item.formaPagamento}</td>
                     <td>{item.status}</td>
@@ -140,14 +161,16 @@ function Pedidos() {
         });
     };
 
-    const tableFields = ["ID Pedido", "Nome", "Data Cadastro", "Total", "Quantidade", "Forma de Pagamento", "Status", "Quem validou", "Validar pedido", "Cancelar pedido"];
+    const tableFields = ["ID Pedido", "Nome usuário", "Data Cadastro", "Total pago", "Ingressos", "Forma de Pagamento", "Status", "Última Ação por", "Validar pedido", "Cancelar pedido"];
 
     useEffect(() => {
         if (errorMessage) {
             toast.error(errorMessage);
+            setErrorMessage('');
         }
         if (successMessage) {
             toast.success(successMessage);
+            setSuccessMessage('');
         }
     }, [errorMessage, successMessage]);
 
@@ -158,7 +181,7 @@ function Pedidos() {
                 <h3 className="text-center">Pedidos</h3>
                 <div className="row justify-content-center">
                     <div className="col-12">
-                        <CampoFiltro placeholder="Pesquisar pedido de usuário" handleFilter={setFilterText} />
+                        <CampoFiltro placeholder="Pesquisar por nome de usuário" handleFilter={setFilterText} />
                     </div>
                 </div>
                 <div className="row">
@@ -166,7 +189,7 @@ function Pedidos() {
                         <ButtonFiltro opcoes={["Validado", "Pendente", "Cancelado"]} handleFilter={(value) => handleFilter("status", value)} handleClear={() => handleClear("status")} />
                     </div>
                     <div className="col-12 col-md-6">
-                        <ButtonFiltro opcoes={["Pendentes de Ontem"]} handleFilter={handlePendingYesterdayFilter} handleClear={() => handleClear("pendingYesterday")} />
+                        <ButtonFiltro opcoes={["Pagamento atrasado"]} handleFilter={handlePendingYesterdayFilter} handleClear={() => handleClear("pendingYesterday")} />
                     </div>
                 </div>
                 <div className="row justify-content-center">

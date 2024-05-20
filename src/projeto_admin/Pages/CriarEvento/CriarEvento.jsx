@@ -74,14 +74,14 @@ const CriarEvento = () => {
         const lotes = [];
         for (let i = 0; i < formData.get("quantidadeLotes"); i++) {
             const tipoLote = formData.get('tipoLote');
-            const preco = formData.getAll('valorIngresso')[i];
+            let preco = formData.getAll('valorIngresso')[i];
             const quantidadeIngressos = formData.getAll('quantidadeIngressos')[i];
             const dataInicio = formData.getAll('dataInicio')[i];
             const dataTermino = formData.getAll('dataTermino')[i];
             const nomeLote = formData.getAll('nomeLote')[i];
             const ativo = i === 0 ? 1 : 0;
             
-            //Se for o primeiro lote o ativo vai com 1, se não, vai com 0
+            preco = preco.replace(',', '.');
 
             if (tipoLote === 'quantidade' && (quantidadeIngressos === '' || preco === '')) {
                 setErrorMessage('Por favor preencha todos os campos dos lotes.');

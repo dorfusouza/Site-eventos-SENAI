@@ -1,28 +1,25 @@
-import './Rodape.css';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import senaiRodape from '../../../assets/Images/senaiRodape.png';
 import { Link } from 'react-router-dom';
-import imgBanner from '../../../assets/Images/banner_logo.png';
-import './Rodape.css';
 
 function Rodape() {
     return (
-        <footer className="footer pt-5 pb-2 px-5 container-fluid" style={{backgroundColor: "#4C576C"}}>
-            <div className="row">
-                <div className="col-md-4">
-                    <Link to="/">
-                        <img src={imgBanner} alt="Logo" className="img-fluid" />
-                    </Link>
-                </div>
-            </div>
-            <hr style={{backgroundColor: "white", width: "100%"}} />
-            <div className="row">
-                <div className="col-4 div-footer-items">
-                    <Link to="/eventos" className="btn-link btn fs-5">Eventos</Link>
-                </div>
-                <div className="col-4 div-footer-items">
-                    <Link to="/suporte" className="btn-link btn fs-5">Fale conosco</Link>
-                </div>
-                <div className="col-4 div-footer-items">
-                    <Link to="/" className="btn-link btn fs-5">Home</Link>
+        <footer className="footer-container text-white py-5 mt-5 px-5" style={{ backgroundColor: "#4C576C" }}>
+            <div className="container">
+                <div className="row align-items-start">
+                    <div className="col-12 col-md-4 w-100">
+                        <img className="img-fluid senai" src={senaiRodape} alt="Logo" />
+                        <hr className="bg-white" />
+                        <div className="col-12 col-md-8">
+                            <div className="d-flex flex-column flex-md-row align-items-center mt-3">
+                                <Link Link to="/" className="btn-link btn text-white fs-5" style={{ textDecoration: 'none' }}>Eventos</Link>
+                                <Link to="/meusIngressos" className="btn-link btn text-white fs-5" style={{ textDecoration: 'none' }}>Meus ingressos</Link>
+                                <Link to="/suporte" className="btn-link btn text-white fs-5" style={{ textDecoration: 'none' }}>Fale conosco</Link>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </footer>

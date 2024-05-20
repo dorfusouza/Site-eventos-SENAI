@@ -9,10 +9,10 @@ import { isAuthenticated } from '../../components/Utils/auth.jsx';
 
 
 const LoginPageAdmin = () => {  
-
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');    
     const inDevelopment = localStorage.getItem('inDevelopment');
+    const [showPassword, setShowPassword] = useState(false);
     
     const navigate = useNavigate();
 
@@ -26,6 +26,8 @@ const LoginPageAdmin = () => {
     useEffect(() => {
         verificarAutenticacao();
     }, []);
+
+
 
     var url = '';
     if (inDevelopment === 'true') {
@@ -89,34 +91,34 @@ const LoginPageAdmin = () => {
         }
     }
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
         <>
             <Cabecalho />
-            <div className='container mt-3 mb-5'>
+            <div className='container mt-5 mb-5 shadow-lg p-5 bg-body rounded' style={{ maxWidth: '400px' }}>
                 <div className='row justify-content-center'>
-                    <div className='col-md-6 login_inicio'>
-                        <div className='login_titulo text-center'>
-                            <h1>Acesso Restrito</h1>
-                            <p>Preencha seus dados para continuar</p>
-                        </div>
-
-                        <div className='mb-3'>
-                            <label htmlFor='email' className='form-label'></label>
-                            <input type='text' className='form-control' id='email' placeholder='E-mail'  onChange={onAlterar} onKeyDown={HandleKeyDown}/>
+                    <div className='col'>
+                        <div className='text-center'>
+                            <h1 className='fs-1'>Login</h1>
+                            <p className='lead'>Preencha os campos abaixo</p>
                         </div>
                         <div className='mb-3'>
-                            <label htmlFor='senha' className='form-label'></label>
-                            <input type='password' className='form-control' id='senha' placeholder='Senha'  onChange={onAlterar} onKeyDown={HandleKeyDown}/>
+                            <input type='text' className='form-control' id='email' placeholder='E-mail' onChange={onAlterar} onKeyDown={HandleKeyDown} />
                         </div>
-
-                        <div className='d-grid'>
-                            <button type='button' className='btn btn-primary' onClick={onEnviar}>Acessar</button>
+                        <div className='mb-3 input-group'>
+                            <input type={showPassword ? 'text' : 'password'} className='form-control' id='senha' placeholder='Senha' onChange={onAlterar} onKeyDown={HandleKeyDown} />
+                            <span className={`input-group-text btn btn-outline-secondary border border-1 ${showPassword ? 'border-danger' : ''}`} onClick={toggleShowPassword}>
+                                <i className={`bi bi-eye${showPassword ? '-slash' : ''}`}></i>
+                            </span>
                         </div>
-
+                        <div className='d-grid gap-2'>
+                            <button type='button' className='btn btn-primary fs-5' onClick={onEnviar}>Acessar</button>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
             <Rodape />

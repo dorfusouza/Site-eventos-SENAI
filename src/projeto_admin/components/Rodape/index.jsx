@@ -1,34 +1,28 @@
-import React from 'react';
-import './Rodape.css'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import senaiRodape from '../../../assets/Images/senaiRodape.png';
-import Linha from '../../../assets/Images/Linha.png';
-
 import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="footer-container"> 
-      <div className="logo-container"> 
-        <img className="senai"src={senaiRodape} alt="Logo"/>
-        <img className="linha" src={Linha} alt='Logo'></img>
-        <div className='botao-container'>
-          <Link to='/admin/encontreEventos'>Encontre eventos</Link>
-          <Link to='/admin/cidades'>Cidades</Link>
-          <Link to='/admin/Suporte'>Suporte</Link>
+    <footer className="footer-container text-white py-5 mt-5 px-5" style={{ backgroundColor: "#4C576C" }}>
+      <div className="container">
+        <div className="row align-items-start">
+          <div className="col-12 col-md-4 w-100">
+            <img className="img-fluid senai" src={senaiRodape} alt="Logo" />
+            <hr className="bg-white" />
+            <div className="col-12 col-md-8">
+            <div className="d-flex flex-column flex-md-row align-items-center mt-3">
+              <Link to="/admin" className="btn btn-link fs-5" style={{color: '#fff', textDecoration: 'none'}}>Home</Link>
+              <Link to="/admin/pedidos" className="text-white btn btn-link fs-5" style={{ textDecoration: 'none'}}>Pedidos</Link>
+              <Link to="/admin/usuarios" className="text-white btn btn-link fs-5" style={{ textDecoration: 'none'}}>Usuários</Link>
+              <Link to="/admin/criar_evento" className="text-white btn btn-link fs-5" style={{ textDecoration: 'none'}}>Criar Evento</Link>
+              <Link to="/admin/editar_evento" className="text-white btn btn-link fs-5" style={{ textDecoration: 'none'}}>Editar Evento</Link>
+            </div>
+          </div>
+          </div>
+
         </div>
       </div>
-
-      <img className="linha" src={Linha} alt='Logo'></img>
-
-      <div className="botao-container">
-        <a href="/admin">Home</a>
-        <a href="https://sp.senai.br/o-senai/o-sistema-senai">Sobre</a>
-        <a href="https://www.sp.senai.br/termos-de-uso-e-politica-de-privacidade">Termos e Políticas</a>
-        <a href="https://transparencia.sp.senai.br/Content/arquivos/integridade/Senai_SP_Codigo_Etica.pdf" target="_blank" rel="noopener noreferrer">Ética e Conduta</a>
-       
-        
-      </div>
-      
     </footer>
   );
 }

@@ -10,15 +10,15 @@ const GraficosPage = () => {
     const [tipoGrafico, setTipoGrafico] = useState('lote');
     const idEvento = useParams().idEvento;
     const handleButtonClick = (tipo) => {
-        setTipoGrafico(tipo); // Função para atualizar o tipo de gráfico com base no botão clicado
+        setTipoGrafico(tipo);
     };
 
     return(
         <div>
             <Menu />
             <div className={'graficos-page'}>
-                <Categorias onButtonClick={handleButtonClick} /> {/* Passe a função de clique do botão para o componente Categorias */}
-                {tipoGrafico === 'lote' ? <GraficoLote /> : <GraficoIngresso />} {/* Renderize o componente de gráfico correspondente com base no estado */}
+                <Categorias onButtonClick={handleButtonClick} /> 
+                {tipoGrafico === 'lote' ? <GraficoLote /> : <GraficoIngresso />}
             </div>
             <Rodape />
 

@@ -1,4 +1,13 @@
+import InputMask from 'react-input-mask';
+import { useState } from 'react';
 export const ModalAdicionarLote = ({ handleAdicionar }) => {
+
+    const [valueQuantity, setValueQuantity] = useState('');
+
+    const handlePriceChange = (e) => {
+        let value = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        setValueQuantity(value);
+    };
 
     return (
         <div>
@@ -15,7 +24,7 @@ export const ModalAdicionarLote = ({ handleAdicionar }) => {
                                     <label htmlFor="tipoAdicionarLote" className="form-label">Tipo de lote</label>
                                     <select className="form-select" id="tipoAdicionarLote" required onChange={(e) => {
                                         if (e.target.value === 'quantidade' || e.target.value === 'gratis') {
-                                            document.getElementById('dataInicioAdicionarLote').parentElement.style.display = 'none'
+                                            document.getElementById('dataInicioAdicionarLote').parentElement.style.display = 'none';
                                             document.getElementById('dataFinalAdicionarLote').parentElement.style.display = 'none';
                                         } else {
                                             document.getElementById('dataInicioAdicionarLote').parentElement.style.display = 'block';
@@ -43,7 +52,16 @@ export const ModalAdicionarLote = ({ handleAdicionar }) => {
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="valorUnitarioAdicionarLote" className="form-label">Valor Unitário</label>
-                                    <input type="number" className="form-control" id="valorUnitarioAdicionarLote" name="valorUnitarioAdicionarLote" required />
+                                    <InputMask
+                                        mask="R$ 99,99"
+                                        maskChar={null}
+                                        onChange={handlePriceChange}
+                                        value={valueQuantity}
+                                        required
+                                        name={"valorUnitarioAdicionarLote"}
+                                        className="form-control"
+                                        placeholder="R$ 0,00"
+                                    />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="dataInicioAdicionarLote" className="form-label">Data de início</label>
@@ -67,9 +85,7 @@ export const ModalAdicionarLote = ({ handleAdicionar }) => {
                 </div>
             </div>
             <div id="confirmModal">
-
             </div>
         </div>
     );
-
 }

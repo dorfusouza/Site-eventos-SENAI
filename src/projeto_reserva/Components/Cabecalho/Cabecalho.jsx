@@ -5,23 +5,11 @@ import perfil_pequeno from '../../../assets/Images/perfil_pequeno.png';
 import { isAuthenticated } from '../Utils/auth.jsx';
 import { useNavigate } from 'react-router-dom';
 import './Cabecalho.css';
+
 const Cabecalho = () => {
-    const [isSearchOpen, setSearchOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
 
-    const handleSearchIconClick = () => {
-        setSearchOpen((prev) => !prev);
-    };
-
-    const handleSearchInputChange = (event) => {
-        const query = event.target.value;
-        console.log('Pesquisar:', query);
-    };
-
-    const handleOverlayClick = () => {
-        setSearchOpen(false);
-    };
 
     const onLogoff = () => {
         localStorage.setItem('email', '');
@@ -39,7 +27,7 @@ const Cabecalho = () => {
     return (
         <>
             <div className="container-fluid" style={{ borderTop: '14px solid red', borderBottom: '14px solid red', width: '100%', backgroundColor: "#F0F0F0" }}>
-                <div className="p-3 pt-5 pb-5 row-cols-3 d-flex justify-content-between align-items-center">
+                <div className="p-3 pt-5 pb-5 row d-flex justify-content-between align-items-center">
                     <div className="d-flex align-items-center justify-content-center col-6">
                         <img src={senai_vermelho} alt="Logo" className="img-fluid" onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />
                     </div>
@@ -83,7 +71,7 @@ const Cabecalho = () => {
                             </nav>
                         </div>
                     </div>
-                    <div className="col-2 d-flex align-items-center justify-content-center">
+                    <div className="col-3 d-flex align-items-center justify-content-center">
                         <Link to="/perfil">
                             <img src={perfil_pequeno} alt="Perfil" />
                         </Link>

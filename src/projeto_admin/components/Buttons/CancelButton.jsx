@@ -44,7 +44,7 @@ export const CancelButton = ({ id, cancel, status, pedido }) => {
                             <h5 className="modal-title" id={`confirmationModalLabel-${id}`}>Confirmar {
                                 status === 'Validado' ? 'Cancelamento' : status === 'Pendente' ? 'Cancelamento' : 'Cancelamento'
                             }</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowConfirmationModal(false)}></button>
                         </div>
                         <div className="modal-body">
                             <p>
@@ -65,8 +65,11 @@ export const CancelButton = ({ id, cancel, status, pedido }) => {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button type="button" className="btn btn-danger" onClick={handleConfirmCancel} data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" className="btn btn-secondary" onClick={() => setShowConfirmationModal(false)} data-bs-dismiss="modal"
+                            >Fechar</button>
+                            <button type="button" className={`btn btn-${status === 'Cancelado' ? 'info' : 'danger'}`}
+                             onClick={handleConfirmCancel} data-bs-dismiss="modal">Confirmar
+                            </button>
                         </div>
                     </div>
                 </div>

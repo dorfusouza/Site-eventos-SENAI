@@ -99,7 +99,7 @@ const LoginPage = () => {
                         </div>
                         <div className='mb-3 input-group'>
                             <input type={showPassword ? 'text' : 'password'} className='form-control' id='senha' placeholder='Senha' onChange={onAlterar} onKeyDown={HandleKeyDown} />
-                            <span className='input-group-text btn btn-outline-secondary' onClick={toggleShowPassword}>
+                            <span className={`input-group-text btn btn-outline-secondary border border-1 ${showPassword ? 'border-danger' : ''}`} onClick={toggleShowPassword}>
                                 <i className={`bi bi-eye${showPassword ? '-slash' : ''}`}></i>
                             </span>
                         </div>

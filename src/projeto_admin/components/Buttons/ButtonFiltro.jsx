@@ -13,9 +13,10 @@ export function ButtonFiltro(props) {
     }
 
     return (
-        <div className="input-group" style={{width: "420px"}}>
+        <div className="input-group w-100 mb-3" style={{maxWidth: "500px"}}>
             <span className="input-group-text border" style={{border: "1px solid rgba(0,0,0,0.50)"}}><i className="bi bi-funnel-fill"></i></span>
-            <select className="form-select border btn-filtro-select" onChange={handleChange} id={`select-${props.opcoes[0]}`}>
+            <select className="form-select border btn-filtro-select rounded-end"
+             onChange={handleChange} id={`select-${props.opcoes[0]}`}>
                 <option defaultValue value="" style={{display: "none"}}>Filtrar por...</option>
                 {props.opcoes.map(opcao => (
                     <option key={opcao}>{opcao}</option>

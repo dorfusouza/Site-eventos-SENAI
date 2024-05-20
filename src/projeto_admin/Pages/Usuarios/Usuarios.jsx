@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import InputMask from 'react-input-mask';
 import { CampoFiltro } from "../../components/CampoFiltro/CampoFiltro.jsx";
 import { ButtonFiltro } from "../../components/Buttons/ButtonFiltro.jsx";
 import { TabelaFiltro } from "../../components/TabelaFiltro/TabelaFiltro.jsx";
@@ -20,6 +21,7 @@ function Usuarios() {
     });
     const [filteredUsuarios, setFilteredUsuarios] = useState([]);
     const [modalData, setModalData] = useState();
+    const [showPassword, setShowPassword] = useState({});
 
     const inDevelopment = localStorage.getItem('inDevelopment');
     var url = '';
@@ -69,24 +71,31 @@ function Usuarios() {
     };
 
     const handleClear = (type) => {
-        console.log(filters)
         setFilters((prevFilters) => ({
             ...prevFilters,
             [type]: null,
         }));
-        console.log(filters)
     };
 
     useEffect(() => {
         setFilteredUsuarios(applyFilters(usuarios));
     }, [filterText, filters, usuarios]);
 
+    const togglePasswordVisibility = (idUsuario) => {
+        setShowPassword((prevShowPassword) => ({
+            ...prevShowPassword,
+            [idUsuario]: !prevShowPassword[idUsuario]
+        }));
+    };
+
     const renderizarDados = () => {
         return filteredUsuarios.map((item) => (
             <tr key={item.idUsuario}>
                 <td>{item.nomeCompleto}</td>
                 <td>{item.email}</td>
-                <td>{item.senha}</td>
+                <td onMouseEnter={() => togglePasswordVisibility(item.idUsuario)} onMouseLeave={() => setShowPassword((prevShowPassword) => ({ ...prevShowPassword, [item.idUsuario]: false }))} onClick={() => togglePasswordVisibility(item.idUsuario)}>
+                    {showPassword[item.idUsuario] ? item.senha : '●●●●●●●●'}
+                </td>
                 <td>{item.telefone}</td>
                 <td>{item.perfil}</td>
                 <td>{item.ativo ? "Ativo" : "Inativo"}</td>
@@ -114,12 +123,12 @@ function Usuarios() {
             <div className="container">
                 <h3 className="text-center">Usuários cadastrados</h3>
                 <div className="row justify-content-center">
-                    <div className="col-12">
+                    <div className="col">   
                         <CampoFiltro placeholder="Pesquisar usuário por nome" handleFilter={setFilterText} />
-                        <div className="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
+                        <div className="btn-group w-100" role="group" aria-label="Basic checkbox toggle button group">
                             <ButtonFiltro opcoes={["Ativo", "Inativo"]} handleClear={handleClear} handleFilter={(value) => handleFilter("ativo", value)} type="ativo" />
                         </div>
-                        <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <div className="btn-group w-100" role="group" aria-label="Basic checkbox toggle button group">
                             <ButtonFiltro opcoes={["Usuario", "Administrador", "Portaria"]} handleClear={handleClear} handleFilter={(value) => handleFilter("perfil", value)} type="perfil" />
                         </div>
                     </div>
@@ -132,6 +141,7 @@ function Usuarios() {
                 <ModalUsuarios modalData={modalData} setModalData={setModalData} usuarios={usuarios} setUsuarios={setUsuarios} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />
             </div>
             <Rodape />
+            <ToastContainer />
         </div>
     );
 }

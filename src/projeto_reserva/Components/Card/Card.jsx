@@ -1,18 +1,18 @@
-import './Card.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import defaultImage from '../../../assets/Images/arraia.png';
 
 function Card({ dados }) {
     return (
-        <Link to={`./InicioReserva/${dados.idEvento}`} className="text-decoration-none" style={{ textDecoration: 'none' }}>
-            <div className='card_inicio'>
-                <img src={dados.imagem || defaultImage} alt="Event" className="card-image" />
-                <div className="card-content">
-                    <p className='dados'>{dados.nomeEvento}</p>
-                    <p className='dados'>Local: {dados.local}</p>
+        <Link to={`./InicioReserva/${dados.idEvento}`} className="text-decoration-none" style={{ color: 'black' }}>
+            <div className='card p-4 m-2'>
+                <img src={dados.imagem || defaultImage} alt="Imagem do evento" className='card-img-top' />
+                <div className='card-body'>
+                    <p className='card-title fs-5'>{dados.nomeEvento}</p>
+                    <p className='card-text fs-5'>{dados.local}</p>
                 </div>
             </div>
+
         </Link>
     );
 }

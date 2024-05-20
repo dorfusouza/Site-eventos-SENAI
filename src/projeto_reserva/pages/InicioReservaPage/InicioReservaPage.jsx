@@ -135,9 +135,20 @@ const InicioReservaPage = () => {
         }
     }
 
+    const getImagem = async (idEvento) => {
+        try {
+            const response = await fetch(url + `Evento/${idEvento}/image`);
+            const data = await response.blob();
+            return URL.createObjectURL(data);
+        } catch (error) {
+            console.error('Erro ao buscar imagem do evento:', error);
+        }
+    }
+
     const fetchDataEvento = async () => {
         const response = await fetch(`${url}Evento/${eventoId}`);
         const data = await response.json();
+        data.imagem = await getImagem(data.idEvento);
         setEvento(data);
     }
 
@@ -157,6 +168,8 @@ const InicioReservaPage = () => {
             }
         })
     }
+
+
 
     useEffect(() => {
         verificarAutenticacao();
@@ -178,7 +191,8 @@ const InicioReservaPage = () => {
             return;
         }
     
-        const dataAtual = new Date().toISOString().split('T')[0];
+        const dataAtual = new Date().toISOString();
+        console.log(dataAtual)
     
         const pedidoData = {
             idPedido: 0,
@@ -242,6 +256,7 @@ const InicioReservaPage = () => {
     useEffect(() => {
         if (errorMessage) {
             toast.error(errorMessage);
+            setErrorMessage('');
         }
     }, [errorMessage]);
 
@@ -262,15 +277,15 @@ const InicioReservaPage = () => {
                 <div className="container">
                     <div className="row mb-4">
                         <div className="col-12 text-center">
-                            <img src={cardImage} className="img-fluid w-50" alt="Evento" />
+                            <img src={evento.imagem} alt="Imagem do evento" className="img-fluid" />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-8">
-                            <h1 className='m-0'>{evento.nomeEvento}</h1>
+                            <h1 className='m-0 fs-1'>{evento.nomeEvento}</h1>
                             <div className="d-flex align-items-center my-3">
                                 <img src={agendaIcon} alt="Agenda" className="me-2" />
-                                <p className="mb-0">
+                                <p className="mb-0 fs-5">
                                     {new Date(evento.dataEvento).toLocaleDateString('pt-BR', {
                                         day: '2-digit',
                                         month: '2-digit',
@@ -280,7 +295,7 @@ const InicioReservaPage = () => {
                             </div>
                             <div className="d-flex align-items-center my-3">
                                 <img src={localIcon} alt="Local" className="me-2" />
-                                <p className="mb-0">{evento.local}</p>
+                                <p className="mb-0 fs-5">{evento.local}</p>
                             </div>
                             <h2>Descrição do evento</h2>
                             <p>{evento.descricao}</p>
@@ -289,7 +304,9 @@ const InicioReservaPage = () => {
                         <div className="col-md-4 w-100">
                             <div className="card" style={{ backgroundColor: '#EEEEEE' }}>
                                 <div className="card-body">
-                                    <h3 className="mb-4 fs-3 color-primary" style={{ color: '#0a0a0a', opacity: '1' }}>Reserva de ingressos</h3>
+                                    {loteAtual.idLote ? (
+                                        <>
+                                        <h3 className="mb-4 fs-3 color-primary" style={{ color: '#0a0a0a', opacity: '1' }}>Reserva de ingressos</h3>
                                     <h4 className="mb-4 fs-4">{loteAtual.nome}</h4>
                                     <p className="text-muted fs-5">{loteAtual.saldo} disponíveis</p>
                                     {loteAtual.valorUnitario === 0 ? <p className="text-muted fs-5">Gratuito</p> : <p className="text-muted fs-5">{Intl.NumberFormat('pt-BR', {
@@ -350,6 +367,9 @@ const InicioReservaPage = () => {
                                         }).format(getSum())}</h4>
                                     </div>
                                     <button className="btn btn-success w-100 mt-3 botaoVerde fs-5" onClick={handleOpenConfirmationModal}>Reservar Ingresso</button>
+                                    </> ) : (
+                                        <p className="text-muted fs-3">Nenhum lote ativo disponível</p>
+                                    )}
                                 </div>
                             </div>
                         </div>
