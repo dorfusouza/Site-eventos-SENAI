@@ -1,54 +1,49 @@
-import React from 'react'
-import './ConfirmacaoPage.css'
-import imgCabecalho from '../../../assets/Images/imgCabecalho.png'
-import Cabecalho from '../../components/Cabecalho/Cabecalho'
-import imgcheck from '../../../assets/Images/check.png'
-import Check from '../../components/Check/Check'
-import { Link } from 'react-router-dom';
-import { isAuthenticated } from '../../components/Utils/auth.jsx';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
-const ConfirmacaoPage = () => {
-
-    const navigate = useNavigate();
-
-    const verificarAutenticacao = () => {
-        if (!isAuthenticated()) {
-            console.log('Usuário não autenticado');
-            navigate('/');
-        }
+import React from "react";
+ 
+import Cabecalho from "../../components/Cabecalho/Cabecalho";
+import Alert from "../../components/Alert/Alert";
+import { Link } from "react-router-dom";
+import { isAuthenticated } from "../../components/Utils/auth.jsx";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Rodape from "../../components/Rodape/Rodape.jsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import certo from '../../../assets/images/certo.png'
+ 
+ 
+const InvalidoPage = () => {
+  const navigate = useNavigate();
+ 
+  const verificarAutenticacao = () => {
+    if (!isAuthenticated()) {
+      console.log("Usuário não autenticado");
+      navigate("/");
     }
-    useEffect(() => {
-        verificarAutenticacao();
-    }, []);
+  };
+ 
+  useEffect(() => {
+    verificarAutenticacao();
+  }, []);
+ 
+  function onEnviar() {
+    console.log("TESTE");
+  }
+  return (
+    <>
+      <Cabecalho />
+      <div className="container d-flex mb-5 mt-5 flex-column align-items-center justify-content-center pt-5 pb-5" style={{paddingBottom: '600px'}}>
+        <div className="card text-center" style={{ width: 300 , height:350}}>
+          <div className="card-body d-flex flex-column justify-content-center align-items-center" style={{ backgroundColor: "#00FF00", border: 0 }}>
+            <h5 className="card-title">Validação feita com sucesso!</h5>
+            <img src={certo} alt="ex" style={{ width: 100, height: 100 }} />
+            <a href="/validacao" className="btn btn-primary mt-4" style={{ backgroundColor: "#EEEEEE", color: "black", border: "black" }}>Voltar ao Incio</a>
+          </div>
+        </div>
+      </div>
+      <Rodape />
+    </>
+  );
+};
 
-    function onEnviar() {
-        console.log("TESTE")
-    }
-    return (
-        <>
-            <Cabecalho cabecalho={imgCabecalho} />
-            <h1> Confirmação </h1>
-            <div className='bloco_czc'>
-                <div className='principal'>
-                    <div className='bloco_vd'>
-
-                        <h3> VALIDAÇÃO EFETUADA COM SUCESSO!
-                            <Check check={imgcheck} />
-                        </h3>
-                    </div>
-                    <Link onClick={onEnviar} to="/validacao">
-                        <button className='botaov'>
-                            Voltar
-                        </button>
-                    </Link>
-                </div>
-
-            </div>
-
-        </>
-    )
-}
-
-export default ConfirmacaoPage
+export default InvalidoPage;

@@ -8,7 +8,7 @@ input {
   border-radius: 20px;
   border: 0px;
 }
-
+/*
 @media (max-width: 450px) {
   .campo-input {
     width: 200px;

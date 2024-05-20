@@ -77,9 +77,9 @@ export default QrPage;
 import React, { useEffect, useRef, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import Cabecalho from "../../components/Cabecalho/Cabecalho";
-import imgCabecalho from "../../../assets/Images/imgCabecalho.png";
 import { isAuthenticated } from "../../components/Utils/auth.jsx";
 import { useNavigate } from "react-router-dom";
+import Rodape from "../../components/Rodape/Rodape.jsx";
 
 const QrPage = () => {
   const navigate = useNavigate();
@@ -175,16 +175,23 @@ const QrPage = () => {
 
   return (
     <>
-      <Cabecalho cabecalho={imgCabecalho} />
-      <h1 className="logc"> Aponte o QR CODE </h1>
-      <div className="bloco_czc">
-        <div
-          ref={videoRef}
-          id="reader"
-          style={{ width: "400px", height: "400px" }}
-        ></div>
+     <Cabecalho />
+     <div className="container d-flex mb-5 mt-5 flex-column align-items-center justify-content-center pt-5 pb-5" style={{paddingBottom: '600px'}}>
+        <div className="row justify-content-center">
+          <div className="col text-center">
+            <h1 className="p-4">Aponte o QR CODE</h1>
+            <div className="bloco_czc pb-5 d-flex justify-content-center">
+              <div
+                ref={videoRef}
+                id="reader"
+                style={{ width: "400px", height: "400px" }}
+              ></div>
+            </div>
+            <div id="resultadoQrCode"></div>
+          </div>
+        </div>
       </div>
-      <div id="resultadoQrCode"></div>
+      <Rodape />
     </>
   );
 };

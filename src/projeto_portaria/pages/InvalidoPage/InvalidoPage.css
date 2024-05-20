@@ -44,7 +44,7 @@
   height: 500px;
   border-radius: 5px;
 }
-
+/*
 @media (max-width: 450px) {
   .bloco_czi {
     display: flex;
@@ -90,14 +90,6 @@
     font-size: 15px;
   }
 }
-
-@media (max-width: 450px) {
-  .cabecalh {
-    width: 300px;
-    margin-left: 60px;
-  }
-}
-
 @media (max-width: 450px) {
   .logi {
     text-size-adjust: 15px;
@@ -105,3 +97,4 @@
     margin-left: 120px;
   }
 }
+*/
