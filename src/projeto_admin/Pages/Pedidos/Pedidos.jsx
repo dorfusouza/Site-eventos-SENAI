@@ -158,8 +158,33 @@ function Pedidos() {
                     <td>{item.formaPagamento}</td>
                     <td>{item.status}</td>
                     <td>{nomeAdmin}</td>
-                    <td><ValidateButton id={item.idPedido} validate={handleValidate} status={item.status} pedido={item} /></td>
-                    <td><CancelButton id={item.idPedido} cancel={handleCancel} status={item.status} pedido={item} /></td>
+
+                    { 
+                        (item.validacaoIdUsuario == 0)
+                        ? <>
+                            <td><ValidateButton id={item.idPedido} validate={handleValidate} status={item.status} pedido={item} /></td> 
+                            <td><CancelButton id={item.idPedido} cancel={handleCancel} status={item.status} pedido={item} /></td>  
+                         </>
+                        : <td colSpan={2}>
+                            {
+                                (item.status === "Validado") 
+                                ?
+                                <div className='alert alert-success p-1' role="alert">
+                                    <strong>Pedido Aprovado</strong>
+                                </div>
+                                :
+                                <div className='alert alert-danger p-1' role="alert">
+                                    <strong>Pedido Cancelado</strong>
+                                </div>
+                            }   
+                         </td>                     
+                    }
+                    {/* { 
+                        (item.validacaoIdUsuario == 0)
+                        ? <td><CancelButton id={item.idPedido} cancel={handleCancel} status={item.status} pedido={item} /></td>
+                        : <td><span className='btn btn-primary'>Realizada</span></td> 
+                    
+                    } */}
                 </tr>
             );
         });
