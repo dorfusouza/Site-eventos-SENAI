@@ -62,7 +62,7 @@ const SuportePage = () => {
                     <div className='col-lg-6 text-center'>
                         <img className='img-fluid' src={imgSuport} alt='Suporte' />
                         <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-5'
-                            href="https://api.whatsapp.com/send?phone=+5514996551609" target="_blank" rel="noreferrer">
+                            href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
                             <div className='d-flex align-items-center justify-content-center' style={{ fontSize: '1.5rem', gap: '10px', fontWeight: 'bold' }}>
                                 FALE CONOSCO
                                 <img className='img-fluid' src={imgBanner} alt='WhatsApp Logo' style={{ height: '30px' }} />

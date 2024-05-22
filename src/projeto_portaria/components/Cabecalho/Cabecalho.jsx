@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import senai_vermelho from '../../../assets/Images/senai_vermelho.png';
 import perfil_pequeno from '../../../assets/Images/perfil_pequeno.png';
@@ -32,42 +32,6 @@ const Cabecalho = () => {
                     </div>
                     <div className="col-3 d-flex align-items-center justify-content-center">
                         <div className="d-lg-none d-flex align-items-center">
-                            <button className="hamburger-icon" onClick={toggleMenu} style={{ fontSize: "30px", border: 'none', backgroundColor: 'transparent' }}>
-                                ☰
-                            </button>
-                            {isOpen && (
-                                <div className="menu-items">
-                                    <i className="bi bi-x btn btn-outline-dark" width="30" height="20" onClick={toggleMenu} style={{ fontSize: "30px", cursor: 'pointer' }}></i>
-                                    <nav className="menu-mobile">
-                                        <ul className="nav-mobile d-flex flex-column">
-                                            <li className=" mb-3" style={{ listStyle: 'none' }}>
-                                                <Link to="/" className="btn btn-outline-secundary fs-4">Eventos</Link>
-                                            </li>
-                                            <li className="mb-3" style={{ listStyle: 'none' }}>
-                                                <Link to="/meusIngressos" className="btn btn-outline-secundary fs-4">Meus Ingressos</Link>
-                                            </li>
-                                            <li className=" mb-3" style={{ listStyle: 'none' }}>
-                                                <Link to="/suporte" className="btn btn-outline-secundary fs-4">Fale conosco</Link>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            )}
-                        </div>
-                        <div className="d-none d-lg-block">
-                            <nav className="menu-full">
-                                <ul className="nav">
-                                    <li className="nav-item mb-3">
-                                        <Link to="/" className="nav-link">Eventos</Link>
-                                    </li>
-                                    <li className="nav-item mb-3">
-                                        <Link to="/meusIngressos" className="nav-link">Meus Ingressos</Link>
-                                    </li>
-                                    <li className="nav-item mb-3">
-                                        <Link to="/suporte" className="nav-link">Fale conosco</Link>
-                                    </li>
-                                </ul>
-                            </nav>
                         </div>
                     </div>
                     <div className="col-3 d-flex align-items-center justify-content-center">

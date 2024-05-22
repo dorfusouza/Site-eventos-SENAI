@@ -38,7 +38,7 @@ const Login = ({ onLogin }) => {
       localStorage.setItem('telefone', data.telefone);
       localStorage.setItem('ativo', data.ativo);
 
-      navigate('/validacao');
+      navigate('/portaria/validacao');
 
     } catch (error) {
       notifyError("Usuário ou senha inválidos " + error);

@@ -21,18 +21,21 @@ function LoginPage() {
 
   return (
     <>
-    <Cabecalho />
-    <div className="container d-flex mb-4 mt-5 flex-column align-items-center justify-content-center" style={{}}>
-      <div className="card d-flex flex-column align-items-center" style={{ width: "100%", maxWidth: "400px"}}>
-        <h1 className="mb-4 text-center">Login</h1>
-        <Login onLogin={handleLogin} />
-        {isLoggingIn && <p className="text-center">Aguarde... Efetuando login</p>}
-        {isAuthenticated && <p className="text-success text-center">Login efetuado com sucesso!</p>}
+   <Cabecalho />
+      <div className='container mt-5 mb-5 shadow-lg p-5 bg-body rounded' style={{ maxWidth: '400px', border: '1px solid transparent' }}>
+        <div className="card d-flex flex-column align-items-center" style={{ width: "100%", maxWidth: "400px", border: '0px'}}>
+          <h1 className="mb-4 text-center">Login</h1>
+          <Login onLogin={handleLogin} />
+
+          {isLoggingIn && <p className="text-center">Aguarde... Efetuando login</p>}
+          {isAuthenticated && <p className="text-success text-center">Login efetuado com sucesso!</p>}
+       
+        </div>
       </div>
-    </div>
-    <Rodape />
-  </>
-);
+      
+      <Rodape />
+    </>
+  );
 }
 
 export default LoginPage;

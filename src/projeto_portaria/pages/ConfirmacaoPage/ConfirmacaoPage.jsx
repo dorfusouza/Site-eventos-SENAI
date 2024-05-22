@@ -2,7 +2,6 @@
 import React from "react";
  
 import Cabecalho from "../../components/Cabecalho/Cabecalho";
-import Alert from "../../components/Alert/Alert";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../components/Utils/auth.jsx";
 import { useNavigate } from "react-router-dom";
