@@ -29,7 +29,6 @@ const CameraPage = () => {
     <>
      <Cabecalho />
       <div className="container d-flex mb-1 mt-4 flex-column align-items-center justify-content-center pt-5 pb-5" style={{ paddingBottom: '600px' }}>
-        
           <div className="col-auto text-center">
             <h1 className="va mt-3">Abrir a Câmera</h1>
             <Link onClick={onEnviar} to="/portaria/qrpage">
@@ -40,7 +39,6 @@ const CameraPage = () => {
               </div>
             </Link>
           </div>
-
       </div>
       <Rodape />
     </>
