@@ -1,79 +1,3 @@
-/*
-import React, { useEffect, useRef } from 'react';
-import { Html5QrcodeScanner } from "html5-qrcode";
-import Cabecalho from '../../components/Cabecalho/Cabecalho';
-import imgCabecalho from '../../assets/images/imgCabecalho.png';
-
-function QrPage() {
-    const videoRef = useRef(null);
-    const scannerRef = useRef(null);
-
-    useEffect(() => {
-        getLerQrCode();
-    }, []);
-
-    const getLerQrCode = () => {
-        if (!scannerRef.current) {
-            const html5QrCodeScanner = new Html5QrcodeScanner(
-                "reader",
-                { fps: 10, qrbox: 400 }
-            );
-
-            scannerRef.current = html5QrCodeScanner;
-
-            html5QrCodeScanner.render(onScanSuccess, onScanError);
-        }
-
-       
-        return () => {
-           
-            if (scannerRef.current) {
-                scannerRef.current.clear();
-                scannerRef.current = null;
-            }
-        };
-    };
-
-    const onScanSuccess = (decodedText, decodedResult) => {
-      
-        const resultadoQrCode = document.getElementById('resultadoQrCode');
-        resultadoQrCode.innerText = decodedText;
-
-       
-        if (decodedText === "Lara") {
-            window.location.href = "/confirmacao";
-        }
-
-       
-        const timeoutId = setTimeout(() => {
-           
-            window.location.href = "/invalido";
-        }, 60000); // 60000 milissegundos = 1 minuto
-
-       
-        return () => clearTimeout(timeoutId);
-    };
-
-    const onScanError = (errorMessage) => {
-        
-        console.error("Erro ao ler QR Code:", errorMessage);
-    };
-
-    return (
-        <>
-            <Cabecalho cabecalho={imgCabecalho} />
-            <h1> Aponte o QR CODE </h1>
-            <div className='bloco_cz'>
-                <div ref={videoRef} id="reader" style={{ width: '400px', height: '400px' }}></div>
-            </div>
-            <div id='resultadoQrCode'></div>
-        </>
-    );
-}
-
-export default QrPage;
-*/
-
 import React, { useEffect, useRef, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import Cabecalho from "../../components/Cabecalho/Cabecalho";
@@ -131,12 +55,12 @@ const QrPage = () => {
     let resultado = await verificaQRCODE(decodedText);
     //console.log(resultado)
     if (resultado) {
-      window.location.href = "/confirmacao";
+      window.location.href = "/portaria/confirmacao";
     } else {
-      window.location.href = "/invalido";
+      window.location.href = "/portaria/invalido";
     }
     const timeoutId = setTimeout(() => {
-      window.location.href = "/invalido";
+      window.location.href = "/portaria/invalido";
     }, 60000);
 
     return () => clearTimeout(timeoutId);

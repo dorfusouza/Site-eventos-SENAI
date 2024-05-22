@@ -8,7 +8,7 @@ import { isAuthenticated } from "../../components/Utils/auth.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Rodape from "../../components/Rodape/Rodape.jsx";
-import exclamacao from '../../assets/images/exclamacao.png'
+import exclamacao from '../../../assets/Images/exclamacao.png'
 import 'bootstrap/dist/css/bootstrap.min.css';
  
  

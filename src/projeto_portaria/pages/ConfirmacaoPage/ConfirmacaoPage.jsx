@@ -2,14 +2,13 @@
 import React from "react";
  
 import Cabecalho from "../../components/Cabecalho/Cabecalho";
-import Alert from "../../components/Alert/Alert";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../components/Utils/auth.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Rodape from "../../components/Rodape/Rodape.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import certo from '../../../assets/images/certo.png'
+import certo from '../../../assets/Images/certo.png'
  
  
 const InvalidoPage = () => {

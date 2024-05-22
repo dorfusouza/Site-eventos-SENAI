@@ -46,31 +46,37 @@ function App() {
                     <ValidacaoPage/>
                 </ProtectedRoute>
             }/>
+            <Route path="/portaria" element={<CameraPage/>} />
             <Route path="/portaria/camera" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <CameraPage/>
                 </ProtectedRoute>
             }/>
+            <Route path="/portaria" element={<ConfirmacaoPage/>} />
             <Route path="/portaria/confirmacao" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <ConfirmacaoPage/>
                 </ProtectedRoute>
             }/>
+            <Route path="/portaria" element={<InvalidoPage/>} />
             <Route path="/portaria/invalido" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <InvalidoPage/>
                 </ProtectedRoute>
             }/>
+            <Route path="/portaria" element={<TenteNovamentePage/>} />
             <Route path="/portaria/TenteNovamente" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <TenteNovamentePage/>
                 </ProtectedRoute>
             }/>
+            <Route path="/portaria" element={<QrPage/>} />
             <Route path="/portaria/qrpage" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <QrPage/>
                 </ProtectedRoute>
             }/>
+            
         </Route>
         <Route path="/admin">
             <Route path="/admin/" element={<LoginPageAdmin/>} />
