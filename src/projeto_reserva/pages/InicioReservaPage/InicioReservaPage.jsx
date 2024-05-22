@@ -335,39 +335,40 @@ const InicioReservaPage = () => {
                                                     }).format(tipo.nome === 'Infantil' ? 5 : loteAtual.valorUnitario * tipo.desconto)}</p>
                                                 </div>
                                                 <div className="d-flex align-items-center">
-                                                <button className="btn btn-outline-dark btn-sm" onClick={() => {
-                                                    if (valoresIngressosSelecionados[index] > 0) {
-                                                        const valores = [...valoresIngressosSelecionados];
-                                                        valores[index] -= 1;
-                                                        setValoresIngressosSelecionados(valores);
-                                                        setLoteAtual(prevState => ({
-                                                            ...prevState,
-                                                            saldo: Math.min(prevState.saldo + 1, loteAtual.saldo + 1) // Ensure saldo doesn't exceed loteAtual.saldo
-                                                        }));
-                                                    }
-                                                }}>
-                                                    <i className="bi bi-patch-minus"></i>
-                                                </button>
-                                                <span className="mx-2">{valoresIngressosSelecionados[index]}</span>
-                                                <button className="btn btn-outline-dark btn-sm" onClick={() => {
-                                                    const totalIngressos = valoresIngressosSelecionados.reduce((a, b) => a + b, 0);
-                                                    if (loteAtual.saldo > 0 && totalIngressos < 10) {
-                                                        const valores = [...valoresIngressosSelecionados];
-                                                        valores[index] += 1;
-                                                        setValoresIngressosSelecionados(valores);
-                                                        setLoteAtual(prevState => ({
-                                                            ...prevState,
-                                                            saldo: Math.max(prevState.saldo - 1, 0) // Ensure saldo doesn't go below 0
-                                                        }));
-                                                    }
-                                                }}>
-                                                    <i className="bi bi-patch-plus"></i>
-                                                </button>
+                                                    <button className="btn btn-outline-dark btn-sm" onClick={() => {
+                                                        if (valoresIngressosSelecionados[index] > 0) {
+                                                            const valores = [...valoresIngressosSelecionados];
+                                                            valores[index] -= 1;
+                                                            setValoresIngressosSelecionados(valores);
+                                                            setLoteAtual(prevState => ({
+                                                                ...prevState,
+                                                                saldo: Math.min(prevState.saldo + 1, loteAtual.saldo + 1) // Ensure saldo doesn't exceed loteAtual.saldo
+                                                            }));
+                                                        }
+                                                    }}>
+                                                        <i className="bi bi-patch-minus"></i>
+                                                    </button>
+                                                    <span className="mx-2">{valoresIngressosSelecionados[index]}</span>
+                                                    <button className="btn btn-outline-dark btn-sm" onClick={() => {
+                                                        const totalIngressos = valoresIngressosSelecionados.reduce((a, b) => a + b, 0);
+                                                        if (loteAtual.saldo > 0 && totalIngressos < 10) {
+                                                            const valores = [...valoresIngressosSelecionados];
+                                                            valores[index] += 1;
+                                                            setValoresIngressosSelecionados(valores);
+                                                            setLoteAtual(prevState => ({
+                                                                ...prevState,
+                                                                saldo: Math.max(prevState.saldo - 1, 0) // Ensure saldo doesn't go below 0
+                                                            }));
+                                                        }
+                                                    }}>
+                                                        <i className="bi bi-patch-plus"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                             <hr />
                                         </div>
                                     ))}
+
                                     <div className="d-flex justify-content-between align-items-center mt-4">
                                         <h4>Total</h4>
                                         <h4>{Intl.NumberFormat('pt-BR', {
