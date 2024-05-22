@@ -193,7 +193,7 @@ const CriarEvento = () => {
                     <h3>Imagem de divulgação (opcional)</h3>
                     <div className="mb-3">
                         <input type="file" accept="image/*" className="form-control w-25" name="imagem" />
-                        <p>A dimensão recomendada é de 1600 x 838 (mesma proporção do formato utilizado nas páginas de evento no Facebook). Formato JPEG, GIF ou PNG de no máximo 2MB. Imagens com dimensões diferentes serão redimensionadas.</p>
+                        <p>A dimensão recomendada é de 460 (W) x 388 (H). Formato JPEG, GIF ou PNG de no máximo 2MB. Imagens com dimensões diferentes serão redimensionadas.</p>
                     </div>
                 </fieldset>
 
