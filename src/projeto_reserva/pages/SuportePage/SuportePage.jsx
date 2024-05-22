@@ -84,7 +84,7 @@ const SuportePage = () => {
                                     {itemFrase}</p>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary fs-5" data-bs-dismiss="modal">Close</button>
+                                <button type="button" className="btn btn-secondary fs-5" data-bs-dismiss="modal">Fechar</button>
                             </div>
                         </div>
                     </div>
