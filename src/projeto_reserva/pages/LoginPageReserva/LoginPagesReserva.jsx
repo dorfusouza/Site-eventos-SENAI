@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Cabecalho from '../../Components/Cabecalho/Cabecalho.jsx';
 import Rodape from '../../Components/Rodape/Rodape.jsx';
 
+
 const LoginPage = () => {
     const navigate = useNavigate();
 
@@ -12,8 +13,12 @@ const LoginPage = () => {
     const [senha, setSenha] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const inDevelopment = localStorage.getItem('inDevelopment');
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
-
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
+    }
     const notifyError = (msg) => 
         toast.error(msg, {
             position: "top-right",
