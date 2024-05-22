@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import senai_vermelho from '../../../assets/Images/senai_vermelho.png';
 import perfil_pequeno from '../../../assets/Images/perfil_pequeno.png';
-import { isAuthenticated } from '../Utils/auth.jsx';
 import { useNavigate } from 'react-router-dom';
-import './Cabecalho.css';
+import { isAuthenticated } from '../Utils/auth.jsx'
 
 const Cabecalho = () => {
     const [isOpen, setIsOpen] = useState(false);

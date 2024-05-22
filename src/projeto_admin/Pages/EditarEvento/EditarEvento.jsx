@@ -258,7 +258,7 @@ const EditarEvento = () => {
 
     function handleSalvarLote() {
         const idLote = parseInt(document.getElementById('lote').value);
-        const valorUnitario = parseFloat(document.getElementById('valorUnitario').value);
+        const valorUnitario = parseFloat(document.getElementById('valorUnitario').value.replace(',', '.'));
         const quantidadeTotal = parseInt(document.getElementById('quantidadeTotal').value);
         const saldo = parseInt(document.getElementById('saldo').value);
         let ativo = document.getElementById('ativo_lote').checked;
@@ -266,6 +266,8 @@ const EditarEvento = () => {
         let dataFinal = document.getElementById('dataFinal').value;
         const tipo = document.getElementById('tipo').value;
         const nome = document.getElementById('nomeLote').value;
+        
+        console.log(valorUnitario)
 
         if (saldo > quantidadeTotal) {
             setErrorMessage('O saldo não pode ser maior que a quantidade total!');
@@ -320,7 +322,7 @@ const EditarEvento = () => {
     }
 
     function handleAdicionarLote() {
-        const valorUnitario = parseFloat(document.getElementById('valorUnitarioAdicionarLote').value);
+        const valorUnitario = parseFloat(document.getElementById('valorUnitario').value.replace(',', '.'));
         const quantidadeTotal = parseInt(document.getElementById('quantidadeTotalAdicionarLote').value);
         let ativo = document.getElementById('ativo_loteAdicionarLote').checked;
         let dataInicio = document.getElementById('dataInicioAdicionarLote').value;
@@ -404,9 +406,7 @@ const EditarEvento = () => {
 
     function handleDeletarLote() {
         const idLote = selectedLote;
-        //const url = 'http://localhost:5236/api/Lote/' + idLote;
-        const url = 'https://www.senailp.com.br/eventos-api/api/Lote/' + idLote;
-        fetch(url, {
+        fetch(url + 'Lote/' + idLote, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

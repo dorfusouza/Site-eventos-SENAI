@@ -25,8 +25,7 @@ import NotFoundPage from "./componentes/NotFoundPage.jsx";
 import PerfilPage from "./projeto_admin/Pages/PerfilAdmPage/PerfilPage.jsx";
 
 function App() {
-    localStorage.setItem('inDevelopment', 'true')
-    const perfil = localStorage.getItem('perfil');
+    localStorage.setItem('inDevelopment', 'false')
   return (
     <Router>
     <Routes>

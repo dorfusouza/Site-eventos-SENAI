@@ -7,7 +7,7 @@ export const ModalEditarLotes = ({ handleSalvar, handleDeletar, lotes, setSelect
 
 
     const handlePriceChange = (e) => {
-        const value = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        let value = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
         setValueQuantity(value);
     };
 
@@ -25,7 +25,7 @@ export const ModalEditarLotes = ({ handleSalvar, handleDeletar, lotes, setSelect
                             lotes.map((item) => {
                                 if (item.idLote === parseInt(document.getElementById('lote').value)) {
                                     let ativo = item.ativo === 1 ? true : false;
-                                    document.getElementById('valorUnitario').value = item.valorUnitario;
+                                    setValueQuantity(item.valorUnitario);
                                     document.getElementById('quantidadeTotal').value = item.quantidadeTotal;
                                     document.getElementById('saldo').value = item.saldo;
                                     document.getElementById('ativo_lote').checked = ativo;
@@ -71,7 +71,7 @@ export const ModalEditarLotes = ({ handleSalvar, handleDeletar, lotes, setSelect
                             <div className="mb-3">
                                 <label htmlFor="valorUnitario" className="form-label">Valor Unitário</label>
                                 <InputMask
-                                    mask="R$ 99,99"
+                                    mask="99,99"
                                     value={valueQuantity}
                                     onChange={handlePriceChange}
                                     className="form-control"
