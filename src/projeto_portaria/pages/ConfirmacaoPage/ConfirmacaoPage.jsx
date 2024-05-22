@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Rodape from "../../components/Rodape/Rodape.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import certo from '../../../assets/images/certo.png'
+import certo from '../../../assets/Images/certo.png'
  
  
 const InvalidoPage = () => {

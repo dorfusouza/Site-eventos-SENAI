@@ -53,7 +53,7 @@ export const ModalAdicionarLote = ({ handleAdicionar }) => {
                                 <div className="mb-3">
                                     <label htmlFor="valorUnitarioAdicionarLote" className="form-label">Valor Unitário</label>
                                     <InputMask
-                                        mask="R$ 99,99"
+                                        mask="99,99"
                                         maskChar={null}
                                         onChange={handlePriceChange}
                                         value={valueQuantity}
