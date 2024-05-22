@@ -25,7 +25,7 @@ import NotFoundPage from "./componentes/NotFoundPage.jsx";
 import PerfilPage from "./projeto_admin/Pages/PerfilAdmPage/PerfilPage.jsx";
 
 function App() {
-    localStorage.setItem('inDevelopment', 'false')
+    localStorage.setItem('inDevelopment', 'true')
   return (
     <Router>
     <Routes>
@@ -39,43 +39,36 @@ function App() {
             <Route path="/suporte" element={<SuportePage/>} />
         </Route>
         <Route path="/portaria">
-            <Route path="/portaria" element={<LoginPage/>} />
             <Route path="/portaria/validacao" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <ValidacaoPage/>
                 </ProtectedRoute>
             }/>
-            <Route path="/portaria" element={<CameraPage/>} />
             <Route path="/portaria/camera" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <CameraPage/>
                 </ProtectedRoute>
             }/>
-            <Route path="/portaria" element={<ConfirmacaoPage/>} />
             <Route path="/portaria/confirmacao" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <ConfirmacaoPage/>
                 </ProtectedRoute>
             }/>
-            <Route path="/portaria" element={<InvalidoPage/>} />
             <Route path="/portaria/invalido" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <InvalidoPage/>
                 </ProtectedRoute>
             }/>
-            <Route path="/portaria" element={<TenteNovamentePage/>} />
             <Route path="/portaria/TenteNovamente" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <TenteNovamentePage/>
                 </ProtectedRoute>
             }/>
-            <Route path="/portaria" element={<QrPage/>} />
             <Route path="/portaria/qrpage" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <QrPage/>
                 </ProtectedRoute>
             }/>
-            
         </Route>
         <Route path="/admin">
             <Route path="/admin/" element={<LoginPageAdmin/>} />

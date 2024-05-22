@@ -23,8 +23,12 @@ function Pedidos() {
     });
     const [filteredPedidos, setFilteredPedidos] = useState([]);
     const inDevelopment = localStorage.getItem('inDevelopment');
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
-    
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = 'http://localhost:5236/api/';
+    } else {
+        url = 'https://www.senailp.com.br/eventos-api/api/';
+    }
     async function fetchPedidos() {
         const response = await fetch(url + 'Pedido');
         const data = await response.json();
