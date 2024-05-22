@@ -55,8 +55,8 @@ const Login = ({ onLogin }) => {
   return (
     <div className="d-flex flex-column align-items-center">
       <form onSubmit={handleSubmit} className="w-100">
-        <CampoLogin label="Email" place="Digite seu email" nome="email" value={email} aoAlterar={handleInputChange} />
-        <CampoLogin label="Senha" place="Digite sua senha" nome="senha" value={senha} aoAlterar={handleInputChange} tipo="password" />
+        <CampoLogin place="Digite seu email" nome="email" value={email} aoAlterar={handleInputChange} />
+        <CampoLogin place="Digite sua senha" nome="senha" value={senha} aoAlterar={handleInputChange} tipo="password" />
         <button type="submit" className="btn btn-primary btn-block mt-3">Entrar</button>
       </form>
       <ToastContainer />
