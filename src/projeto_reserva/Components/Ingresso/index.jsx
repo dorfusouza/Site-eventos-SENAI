@@ -3,10 +3,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import QRCode from 'qrcode.react';
 import propTypes from 'prop-types';
 import img_cancelado from '../../../assets/Images/pedido_cancelado.png'
+import constantes from "../../../componentes/Constantes.jsx";
 
 const Ingresso = ({ obj, descricao, onUpdateDescricao }) => {
     const inDevelopment = localStorage.getItem('inDevelopment');
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
 
     function conversao(status) {
         if (obj.ativo === 1) {
@@ -25,18 +32,18 @@ const Ingresso = ({ obj, descricao, onUpdateDescricao }) => {
         }
     }
 
+    async function fetchNomeEvento() {
+        try {
+            const response = await fetch(url + `Ingresso/nome/${obj.idIngresso}`);
+            const data = await response.text();
+            onUpdateDescricao(obj.idIngresso, data);
+        } catch (error) {
+            console.error('Erro ao buscar descrição do evento:', error);
+        }
+    }
+
     useEffect(() => {
         if (!descricao) {
-            async function fetchNomeEvento() {
-                try {
-                    const response = await fetch(url + `Ingresso/nome/${obj.idIngresso}`);
-                    const data = await response.text();
-                    onUpdateDescricao(obj.idIngresso, data);
-                } catch (error) {
-                    console.error('Erro ao buscar descrição do evento:', error);
-                }
-            }
-
             fetchNomeEvento();
         }
     }, [obj.idIngresso, descricao, onUpdateDescricao]);
