@@ -25,13 +25,10 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, ped
                     </div>
                     <div className="modal-body">
                         <p>Deseja confirmar a reserva dos ingressos?</p>
-
                         <p>{<div className='' style={{ backgroundColor: '#eded82', borderRadius: '5px', padding: '15px', width: '100%' }} >
                             <p><strong>Atenção:</strong> Você tem 24 horas para realizar o pagamento. Enquanto o pagamento não for efetuado, não será possivel realizar outras reservas.</p>
                         </div>
                         }</p>
-
-
 
                         {/* Mostra as informações do pedido em forma de card */}
                         <div className="card">
