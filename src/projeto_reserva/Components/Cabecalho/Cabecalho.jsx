@@ -86,7 +86,7 @@ const Cabecalho = () => {
                             </button>
                         ) : (
                             <Link to="/login" className="btn btn-link" style={{ textDecoration: 'none', fontSize: "18px" }}>
-                                <Entrar></Entrar>
+                                Entrar
                             </Link>
                         )}
                     </div>
