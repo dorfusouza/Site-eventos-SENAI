@@ -5,6 +5,7 @@ import Cabecalho from '../../Components/Cabecalho/Cabecalho';
 import Rodape from '../../Components/Rodape/Rodape';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../Components/Utils/auth.jsx';
+import pix from '../../../assets/Images/pix.png'
 import constantes from "../../../componentes/Constantes.jsx";
 
 function MeusIngressos() {
@@ -22,7 +23,6 @@ function MeusIngressos() {
     } else {
         url = constantes.apiUrl;
     }
-
     const verificarAutenticacao = () => {
         if (!isAuthenticated()) {
             console.log('Usuário não autenticado');

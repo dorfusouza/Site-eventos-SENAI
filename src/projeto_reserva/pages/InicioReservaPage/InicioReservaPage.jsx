@@ -10,7 +10,7 @@ import agendaIcon from '../../../assets/Images/agenda.png';
 import localIcon from '../../../assets/Images/local.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import constantes from "../../../componentes/Constantes.jsx";
+import pix from '../../../assets/Images/pix.png'
 
 const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, pedido, ingressos }) => {
     return (
@@ -76,12 +76,7 @@ const InicioReservaPage = () => {
     const [lotes, setLotes] = useState([{}]);
     const [loteAtual, setLoteAtual] = useState({});
     const [valoresIngressosSelecionados, setValoresIngressosSelecionados] = useState([]);
-    var url = ''
-    if (inDevelopment === 'true') {
-        url = constantes.localApiUrl;
-    } else {
-        url = constantes.apiUrl;
-    }
+    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [reservationConfirmed, setReservationConfirmed] = useState(false);
 
@@ -121,37 +116,11 @@ const InicioReservaPage = () => {
     };
 
     const handleConfirmReservation = async () => {
-        try {
-            const idUsuario = localStorage.getItem('id');
-    
-            const getLastPedidoStatus = async (idUsuario) => {
-                const response = await fetch(`${url}Pedido/Usuario/${idUsuario}`);
-                if (!response.ok) {
-                    throw new Error("Erro ao buscar os pedidos do usuário");
-                }
-                const data = await response.json();
-    
-                if (data.length === 0) {
-                    return null;
-                }
-                return data[data.length - 1].status;
-            };
-    
-            const pedidoStatus = await getLastPedidoStatus(idUsuario);
-    
-            if (pedidoStatus === 'Pendente') {
-                setErrorMessage("O pedido anterior não está validado!");
-                return;
-            }
-    
-            await handleSubmit();
-            setReservationConfirmed(true);
-            handleCloseConfirmationModal();
-        } catch (error) {
-            setErrorMessage("Erro ao confirmar reserva!");
-        }
+        await handleSubmit();
+        setReservationConfirmed(true);
+        handleCloseConfirmationModal();
     };
-    
+
     const handleCancelReservation = () => {
         handleCloseConfirmationModal();
     };
@@ -333,6 +302,15 @@ const InicioReservaPage = () => {
                             </div>
                             <h2>Descrição do evento</h2>
                             <p>{evento.descricao}</p>
+                            <div className='col-lg-6 '>
+                            <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-5'
+                             href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
+                            <div className='d-flex align-items-center justify-content-center' style={{ fontSize: '1.3rem', gap: '10px', fontWeight: 'bold' }}>
+                            PAGAMENTO
+                            <img className='img-fluid' src={pix} alt='WhatsApp Logo' style={{ height: '30px' }} />
+                        </div>
+                    </a>
+                </div>
                             <hr />
                         </div>
                         <div className="col-md-4 w-100">
