@@ -42,9 +42,7 @@ const Ingresso = ({ obj, descricao, onUpdateDescricao }) => {
     }, [obj.idIngresso, descricao, onUpdateDescricao]);
 
     return (
-        <div className='col-md-4 mb-4 d-flex justify-content-center'>
-            {/* <div className='card m-3 p-3 shadow bg-white rounded' style={{ border: obj.status === 'Pendente' ? '1px solid #ffc107' : obj.status === 'Utilizado' ? '1px solid #6d6d6d' : '1px solid #28a745', width: '300px' }}> */}
-            <div className={`card m-3 p-3 shadow bg-white rounded border border-${obj.status === 'Pendente' ? 'warning' : obj.status === 'Cancelado' ? 'danger' : obj.status === 'Utilizado' ? 'secondary-subtle' : 'success'}`} style={{ border: '1px solid' , width: '300px' }}>
+            <div className={`card m-3 p-3 shadow bg-white rounded border border-${obj.status === 'Pendente' ? 'warning' : obj.status === 'Cancelado' ? 'danger' : obj.status === 'Utilizado' ? 'secondary-subtle' : 'success'}`} style={{ border: '1px solid' , minWidth: '300px', maxWidth: '400px' }}>
                 <p id='descricaoEvento' className='h5 text-center mb-0'>{descricao}</p>
                 <hr />
                 <p className='text-center mb-0'>Ingresso: <span className='fw-bold'>{obj.tipo}</span></p>
@@ -60,7 +58,7 @@ const Ingresso = ({ obj, descricao, onUpdateDescricao }) => {
                     :
                     <>
                         <div className='text-center mb-1' style={{ filter: obj.status === 'Pendente' ? 'blur(5px)' : 'none' }}>
-                            <QRCode value={obj.status === 'Pendente' ? 'Pendente' : obj.codigoQr} size={200} />
+                            <QRCode value={obj.status === 'Pendente' ? 'Pendente' : obj.codigoQr} size={250} />
                         </div>
                         <p className='text-center mb-0'>                            
                             {obj.status === 'Pendente' ? 'O QR Code estará disponível após a confirmação do pagamento.' : `Código QR: ${obj.codigoQr}`}
@@ -85,7 +83,6 @@ const Ingresso = ({ obj, descricao, onUpdateDescricao }) => {
                     }
                 </h4>
             </div>
-        </div>
     );
 };
 
