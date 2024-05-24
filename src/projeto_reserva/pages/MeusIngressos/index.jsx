@@ -5,14 +5,15 @@ import Cabecalho from '../../Components/Cabecalho/Cabecalho';
 import Rodape from '../../Components/Rodape/Rodape';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../Components/Utils/auth.jsx';
+import pix from '../../../assets/Images/pix.png'
 
 function MeusIngressos() {
     const navigate = useNavigate();
     const [ingressos, setIngressos] = useState([]);
     const [filteredIngressos, setFilteredIngressos] = useState([]);
     const [filtroDescricao, setFiltroDescricao] = useState("");
-    const [filtroStatus, setFiltroStatus] = useState(null); // Estado para o filtro de status
-    const [descricoes, setDescricoes] = useState({}); // Estado para armazenar descrições dos eventos
+    const [filtroStatus, setFiltroStatus] = useState(null);
+    const [descricoes, setDescricoes] = useState({});
 
     const inDevelopment = localStorage.getItem('inDevelopment');
     const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
@@ -61,7 +62,7 @@ function MeusIngressos() {
     };
 
     const handleStatusFilter = (status) => {
-        setFiltroStatus(status === filtroStatus ? null : status); // Toggle the status filter
+        setFiltroStatus(status === filtroStatus ? null : status);
     };
 
     const atualizarDescricoes = (id, descricao) => {
