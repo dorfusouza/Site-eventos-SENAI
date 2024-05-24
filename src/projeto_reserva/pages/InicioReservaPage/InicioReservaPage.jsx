@@ -75,6 +75,7 @@ const InicioReservaPage = () => {
     const [lotes, setLotes] = useState([{}]);
     const [loteAtual, setLoteAtual] = useState({});
     const [valoresIngressosSelecionados, setValoresIngressosSelecionados] = useState([]);
+
     const inDevelopment = localStorage.getItem('inDevelopment');
     var url = '';
     if (inDevelopment === 'true') {
@@ -329,7 +330,7 @@ const InicioReservaPage = () => {
                             <p>{evento.descricao}</p>
                             <div className='col-lg-6 '>
                             <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-5'
-                             href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
+                             href="https://wa.me/+5514997058355" target="_blank" rel="noreferrer">
                             <div className='d-flex align-items-center justify-content-center' style={{ fontSize: '1.3rem', gap: '10px', fontWeight: 'bold' }}>
                             PAGAMENTO
                             <img className='img-fluid' src={pix} alt='WhatsApp Logo' style={{ height: '30px' }} />
