@@ -3,24 +3,43 @@ import { useState } from 'react';
 export const ModalEventos = ({ handleSalvar, handleDeletar, fetchImagem }) => {
     const [imagem, setImagem] = useState(null);
 
-    const handleImagem = async (e) => {
-        const file = e.target.files[0];
-        const base64 = await convertBase64(file);
-        setImagem(base64);
-    };
+    const handleSalvar = (event) =>{
+        event.preventDefault();
+        const data = new FormData(event.target);
+        setFormData(data);
+        const file = data.get('imagemDivulgacao');
 
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-                resolve(fileReader.result);
+        if (file && file.size > 0) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagePreview(reader.result);
             };
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
+            reader.readAsDataURL(file);
+        } else {
+            setImagePreview('');
+        }
+        setShowModal(true);
+
+    }
+
+    // const handleImagem = async (e) => {
+    //     const file = e.target.files[0];
+    //     const base64 = await convertBase64(file);
+    //     setImagem(base64);
+    // };
+
+    // const convertBase64 = (file) => {
+    //     return new Promise((resolve, reject) => {
+    //         const fileReader = new FileReader();
+    //         fileReader.readAsDataURL(file);
+    //         fileReader.onload = () => {
+    //             resolve(fileReader.result);
+    //         };
+    //         fileReader.onerror = (error) => {
+    //             reject(error);
+    //         };
+    //     });
+    // };
 
     return (
         <div className="modal fade" id="modal" tabIndex="-1" aria-labelledby="modal" aria-hidden="true">
@@ -54,8 +73,8 @@ export const ModalEventos = ({ handleSalvar, handleDeletar, fetchImagem }) => {
                                 <input type="number" className="form-control" id="totalIngressos" name="totalIngressos" disabled/>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="ativo" className="form-label">Imagem</label>
-                                <input type="file" className="form-control" id="imagem" name="imagem" onChange={handleImagem}/>
+                                <label htmlFor="ativo" className="form-label" >Imagem</label>
+                                <input type="file" className="form-control" accept="image/*" id="imagem" name="imagem"/>
                                 <img src={imagem} alt="Imagem do evento" className="img-fluid" id="imagem-preview"/>
                             </div>
                             <div className="mb-3 form-check">
@@ -64,7 +83,7 @@ export const ModalEventos = ({ handleSalvar, handleDeletar, fetchImagem }) => {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                <button type="submit" className="btn btn-primary">Salvar</button>
+                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleSalvar}>Salvar</button>
                                 <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={handleDeletar}>Deletar</button>
                             </div>
                         </form>

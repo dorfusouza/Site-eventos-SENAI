@@ -23,6 +23,7 @@ import ProtectedRoute from './componentes/ProtectedRoute.jsx';
 import LoginPageAdmin from './projeto_admin/Pages/LoginPageAdmin/LoginPageAdmin.jsx';
 import NotFoundPage from "./componentes/NotFoundPage.jsx";
 import PerfilPage from "./projeto_admin/Pages/PerfilAdmPage/PerfilPage.jsx";
+import {InfoPedido} from "./projeto_reserva/pages/InfoPage/InfoPedido.jsx";
 
 function App() {
     localStorage.setItem('inDevelopment', 'false')
@@ -37,6 +38,7 @@ function App() {
             <Route path="/InicioReserva/:eventoId" element={<InicioReservaPage />} />
             <Route path="/RegistrarAcesso" element={<RegistroPage />} />
             <Route path="/suporte" element={<SuportePage/>} />
+            <Route path="/detalhes" element={<InfoPedido />} />
         </Route>
         <Route path="/portaria">
             <Route path="/portaria" element={<LoginPage/>} />
