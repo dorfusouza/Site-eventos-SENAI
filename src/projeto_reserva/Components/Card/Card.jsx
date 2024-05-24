@@ -6,10 +6,10 @@ function Card({ dados }) {
     return (
         <Link to={`./InicioReserva/${dados.idEvento}`} className="text-decoration-none" style={{ color: 'black' }}>
             <div className='card p-4 m-2'>
-                <p className='card-text fs-5'>{dados.dataEvento}</p>
                 {console.log(dados.imagem)}
                 <img src={dados.imagem || defaultImage} alt="Imagem do evento" className='card-img-top' />
                 <div className='card-body'>
+                    <p className='card-text fs-5'>{dados.dataEvento}</p>
                     <p className='card-title fs-5'>{dados.nomeEvento}</p>
                     <p className='card-text fs-5'>{dados.local}</p>
                 </div>
