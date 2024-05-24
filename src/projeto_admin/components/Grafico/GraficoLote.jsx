@@ -92,7 +92,6 @@ const Grafico = () => {
                     <p>{`Vendas: ${selectedLote.vendas}`}</p>
                     <p>{`Ingressos disponíveis: ${selectedLote.saldo}`}</p>
                     <p>{`Quantidade total de ingressos: ${selectedLote.quantidadeTotal}`}</p>
-                    <p>{`Receita total: R$ ${selectedLote.profit.toFixed(2)}`}</p>
                 </div>
             )}
         </div>
