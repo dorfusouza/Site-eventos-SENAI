@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Rodape from "../../components/Rodape/index.jsx";
 import Menu from "../../components/Menu/index.jsx";
+import constantes from "../../../componentes/Constantes.jsx";
 
 function Usuarios() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -26,9 +27,9 @@ function Usuarios() {
     const inDevelopment = localStorage.getItem('inDevelopment');
     var url = '';
     if (inDevelopment === 'true') {
-        url = 'http://localhost:5236/api/';
+        url = constantes.localApiUrl;
     } else {
-        url = 'https://www.senailp.com.br/eventos-api/api/';
+        url = constantes.apiUrl;
     }
 
     useEffect(() => {
