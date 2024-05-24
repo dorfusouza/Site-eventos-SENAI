@@ -15,7 +15,14 @@ export const ValidateButton = ({ id, validate, status, pedido}) => {
     };
 
     useEffect(() => {
-        const modal = new Modal(document.getElementById(`confirmationModal-${id}`));
+        const modal = new Modal(
+            document.getElementById(`confirmationModal-${id}`),
+            {
+                keyboard: false,
+                backdrop: 'static'
+            }
+        );
+
         if (showConfirmationModal) {
             modal.show();
         } else {
