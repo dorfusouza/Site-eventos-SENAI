@@ -11,6 +11,7 @@ import localIcon from '../../../assets/Images/local.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import pix from '../../../assets/Images/pix.png'
+import constantes from "../../../componentes/Constantes.jsx";
 
 const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, pedido, ingressos }) => {
     return (
@@ -23,7 +24,6 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, ped
                     </div>
                     <div className="modal-body">
                         <p>Deseja confirmar a reserva dos ingressos?</p>
-                        {/* Mostra as informações do pedido em forma de card */}
                         <div className="card">
                             <div className="card-body">
                                 <h5 className="card-title">Pedido</h5>
@@ -71,12 +71,17 @@ const InicioReservaPage = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const inDevelopment = localStorage.getItem('inDevelopment');
     const [evento, setEvento] = useState({});
     const [lotes, setLotes] = useState([{}]);
     const [loteAtual, setLoteAtual] = useState({});
     const [valoresIngressosSelecionados, setValoresIngressosSelecionados] = useState([]);
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+    const inDevelopment = localStorage.getItem('inDevelopment');
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [reservationConfirmed, setReservationConfirmed] = useState(false);
 
@@ -232,6 +237,28 @@ const InicioReservaPage = () => {
                     });
                 }
             });
+
+
+            //                pedido={{
+            //                     quantidade: valoresIngressosSelecionados.reduce((a, b) => a + b, 0),
+            //                     total: getSum()
+            //                 }}
+            //                 ingressos={tipoIngresso.map((tipo, index) => ({
+            //                     tipo: tipo.nome,
+            //                     valor: tipo === 'Infantil' ? 5 : loteAtual.valorUnitario * tipo.desconto,
+            //                     quantidade: valoresIngressosSelecionados[index]
+            //                 }))}
+            //Iremos setar essas 2 informações em um localStorage
+
+            localStorage.setItem('pedido', JSON.stringify({
+                quantidade: valoresIngressosSelecionados.reduce((a, b) => a + b, 0),
+                total: getSum()
+            }));
+            localStorage.setItem('ingressos', JSON.stringify(tipoIngresso.map((tipo, index) => ({
+                tipo: tipo.nome,
+                valor: tipo === 'Infantil' ? 5 : loteAtual.valorUnitario * tipo.desconto,
+                quantidade: valoresIngressosSelecionados[index],
+            }))));
     
             await fetch(`${url}Ingresso`, {
                 method: 'POST',
@@ -241,11 +268,9 @@ const InicioReservaPage = () => {
                 body: JSON.stringify(ingressos)
             });
     
-            // Display success toast notification
             toast.success('Pedido e ingressos criados com sucesso!');
-            //2s time and redirect to /meusIngressos
             setTimeout(() => {
-                navigate('/meusIngressos');
+                navigate('/detalhes');
             }, 2000);
             
     
