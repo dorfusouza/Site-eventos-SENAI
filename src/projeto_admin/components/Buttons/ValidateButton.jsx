@@ -18,8 +18,8 @@ export const ValidateButton = ({ id, validate, status, pedido}) => {
         const modal = new Modal(
             document.getElementById(`confirmationModal-${id}`),
             {
-                keyboard: false,
-                backdrop: 'static'
+                backdrop: 'static',
+                focus: true,
             }
         );
 
