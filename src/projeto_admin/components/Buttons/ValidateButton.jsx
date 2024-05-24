@@ -15,7 +15,14 @@ export const ValidateButton = ({ id, validate, status, pedido}) => {
     };
 
     useEffect(() => {
-        const modal = new Modal(document.getElementById(`confirmationModal-${id}`));
+        const modal = new Modal(
+            document.getElementById(`confirmationModal-${id}`),
+            {
+                keyboard: false,
+                backdrop: 'static'
+            }
+        );
+
         if (showConfirmationModal) {
             modal.show();
         } else {
@@ -43,7 +50,7 @@ export const ValidateButton = ({ id, validate, status, pedido}) => {
                             <h5 className="modal-title" id={`confirmationModalLabel-${id}`}>Confirmar {
                                 status === 'Validado' ? 'Invalidação' : status === 'Pendente' ? 'Validação' : 'Invalidação'
                             }</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowConfirmationModal(false)}></button>
                         </div>
                         <div className="modal-body">
                             <p>
@@ -65,7 +72,7 @@ export const ValidateButton = ({ id, validate, status, pedido}) => {
                             
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowConfirmationModal(false)}>Cancelar</button>
                             <button type="button" className="btn btn-primary" onClick={handleConfirmValidation} data-bs-dismiss="modal">Confirmar</button>
                         </div>
                     </div>

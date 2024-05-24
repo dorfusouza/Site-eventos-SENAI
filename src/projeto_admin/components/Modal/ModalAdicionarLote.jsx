@@ -61,6 +61,7 @@ export const ModalAdicionarLote = ({ handleAdicionar }) => {
                                         name={"valorUnitarioAdicionarLote"}
                                         className="form-control"
                                         placeholder="R$ 0,00"
+                                        id="valorUnitarioAdicionarLote"
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -77,7 +78,7 @@ export const ModalAdicionarLote = ({ handleAdicionar }) => {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                    <button type="submit" className="btn btn-primary" onClick={handleAdicionar}>Adicionar</button>
+                                    <button type="submit" className="btn btn-primary" onClick={handleAdicionar} data-bs-dismiss="modal">Adicionar</button>
                                 </div>
                             </form>
                         </div>

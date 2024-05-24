@@ -1,8 +1,22 @@
 import propTypes from 'prop-types';
-
+import {useState} from "react";
+import InputMask from 'react-input-mask';
+import constantes from "../../../componentes/Constantes.jsx";
 export const ModalUsuarios = ({setModalData, usuarios, setUsuarios, setSuccessMessage, setErrorMessage}) => {
-    function editarUsuario(){
+    const inDevelopment = localStorage.getItem('inDevelopment');
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
+    const [showPassword, setShowPassword] = useState(false);
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    function editarUsuario(){
         const idUsuario = document.getElementById('idUsuario').value;
         const nomeCompleto = document.getElementById('nomeCompleto').value;
         const email = document.getElementById('email').value;
@@ -26,9 +40,8 @@ export const ModalUsuarios = ({setModalData, usuarios, setUsuarios, setSuccessMe
             perfil: perfil,
             ativo: ativo
         }
-        const url = 'https://www.senailp.com.br/eventos-api/api/Usuario/' + idUsuario;
-        //const url = 'http://localhost:5236/api/Usuario/' + idUsuario;
-        fetch(url, {
+
+        fetch(url + 'Usuario/' + idUsuario, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -57,10 +70,7 @@ export const ModalUsuarios = ({setModalData, usuarios, setUsuarios, setSuccessMe
     }
 
     function deletarUsuario(){
-        const url = 'https://www.senailp.com.br/eventos-api/api/Usuario/' + document.getElementById('idUsuario').value;
-        //const url = 'http://localhost:5236/api/Usuario/' + document.getElementById('idUsuario').value;
-        console.log(url)
-        fetch(url, {
+        fetch(url + 'Usuario/' + document.getElementById('idUsuario').value, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -105,11 +115,16 @@ export const ModalUsuarios = ({setModalData, usuarios, setUsuarios, setSuccessMe
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="senha" className="form-label">Senha</label>
-                                    <input type="password" className="form-control" id="senha"/>
+                                    <div className={"input-group"}>
+                                        <input type={showPassword ? 'text' : 'password'} className='form-control' id='senha' placeholder='Senha' />
+                                        <span className={`input-group-text btn btn-outline-secondary border border-1 ${showPassword ? 'border-danger' : ''}`} onClick={toggleShowPassword}>
+                                            <i className={`bi bi-eye${showPassword ? '-slash' : ''}`}></i>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="telefone" className="form-label">Telefone</label>
-                                    <input type="text" className="form-control" id="telefone" placeholder="(xx) xxxxx-xxxx"/>
+                                    <InputMask mask="+55 (99) 99999-9999" maskChar=" " className='form-control' id='telefone' placeholder='Telefone' name='telefone' />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="perfil" className="form-label">Perfil</label>

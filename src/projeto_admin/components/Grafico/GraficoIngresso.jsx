@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { useParams } from "react-router-dom";
+import constantes from "../../../componentes/Constantes.jsx";
 
 const COLORS = ['#2F5F98', '#2D8BBA', '#41B8D5', '#6CE5E8'];
 const COLORS2 = ['#2F5F98', '#2D8BBA', '#41B8D5', '#6CE5E8'];
@@ -12,7 +13,12 @@ const Grafico = () => {
     const [allIngressos, setAllIngressos] = useState([]);
     const [selectedLote, setSelectedLote] = useState(null);
     const inDevelopment = localStorage.getItem('inDevelopment');
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
 
     async function fetchQuantidadeIngressos() {
         try {

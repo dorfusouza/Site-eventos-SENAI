@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../components/Utils/auth.jsx';
 import 'bootstrap'
 import axios from 'axios'
+import constantes from "../../../componentes/Constantes.jsx";
 
 const EditarEvento = () => {
     const [eventos, setEventos] = useState([]);
@@ -26,9 +27,9 @@ const EditarEvento = () => {
     const inDevelopment = localStorage.getItem('inDevelopment');
     var url = '';
     if (inDevelopment === 'true') {
-        url = 'http://localhost:5236/api/';
+        url = constantes.localApiUrl;
     } else {
-        url = 'https://www.senailp.com.br/eventos-api/api/';
+        url = constantes.apiUrl;
     }
     const verificarAutenticacao = () => {
     if (!isAuthenticated()) {
@@ -105,21 +106,6 @@ const EditarEvento = () => {
 
     function handleDeletarEvento() {
         const idEvento = localStorage.getItem('idEvento');
-        fetch(url + 'Lote/evento/' + idEvento, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                setSuccessMessage('Lotes deletados com sucesso!');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                setErrorMessage('Erro ao deletar lotes!');
-            });
 
         fetch(url + 'Evento/' + idEvento, {
             method: 'DELETE',
@@ -127,10 +113,11 @@ const EditarEvento = () => {
                 'Content-Type': 'application/json'
             }
         })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(data => {
                 console.log('Success:', data);
                 setSuccessMessage('Evento deletado com sucesso!');
+                fetchEventos();
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -267,8 +254,6 @@ const EditarEvento = () => {
         const tipo = document.getElementById('tipo').value;
         const nome = document.getElementById('nomeLote').value;
         
-        console.log(valorUnitario)
-
         if (saldo > quantidadeTotal) {
             setErrorMessage('O saldo não pode ser maior que a quantidade total!');
             return;
@@ -322,14 +307,13 @@ const EditarEvento = () => {
     }
 
     function handleAdicionarLote() {
-        const valorUnitario = parseFloat(document.getElementById('valorUnitario').value.replace(',', '.'));
+        const valorUnitario = parseFloat(document.getElementById('valorUnitarioAdicionarLote').value.replace(',', '.'));
         const quantidadeTotal = parseInt(document.getElementById('quantidadeTotalAdicionarLote').value);
         let ativo = document.getElementById('ativo_loteAdicionarLote').checked;
         let dataInicio = document.getElementById('dataInicioAdicionarLote').value;
         let dataFinal = document.getElementById('dataFinalAdicionarLote').value;
         const tipo = document.getElementById('tipoAdicionarLote').value;
         const nome = document.getElementById('nomeLoteAdicionarLote').value;
-
 
         ativo = ativo ? 1 : 0;
 
@@ -412,10 +396,12 @@ const EditarEvento = () => {
                 'Content-Type': 'application/json'
             }
         })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(data => {
                 console.log('Success:', data);
                 setSuccessMessage('Lote deletado com sucesso!');
+                fetchLotes();
+                fetchEventos();
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -446,9 +432,11 @@ const EditarEvento = () => {
     useEffect(() => {
         if (errorMessage) {
             toast.error(errorMessage);
+            setErrorMessage('');
         }
         if (successMessage) {
             toast.success(successMessage);
+            setSuccessMessage('');
         }
     }, [errorMessage, successMessage]);
 

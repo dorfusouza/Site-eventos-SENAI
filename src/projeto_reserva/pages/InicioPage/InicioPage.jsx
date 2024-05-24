@@ -5,6 +5,7 @@ import Card from '../../Components/Card/Card.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './InicioPage.css';
+import constantes from '../../../componentes/Constantes.jsx'
 
 const InicioPageReserva = () => {
     const [eventos, setEventos] = useState([]);
@@ -12,7 +13,12 @@ const InicioPageReserva = () => {
     const [error, setError] = useState(null);
 
     const inDevelopment = localStorage.getItem('inDevelopment');
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+    let url = '';
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
 
     const notifyError = (msg) => 
         toast.error(msg, {
