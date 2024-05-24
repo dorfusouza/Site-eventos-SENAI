@@ -122,9 +122,35 @@ const InicioReservaPage = () => {
     };
 
     const handleConfirmReservation = async () => {
-        await handleSubmit();
-        setReservationConfirmed(true);
-        handleCloseConfirmationModal();
+        try {
+            const idUsuario = localStorage.getItem('id');
+    
+            const getLastPedidoStatus = async (idUsuario) => {
+                const response = await fetch(`${url}Pedido/Usuario/${idUsuario}`);
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar os pedidos do usuário");
+                }
+                const data = await response.json();
+    
+                if (data.length === 0) {
+                    return null;
+                }
+                return data[data.length - 1].status;
+            };
+    
+            const pedidoStatus = await getLastPedidoStatus(idUsuario);
+    
+            if (pedidoStatus === 'Pendente') {
+                setErrorMessage("O pedido anterior não está validado!");
+                return;
+            }
+    
+            await handleSubmit();
+            setReservationConfirmed(true);
+            handleCloseConfirmationModal();
+        } catch (error) {
+            setErrorMessage("Erro ao confirmar reserva!");
+        }
     };
 
     const handleCancelReservation = () => {
