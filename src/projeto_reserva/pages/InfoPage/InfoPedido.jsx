@@ -2,8 +2,8 @@ import Cabecalho from "../../Components/Cabecalho/Cabecalho.jsx";
 import Rodape from "../../Components/Rodape/Rodape.jsx";
 import { isAuthenticated } from '../../Components/Utils/auth.jsx';
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import pix from "../../../assets/Images/pix.png";
+import { useEffect, useState } from 'react';
+import pix from '../../../assets/Images/pix.png'
 
 export const InfoPedido = () => {
     const navigate = useNavigate();
@@ -32,6 +32,17 @@ export const InfoPedido = () => {
                         <div className="d-flex justify-content-between flex-column mb-3">
                             <h5>Quantidade de Ingressos: {pedido.quantidade}</h5>
                             <h5>Total: R$ {pedido.total}</h5>
+                            <p>
+                                <h5><strong>Em caso de:</strong> Pagamento via PIX, confirme a transação enviando o comprovante.</h5>
+                            </p>
+                            <h4><strong>Mande comprovante aqui</strong></h4>
+                            <div className='col-lg-6'>
+                                <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-5' href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
+                                    <div className='d-flex align-items-center justify-content-center' style={{ fontSize: '1.3rem', gap: '10px', fontWeight: 'bold' }}>
+                                        <img src={pix} alt="Pix" style={{ width: '30px' }} />
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                         <h1 className="mb-4 fs-2 text-start">Ingressos</h1>
                         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">

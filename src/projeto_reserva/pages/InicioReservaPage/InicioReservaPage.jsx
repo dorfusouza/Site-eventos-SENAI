@@ -1,22 +1,21 @@
 import './InicioReservaPage.css';
-import React, {useEffect, useState} from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
-import {isAuthenticated} from '../../Components/Utils/auth.jsx';
-import {ToastContainer} from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../../Components/Utils/auth.jsx';
+import { ToastContainer } from 'react-toastify';
 import Cabecalho from '../../Components/Cabecalho/Cabecalho';
 import Rodape from '../../Components/Rodape/Rodape';
 import cardImage from '../../../assets/Images/card2certo.png';
 import agendaIcon from '../../../assets/Images/agenda.png';
 import localIcon from '../../../assets/Images/local.png';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import pix from '../../../assets/Images/pix.png'
 import constantes from "../../../componentes/Constantes.jsx";
 
-const ConfirmationModal = ({show, handleClose, handleConfirm, handleCancel, pedido, ingressos}) => {
+const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, pedido, ingressos }) => {
     return (
-        <div className={`modal fade ${show ? 'show d-block' : ''}`} id="confirmationModal" tabIndex="-1"
-             aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div className={`modal fade ${show ? 'show d-block' : ''}`} id="confirmationModal" tabIndex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -68,7 +67,7 @@ const ConfirmationModal = ({show, handleClose, handleConfirm, handleCancel, pedi
 };
 
 const InicioReservaPage = () => {
-    const {eventoId} = useParams();
+    const { eventoId } = useParams();
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -122,9 +121,35 @@ const InicioReservaPage = () => {
     };
 
     const handleConfirmReservation = async () => {
-        await handleSubmit();
-        setReservationConfirmed(true);
-        handleCloseConfirmationModal();
+        try {
+            const idUsuario = localStorage.getItem('id');
+
+            const getLastPedidoStatus = async (idUsuario) => {
+                const response = await fetch(`${url}Pedido/Usuario/${idUsuario}`);
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar os pedidos do usuário");
+                }
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    return null;
+                }
+                return data[data.length - 1].status;
+            };
+
+            const pedidoStatus = await getLastPedidoStatus(idUsuario);
+
+            if (pedidoStatus === 'Pendente') {
+                setErrorMessage("O pedido anterior não está validado!");
+                return;
+            }
+
+            await handleSubmit();
+            setReservationConfirmed(true);
+            handleCloseConfirmationModal();
+        } catch (error) {
+            setErrorMessage("Erro ao confirmar reserva!");
+        }
     };
 
     const handleCancelReservation = () => {
@@ -196,10 +221,10 @@ const InicioReservaPage = () => {
             navigate('/Login');
             return;
         }
-
+    
         const dataAtual = new Date().toISOString();
         console.log(dataAtual)
-
+    
         const pedidoData = {
             idPedido: 0,
             usuariosId: localStorage.getItem('id'),
@@ -210,7 +235,7 @@ const InicioReservaPage = () => {
             status: 'Pendente',
             validacaoIdUsuario: 0
         };
-
+    
         try {
             const response = await fetch(`${url}Pedido`, {
                 method: 'POST',
@@ -220,7 +245,7 @@ const InicioReservaPage = () => {
                 body: JSON.stringify(pedidoData)
             });
             const data = await response.json();
-
+    
             const ingressos = [];
             valoresIngressosSelecionados.forEach((valor, index) => {
                 for (let i = 0; i < valor; i++) {
@@ -248,7 +273,7 @@ const InicioReservaPage = () => {
                 valor: tipo === 'Infantil' ? 5 : loteAtual.valorUnitario * tipo.desconto,
                 quantidade: valoresIngressosSelecionados[index],
             }))));
-
+    
             await fetch(`${url}Ingresso`, {
                 method: 'POST',
                 headers: {
@@ -256,20 +281,20 @@ const InicioReservaPage = () => {
                 },
                 body: JSON.stringify(ingressos)
             });
-
+    
             toast.success('Pedido e ingressos criados com sucesso!');
             setTimeout(() => {
                 navigate('/detalhes');
             }, 2000);
-
-
+            
+    
         } catch (error) {
             // Display error toast notification
             toast.error('Erro ao criar pedido e ingressos.');
             console.error('Erro ao criar pedido e ingressos:', error);
         }
     }
-
+    
     useEffect(() => {
         if (errorMessage) {
             toast.error(errorMessage);
@@ -289,19 +314,19 @@ const InicioReservaPage = () => {
 
     return (
         <>
-            <Cabecalho/>
+            <Cabecalho />
             <div className="container-fluid bg-light py-5">
                 <div className="container">
                     <div className="row mb-4">
                         <div className="col-12 text-center">
-                            <img src={evento.imagem} alt="Imagem do evento" className="img-fluid"/>
+                            <img src={evento.imagem} alt="Imagem do evento" className="img-fluid" />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-8">
                             <h1 className='m-0 fs-1'>{evento.nomeEvento}</h1>
                             <div className="d-flex align-items-center my-3">
-                                <img src={agendaIcon} alt="Agenda" className="me-2"/>
+                                <img src={agendaIcon} alt="Agenda" className="me-2" />
                                 <p className="mb-0 fs-5">
                                     {new Date(evento.dataEvento).toLocaleDateString('pt-BR', {
                                         day: '2-digit',
@@ -311,7 +336,7 @@ const InicioReservaPage = () => {
                                 </p>
                             </div>
                             <div className="d-flex align-items-center my-3">
-                                <img src={localIcon} alt="Local" className="me-2"/>
+                                <img src={localIcon} alt="Local" className="me-2" />
                                 <p className="mb-0 fs-5">{evento.local}</p>
                             </div>
                             <h2>Descrição do evento</h2>
@@ -333,7 +358,7 @@ const InicioReservaPage = () => {
                             <p className='fs-5'>Para realizar o pagamento presencialmente, vá até o SENAI e pague com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)</p>
                         </div>
                         <div className="col-md-4 w-100">
-                            <div className="card" style={{backgroundColor: '#EEEEEE'}}>
+                            <div className="card" style={{ backgroundColor: '#EEEEEE' }}>
                                 <div className="card-body">
                                     {loteAtual.idLote ? (
                                         <>
