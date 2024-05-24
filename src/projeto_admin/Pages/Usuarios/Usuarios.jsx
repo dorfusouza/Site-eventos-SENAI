@@ -90,14 +90,14 @@ function Usuarios() {
     };
 
     const renderizarDados = () => {
+        item.senha = "senai";
         return filteredUsuarios.map((item) => (
             <tr key={item.idUsuario}>
                 <td>{item.nomeCompleto}</td>
                 <td>{item.email}</td>
                 {/* <td onMouseEnter={() => togglePasswordVisibility(item.idUsuario)} onMouseLeave={() => setShowPassword((prevShowPassword) => ({ ...prevShowPassword, [item.idUsuario]: false }))} onClick={() => togglePasswordVisibility(item.idUsuario)}>
                     {showPassword[item.idUsuario] ? item.senha : '●●●●●●●●'}
-                </td> */}
-                {item.senha = "senai"}
+                </td> */}                
                 <td>{item.telefone}</td>
                 <td>{item.perfil}</td>
                 <td>{item.ativo ? "Ativo" : "Inativo"}</td>
