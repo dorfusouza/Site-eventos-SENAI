@@ -24,6 +24,7 @@ function MeusIngressos() {
     } else {
         url = constantes.apiUrl;
     }
+    
     const verificarAutenticacao = () => {
         if (!isAuthenticated()) {
             console.log('Usuário não autenticado');
