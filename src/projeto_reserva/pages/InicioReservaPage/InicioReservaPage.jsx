@@ -9,6 +9,8 @@ import cardImage from '../../../assets/Images/card2certo.png';
 import agendaIcon from '../../../assets/Images/agenda.png';
 import localIcon from '../../../assets/Images/local.png';
 import { toast } from 'react-toastify';
+
+
 import 'react-toastify/dist/ReactToastify.css';
 import pix from '../../../assets/Images/pix.png'
 
@@ -23,6 +25,15 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, ped
                     </div>
                     <div className="modal-body">
                         <p>Deseja confirmar a reserva dos ingressos?</p>
+
+                        <div className='' style={{backgroundColor: '#eded82', height: '90px', margin: '10px ', borderRadius: '5px', padding: '10px'}} >
+                            <p><strong>Atenção:</strong> Você tem 24 horas para realizar o pagamento. Enquanto o pagamento não for efetuado, não será possivel realizar outras reservas.</p>
+                        </div>
+                        
+                        <div className='' style={{backgroundColor: '#eded82', height: '66px', margin: '10px ', borderRadius: '5px', padding: '10px'}} >
+                            <p><strong>Em caso de:</strong> Pagamento via PIX ou em dinheiro, clique em 'Confirmar' e prossiga para as opções de pagamento. </p>
+                        </div>
+                        
                         {/* Mostra as informações do pedido em forma de card */}
                         <div className="card">
                             <div className="card-body">
@@ -35,9 +46,8 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, ped
                                 
                                 <h5 className="card-title">Ingressos selecionados</h5>
                                 <div className="d-flex flex-column gap-3">
-                                {ingressos.map((ingresso, index) => {
-                                    if (ingresso.quantidade > 0) {
-                                        return (
+                                    {ingressos.map((ingresso, index) => (
+                                        ingresso.quantidade > 0 && (
                                             <div key={index} className="card">
                                                 <div className="card-body">
                                                     <h5 className="card-title">{ingresso.tipo}</h5>
@@ -46,25 +56,24 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, ped
                                                         currency: 'BRL'
                                                     }).format(ingresso.tipo === 'Infantil' ? 5 : ingresso.valor)}</p>
                                                     <p className="card-text">Quantidade: {ingresso.quantidade}</p>
-        
                                                 </div>
                                             </div>
                                         )
-                                    }
-                                })}
+                                    ))}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancelar</button>
-                        <button type="button" className="btn btn-success" onClick={handleConfirm}>Confirmar</button>
+                        <button type="button" className="btn btn-primary" onClick={handleConfirm}>Confirmar</button>
                     </div>
                 </div>
             </div>
         </div>
     );
 };
+
 
 const InicioReservaPage = () => {
     const { eventoId } = useParams();

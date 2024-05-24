@@ -80,13 +80,14 @@ const Grafico = () => {
 
     return (
         <div>
-            <ResponsiveContainer width="100%" height={400} className="d-flex justify-content-center align-items-center">
+            <ResponsiveContainer width="100%" height={500} className="d-flex justify-content-center align-items-center">
                 <PieChart>
                     <Pie
                         data={quantidadeIngressos}
                         labelLine={false}
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                        outerRadius={160}
+                        outerRadius={document.body.clientWidth >= 960 ? 200 : 110}
+                        fontSize={document.body.clientWidth < 960 ? '12' : ''}
                         fill="#8884d8"
                         dataKey="value"
                         onClick={handlePieClick}
@@ -97,14 +98,15 @@ const Grafico = () => {
                     </Pie>
                     <Tooltip />
                     <Legend
-                        align="middle"
-                        verticalAlign="middle"
-                        layout="vertical"
+                        align="center"
+                        verticalAlign="bottom"
+                        layout="horizontal"
                         iconSize={18}
                         formatter={(value) => `${value} - ${(quantidadeIngressos.find(item => item.name === value)?.value || 0)}`}
                         tooltipType="none"
                         iconType="circle"
-                        wrapperStyle={{ lineHeight: '30px', marginLeft: '20px', marginTop: '25px', fontSize: '18px' }}
+                        wrapperStyle={{ lineHeight: '30px', marginLeft: '20px', marginTop: '25px', fontSize: '18px', paddingLeft: '20px'}}
+                        chartWidth={100}
                     />
                 </PieChart>
             </ResponsiveContainer>
