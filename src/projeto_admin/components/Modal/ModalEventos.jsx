@@ -3,7 +3,7 @@ import { useState } from 'react';
 export const ModalEventos = ({ handleSalvar, handleDeletar, fetchImagem }) => {
     const [imagem, setImagem] = useState(null);
 
-    const handleSalvar = (event) =>{
+    const handleAlterar = (event) =>{
         event.preventDefault();
         const data = new FormData(event.target);
         setFormData(data);
@@ -83,7 +83,7 @@ export const ModalEventos = ({ handleSalvar, handleDeletar, fetchImagem }) => {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleSalvar}>Salvar</button>
+                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleAlterar}>Salvar</button>
                                 <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={handleDeletar}>Deletar</button>
                             </div>
                         </form>
