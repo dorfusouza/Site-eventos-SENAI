@@ -93,7 +93,7 @@ const LoginPage = () => {
         <>
             <Cabecalho />
             <div className='container mt-5 mb-5 shadow-lg p-5 bg-body rounded' style={{ maxWidth: '400px' }}>
-                <div className='row justify-content-center'>
+                <div className='justify-content-center'>
                     <div className='col'>
                         <div className='text-center'>
                             <h1 className='fs-1'>Login</h1>

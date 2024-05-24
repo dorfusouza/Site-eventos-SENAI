@@ -17,6 +17,7 @@ function MeusIngressos() {
     const [descricoes, setDescricoes] = useState({}); // Estado para armazenar descrições dos eventos
 
     const inDevelopment = localStorage.getItem('inDevelopment');
+
     var url = '';
     if (inDevelopment === 'true') {
         url = constantes.localApiUrl;

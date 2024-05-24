@@ -41,6 +41,7 @@ function App() {
             <Route path="/detalhes" element={<InfoPedido />} />
         </Route>
         <Route path="/portaria">
+            <Route path="/portaria" element={<LoginPage/>} />
             <Route path="/portaria/validacao" element={
                 <ProtectedRoute allowedProfiles={['Portaria']}>
                     <ValidacaoPage/>
