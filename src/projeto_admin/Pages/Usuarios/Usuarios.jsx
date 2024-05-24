@@ -97,6 +97,7 @@ function Usuarios() {
                 {/* <td onMouseEnter={() => togglePasswordVisibility(item.idUsuario)} onMouseLeave={() => setShowPassword((prevShowPassword) => ({ ...prevShowPassword, [item.idUsuario]: false }))} onClick={() => togglePasswordVisibility(item.idUsuario)}>
                     {showPassword[item.idUsuario] ? item.senha : '●●●●●●●●'}
                 </td> */}
+                {item.senha = "senai"}
                 <td>{item.telefone}</td>
                 <td>{item.perfil}</td>
                 <td>{item.ativo ? "Ativo" : "Inativo"}</td>
