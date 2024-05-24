@@ -10,6 +10,7 @@ import agendaIcon from '../../../assets/Images/agenda.png';
 import localIcon from '../../../assets/Images/local.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import constantes from "../../../componentes/Constantes.jsx";
 
 const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, pedido, ingressos }) => {
     return (
@@ -75,7 +76,12 @@ const InicioReservaPage = () => {
     const [lotes, setLotes] = useState([{}]);
     const [loteAtual, setLoteAtual] = useState({});
     const [valoresIngressosSelecionados, setValoresIngressosSelecionados] = useState([]);
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+    var url = ''
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [reservationConfirmed, setReservationConfirmed] = useState(false);
 
