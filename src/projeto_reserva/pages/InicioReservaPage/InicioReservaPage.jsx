@@ -296,7 +296,7 @@ const InicioReservaPage = () => {
             toast.success('Pedido e ingressos criados com sucesso!');
             //2s time and redirect to /meusIngressos
             setTimeout(() => {
-                navigate('/meusIngressos');
+                navigate('/infoPedido');
             }, 2000);
 
 
@@ -319,7 +319,7 @@ const InicioReservaPage = () => {
             toast.success(successMessage);
             setSuccessMessage('');
             setTimeout(() => {
-                navigate('/meusIngressos');
+                navigate('/infoPedido');
             }, 2000);
         }
     }, [successMessage, navigate]);
