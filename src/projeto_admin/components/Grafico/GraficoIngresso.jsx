@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { useParams } from "react-router-dom";
+import constantes from "../../../componentes/Constantes.jsx";
 
 const COLORS = ['#2F5F98', '#2D8BBA', '#41B8D5', '#6CE5E8'];
 const COLORS2 = ['#2F5F98', '#2D8BBA', '#41B8D5', '#6CE5E8'];
@@ -12,7 +13,12 @@ const Grafico = () => {
     const [allIngressos, setAllIngressos] = useState([]);
     const [selectedLote, setSelectedLote] = useState(null);
     const inDevelopment = localStorage.getItem('inDevelopment');
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+    var url = '';
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
 
     async function fetchQuantidadeIngressos() {
         try {
@@ -74,13 +80,14 @@ const Grafico = () => {
 
     return (
         <div>
-            <ResponsiveContainer width="100%" height={400} className="d-flex justify-content-center align-items-center">
+            <ResponsiveContainer width="100%" height={500} className="d-flex justify-content-center align-items-center">
                 <PieChart>
                     <Pie
                         data={quantidadeIngressos}
                         labelLine={false}
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                        outerRadius={160}
+                        outerRadius={document.body.clientWidth >= 960 ? 200 : 110}
+                        fontSize={document.body.clientWidth < 960 ? '12' : ''}
                         fill="#8884d8"
                         dataKey="value"
                         onClick={handlePieClick}
@@ -91,14 +98,15 @@ const Grafico = () => {
                     </Pie>
                     <Tooltip />
                     <Legend
-                        align="middle"
-                        verticalAlign="middle"
-                        layout="vertical"
+                        align="center"
+                        verticalAlign="bottom"
+                        layout="horizontal"
                         iconSize={18}
                         formatter={(value) => `${value} - ${(quantidadeIngressos.find(item => item.name === value)?.value || 0)}`}
                         tooltipType="none"
                         iconType="circle"
-                        wrapperStyle={{ lineHeight: '30px', marginLeft: '20px', marginTop: '25px', fontSize: '18px' }}
+                        wrapperStyle={{ lineHeight: '30px', marginLeft: '20px', marginTop: '25px', fontSize: '18px', paddingLeft: '20px'}}
+                        chartWidth={100}
                     />
                 </PieChart>
             </ResponsiveContainer>

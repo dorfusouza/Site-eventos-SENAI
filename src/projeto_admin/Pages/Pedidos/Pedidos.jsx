@@ -9,6 +9,7 @@ import Rodape from "../../components/Rodape/index.jsx";
 import Menu from "../../components/Menu/index.jsx";
 import { CancelButton } from "../../components/Buttons/CancelButton.jsx";
 import InputMask from 'react-input-mask';
+import constantes from "../../../componentes/Constantes.jsx";
 
 
 function Pedidos() {
@@ -25,9 +26,9 @@ function Pedidos() {
     const inDevelopment = localStorage.getItem('inDevelopment');
     var url = '';
     if (inDevelopment === 'true') {
-        url = 'http://localhost:5236/api/';
+        url = constantes.localApiUrl;
     } else {
-        url = 'https://www.senailp.com.br/eventos-api/api/';
+        url = constantes.apiUrl;
     }
     async function fetchPedidos() {
         const response = await fetch(url + 'Pedido');
@@ -93,6 +94,7 @@ function Pedidos() {
 
     const handleValidate = (id) => {
         let idUsuario = localStorage.getItem('id');
+
         fetch(url + 'Pedido/validar/' + id + `?validacaoIdUsuario=${idUsuario}`, {
             method: 'PUT',
         })

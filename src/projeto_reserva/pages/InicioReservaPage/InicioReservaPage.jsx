@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 
 
 import 'react-toastify/dist/ReactToastify.css';
+import constantes from "../../../componentes/Constantes.jsx";
 
 const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, pedido, ingressos }) => {
     return (
@@ -84,7 +85,12 @@ const InicioReservaPage = () => {
     const [lotes, setLotes] = useState([{}]);
     const [loteAtual, setLoteAtual] = useState({});
     const [valoresIngressosSelecionados, setValoresIngressosSelecionados] = useState([]);
-    const url = inDevelopment === 'true' ? 'http://localhost:5236/api/' : 'https://www.senailp.com.br/eventos-api/api/';
+    var url = ''
+    if (inDevelopment === 'true') {
+        url = constantes.localApiUrl;
+    } else {
+        url = constantes.apiUrl;
+    }
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [reservationConfirmed, setReservationConfirmed] = useState(false);
 
@@ -124,11 +130,37 @@ const InicioReservaPage = () => {
     };
 
     const handleConfirmReservation = async () => {
-        await handleSubmit();
-        setReservationConfirmed(true);
-        handleCloseConfirmationModal();
+        try {
+            const idUsuario = localStorage.getItem('id');
+    
+            const getLastPedidoStatus = async (idUsuario) => {
+                const response = await fetch(`${url}Pedido/Usuario/${idUsuario}`);
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar os pedidos do usuário");
+                }
+                const data = await response.json();
+    
+                if (data.length === 0) {
+                    return null;
+                }
+                return data[data.length - 1].status;
+            };
+    
+            const pedidoStatus = await getLastPedidoStatus(idUsuario);
+    
+            if (pedidoStatus === 'Pendente') {
+                setErrorMessage("O pedido anterior não está validado!");
+                return;
+            }
+    
+            await handleSubmit();
+            setReservationConfirmed(true);
+            handleCloseConfirmationModal();
+        } catch (error) {
+            setErrorMessage("Erro ao confirmar reserva!");
+        }
     };
-
+    
     const handleCancelReservation = () => {
         handleCloseConfirmationModal();
     };
