@@ -42,7 +42,7 @@ export const Lote = ({ tipo }) => {
                             <div className="input-group mb-3 w-25">
                                 <span className="input-group-text" id="inputGroup">R$</span>
                                 <InputMask
-                                    mask="09,99"
+                                    mask="99,99"
                                     maskChar={null}
                                     value={preco}
                                     onChange={handlePriceChange}
