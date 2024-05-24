@@ -33,7 +33,6 @@ export const InfoPedido = () => {
                             <p style={{ backgroundColor: '#eded82', borderRadius: '5px', padding: '10px', marginLeft: '8px' }}>
                                 <strong>Em caso de:</strong> Pagamento em dinheiro dirija-se à instituição Senai Lençóis Paulista e obtenha mais informações na secretaria.
                             </p>
-<<<<<<< HEAD
                             <p style={{ backgroundColor: '#eded82', borderRadius: '5px', padding: '10px', marginLeft: '8px' }}>
                                 <strong>Em caso de:</strong> Pagamento via PIX, confirme a transação enviando o comprovante.
                             </p>
@@ -41,12 +40,6 @@ export const InfoPedido = () => {
                                 <a className='btn btn-info btn-lg text-white text-decoration-none px-4' href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
                                     <div className='d-flex align-items-center justify-content-center fs-5' style={{ fontSize: '1.3rem', gap: '10px', fontWeight: 'bold' }}>
                                     Mande comprovante aqui
-=======
-                            <h4><strong>Mande comprovante aqui</strong></h4>
-                            <div className='col-lg-6'>
-                                <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-5' href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
-                                    <div className='d-flex align-items-center justify-content-center' style={{ fontSize: '1.3rem', gap: '10px', fontWeight: 'bold' }}>
->>>>>>> 21d54e0f321fcb21f55fc633de5c449f65a91bb8
                                         <img src={pix} alt="Pix" style={{ width: '30px' }} />
                                     </div>
                                 </a>
@@ -82,33 +75,11 @@ export const InfoPedido = () => {
                                                 </div>
                                             </div>
                                         </div>
-<<<<<<< HEAD
                                     );
                                 })}
                             </div>
                         </div>
                     </>
-=======
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <div className="col-md-8">
-                            <h2 className='fs-2'>Formas de pagamento</h2>
-                            <p className='fs-5'>Para realizar o pagamento via pix, faça o pix para a chave: 999.999.999-99 e envie o comprovante via whatsapp para o número: (14) 99705-8355</p>
-                            <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-2'
-                               href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
-                                <div className='d-flex align-items-center justify-content-center'
-                                     style={{fontSize: '1.3rem', gap: '10px', fontWeight: 'bold'}}>
-                                    PAGAMENTO
-                                    <img className='img-fluid' src={pix} alt='WhatsApp Logo'
-                                         style={{height: '30px'}}/>
-                                </div>
-                            </a>
-                            <p className='fs-5'>Para realizar o pagamento presencialmente, vá até o SENAI e pague com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)</p>
-                        </div>
-                    </div>
->>>>>>> 21d54e0f321fcb21f55fc633de5c449f65a91bb8
                 ) : (
                     <h1 className="text-center mt-5">Nenhum pedido encontrado</h1>
                 )}
@@ -116,10 +87,6 @@ export const InfoPedido = () => {
             <Rodape />
         </>
     );
-<<<<<<< HEAD
 }
 
 export default InfoPedido;
-=======
-};
->>>>>>> 21d54e0f321fcb21f55fc633de5c449f65a91bb8
