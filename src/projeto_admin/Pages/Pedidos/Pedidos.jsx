@@ -93,6 +93,7 @@ function Pedidos() {
 
     const handleValidate = (id) => {
         let idUsuario = localStorage.getItem('id');
+
         fetch(url + 'Pedido/validar/' + id + `?validacaoIdUsuario=${idUsuario}`, {
             method: 'PUT',
         })
