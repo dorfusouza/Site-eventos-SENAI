@@ -99,7 +99,7 @@ function MeusIngressos() {
                 {filteredIngressos.length === 0 ? (
                     <p className='text-warning'>Nenhum ingresso disponível</p>
                 ) : (
-                    <div className='d-flex flex-wrap'>
+                    <div className='d-flex flex-wrap justify-content-start'>
                         {filteredIngressos.map((item, index) => (
                             <div className='col' key={index}>
                                 <Ingresso obj={item} key={index} onUpdateDescricao={atualizarDescricoes} descricao={descricoes[item.idIngresso]} />

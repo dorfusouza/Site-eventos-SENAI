@@ -2,7 +2,8 @@ import Cabecalho from "../../Components/Cabecalho/Cabecalho.jsx";
 import Rodape from "../../Components/Rodape/Rodape.jsx";
 import { isAuthenticated } from '../../Components/Utils/auth.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import pix from "../../../assets/Images/pix.png";
 
 export const InfoPedido = () => {
     const navigate = useNavigate();
@@ -52,11 +53,20 @@ export const InfoPedido = () => {
                                 )
                             })}
                         </div>
-                        {/*Agora iremos dizer pro usuário de maneira interativa que o pedido foi reservado e que ele agora deve escolher a forma de pagamento>
-                        Caso a forma seja pix, ele deve fazer o pix para a chave selecionada e mandar o comprovante ao whatzap do admin, (irá ter um botão que irá redirecionar para o whatzap do admin)
-                        Caso seja presencial, deverá ser dito para o usuário que ele terá que ir até o LOCAL (SENAI) e pagar com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)
-                        O Design dessa área será diferente da anterior, não usaremos card e será mais agradavél ao usuário usando cores e botões interativos*/}
-
+                        <div className="col-md-8">
+                            <h2 className='fs-2'>Formas de pagamento</h2>
+                            <p className='fs-5'>Para realizar o pagamento via pix, faça o pix para a chave: 999.999.999-99 e envie o comprovante via whatsapp para o número: (14) 99705-8355</p>
+                            <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-2'
+                               href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
+                                <div className='d-flex align-items-center justify-content-center'
+                                     style={{fontSize: '1.3rem', gap: '10px', fontWeight: 'bold'}}>
+                                    PAGAMENTO
+                                    <img className='img-fluid' src={pix} alt='WhatsApp Logo'
+                                         style={{height: '30px'}}/>
+                                </div>
+                            </a>
+                            <p className='fs-5'>Para realizar o pagamento presencialmente, vá até o SENAI e pague com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)</p>
+                        </div>
                     </div>
                 ) : (
                     <h1 className="text-center mt-5">Nenhum pedido encontrado</h1>
