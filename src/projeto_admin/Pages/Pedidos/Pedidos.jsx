@@ -10,6 +10,7 @@ import Menu from "../../components/Menu/index.jsx";
 import { CancelButton } from "../../components/Buttons/CancelButton.jsx";
 import InputMask from 'react-input-mask';
 import constantes from "../../../componentes/Constantes.jsx";
+import Modal from "bootstrap/js/dist/modal.js";
 
 
 function Pedidos() {
@@ -17,7 +18,9 @@ function Pedidos() {
     const [successMessage, setSuccessMessage] = useState('');
     const [pedidos, setPedidos] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
+    const [pedidoModal, setPedidoModal] = useState({});
     const [filterText, setFilterText] = useState("");
+    const [id, setId] = useState(null);
     const [filters, setFilters] = useState({
         status: null,
         pendingYesterday: false,
@@ -30,6 +33,47 @@ function Pedidos() {
     } else {
         url = constantes.apiUrl;
     }
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+    const validate = (id) => {
+        let idUsuario = localStorage.getItem('id');
+
+        fetch(url + 'Pedido/validar/' + id + `?validacaoIdUsuario=${idUsuario}`, {
+            method: 'PUT',
+        })
+            .then(response => response.json())
+            .then(data => {
+                setSuccessMessage(`Pedido ${id} validado com sucesso!`);
+                fetchPedidos();
+            })
+            .catch((error) => {
+                setErrorMessage("Erro ao validar pedido!");
+            });
+    };
+
+
+    const handleConfirmValidation = () => {
+        validate(id);
+        setShowConfirmationModal(false);
+    };
+
+    useEffect(() => {
+        const modal = new Modal(
+            document.getElementById(`confirmationModal-${id}`),
+            {
+                keyboard: false,
+                backdrop: 'static'
+            }
+        );
+
+        if (showConfirmationModal) {
+            modal.show();
+        } else {
+            modal.hide();
+        }
+    }, [showConfirmationModal, id]);
+
+
     async function fetchPedidos() {
         const response = await fetch(url + 'Pedido');
         const data = await response.json();
@@ -92,20 +136,11 @@ function Pedidos() {
         setFilteredPedidos(applyFilters(pedidos));
     }, [filterText, filters, pedidos]);
 
-    const handleValidate = (id) => {
-        let idUsuario = localStorage.getItem('id');
+    const handleValidate = (id, pedido) => {
+        setId(id);
 
-        fetch(url + 'Pedido/validar/' + id + `?validacaoIdUsuario=${idUsuario}`, {
-            method: 'PUT',
-        })
-        .then(response => response.json())
-        .then(data => {
-            setSuccessMessage(`Pedido ${id} validado com sucesso!`);
-            fetchPedidos();
-        })
-        .catch((error) => {
-            setErrorMessage("Erro ao validar pedido!");
-        });
+        setPedidoModal(pedido);
+        setShowConfirmationModal(true);
     }
 
     const handleCancel = (id) => {
@@ -164,7 +199,7 @@ function Pedidos() {
                     { 
                         (item.validacaoIdUsuario == 0)
                         ? <>
-                            <td><ValidateButton id={item.idPedido} validate={handleValidate} status={item.status} pedido={item} /></td> 
+                            <td><ValidateButton id={item.idPedido} validate={handleValidate} status={item.status} pedido={item} handleValidate={handleValidate} /></td>
                             <td><CancelButton id={item.idPedido} cancel={handleCancel} status={item.status} pedido={item} /></td>  
                          </>
                         : <td colSpan={2}>
@@ -231,6 +266,41 @@ function Pedidos() {
             </div>
             <Rodape />
             <ToastContainer />
+            <div className="modal fade" id={`confirmationModal-${id}`} tabIndex="-1" aria-labelledby={`confirmationModalLabel-${id}`} aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id={`confirmationModalLabel-${id}`}>Confirmar {
+                                status === 'Validado' ? 'Invalidação' : status === 'Pendente' ? 'Validação' : 'Invalidação'
+                            }</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowConfirmationModal(false)}></button>
+                        </div>
+                        <div className="modal-body">
+                            <p>
+                                Tem certeza de que deseja {
+                                status === 'Validado' ? 'invalidar' : status === 'Pendente' ? 'validar ' : 'invalidar '
+                            } o pedido?
+                            </p>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title">Pedido</h5>
+                                    <p className="card-text">ID: {id}</p>
+                                    <p className="card-text">Status: {status}</p>
+                                    <p className="card-text">Data: {pedidoModal.dataCadastro}</p>
+                                    <p className="card-text">Total: {pedidoModal.total}</p>
+                                    <p className="card-text">Quantidade: {pedidoModal.quantidade}</p>
+                                    <p className="card-text">Forma de pagamento: {pedidoModal.formaPagamento}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowConfirmationModal(false)}>Cancelar</button>
+                            <button type="button" className="btn btn-primary" onClick={handleConfirmValidation} data-bs-dismiss="modal">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
