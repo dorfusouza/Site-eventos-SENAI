@@ -9,7 +9,7 @@ import cardImage from '../../../assets/Images/card2certo.png';
 import agendaIcon from '../../../assets/Images/agenda.png';
 import localIcon from '../../../assets/Images/local.png';
 import { toast } from 'react-toastify';
-
+import pix from '../../../assets/Images/pix.png'
 
 import 'react-toastify/dist/ReactToastify.css';
 import constantes from "../../../componentes/Constantes.jsx";
