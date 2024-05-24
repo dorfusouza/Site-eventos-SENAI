@@ -63,8 +63,7 @@ const LoginPageAdmin = () => {
             navigate('/admin/inicioadmin');
 
         } catch (error) {
-            notifyError("Usuário ou senha inválidos " + error)
-            console.log('Usuário ou senha inválidos ' + error)
+            notifyError("Usuário ou senha inválidos ")
         }
     };
 
@@ -80,7 +79,6 @@ const LoginPageAdmin = () => {
     const onEnviar = () => {
         if (email === '' || senha === '') {
             notifyError("Preencha todos os campos!")
-            console.log('Preencha todos os campos')   
         } else {            
             getLogin()
         }        

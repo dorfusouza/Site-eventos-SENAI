@@ -54,7 +54,7 @@ const InicioPageReserva = () => {
             setEventos(data);
         } catch (error) {
             setError(error);
-            notifyError("Erro ao carregar eventos da API " + error);
+            notifyError("Erro ao carregar eventos da API ");
         } finally {
             setLoading(false);
         }
