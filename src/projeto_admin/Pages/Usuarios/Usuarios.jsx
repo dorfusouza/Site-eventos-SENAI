@@ -36,7 +36,6 @@ function Usuarios() {
         async function fetchUsuarios() {
             const response = await fetch(url + 'Usuario');
             const data = await response.json();
-            data.senha = "Digite a nova senha";
             setUsuarios(data);
             setFilteredUsuarios(data);
         }
