@@ -42,20 +42,25 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, handleCancel, ped
 
                                 <h5 className="card-title">Ingressos selecionados</h5>
                                 <div className="d-flex flex-column gap-3">
-                                    {ingressos.map((ingresso, index) => (
-                                        ingresso.quantidade > 0 && (
-                                            <div key={index} className="card">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{ingresso.tipo}</h5>
-                                                    <p className="card-text">Valor: {Intl.NumberFormat('pt-BR', {
-                                                        style: 'currency',
-                                                        currency: 'BRL'
-                                                    }).format(ingresso.tipo === 'Infantil' ? 5 : ingresso.valor)}</p>
-                                                    <p className="card-text">Quantidade: {ingresso.quantidade}</p>
+
+                                    {ingressos.map((ingresso, index) => {
+                                        if (ingresso.quantidade > 0) {
+                                            return (
+                                                <div key={index} className="card">
+                                                    <div className="card-body">
+                                                        <h5 className="card-title">{ingresso.tipo}</h5>
+                                                        <p className="card-text">Valor: {Intl.NumberFormat('pt-BR', {
+                                                            style: 'currency',
+                                                            currency: 'BRL'
+                                                        }).format(ingresso.tipo === 'Infantil' ? 5 : ingresso.valor)}</p>
+                                                        <p className="card-text">Quantidade: {ingresso.quantidade}</p>
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    ))}
+                                            )
+                                        }
+                                    })}
+
                                 </div>
                             </div>
                         </div>
@@ -269,6 +274,16 @@ const InicioReservaPage = () => {
                 }
             });
 
+            localStorage.setItem('pedido', JSON.stringify({
+                quantidade: valoresIngressosSelecionados.reduce((a, b) => a + b, 0),
+                total: getSum()
+            }));
+            localStorage.setItem('ingressos', JSON.stringify(tipoIngresso.map((tipo, index) => ({
+                tipo: tipo.nome,
+                valor: tipo === 'Infantil' ? 5 : loteAtual.valorUnitario * tipo.desconto,
+                quantidade: valoresIngressosSelecionados[index],
+            }))));
+    
             await fetch(`${url}Ingresso`, {
                 method: 'POST',
                 headers: {
@@ -338,29 +353,49 @@ const InicioReservaPage = () => {
                             </div>
                             <h2>Descrição do evento</h2>
 
-                            <hr />
+                            <p>{evento.descricao}</p>
+                            <hr/>
+                        </div>
+                        <div className="col-md-8">
+                            <h2 className='fs-2'>Formas de pagamento</h2>
+                            <p className='fs-5'>Para realizar o pagamento via pix, faça o pix para a chave: 999.999.999-99 e envie o comprovante via whatsapp para o número: (14) 99705-8355</p>
+                                <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-2'
+                                   href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
+                                    <div className='d-flex align-items-center justify-content-center'
+                                         style={{fontSize: '1.3rem', gap: '10px', fontWeight: 'bold'}}>
+                                        PAGAMENTO
+                                        <img className='img-fluid' src={pix} alt='WhatsApp Logo'
+                                             style={{height: '30px'}}/>
+                                    </div>
+                                </a>
+                            <p className='fs-5'>Para realizar o pagamento presencialmente, vá até o SENAI e pague com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)</p>
                         </div>
                         <div className="col-md-4 w-100">
                             <div className="card" style={{ backgroundColor: '#EEEEEE' }}>
                                 <div className="card-body">
                                     {loteAtual.idLote ? (
                                         <>
-                                            <h3 className="mb-4 fs-3 color-primary" style={{ color: '#0a0a0a', opacity: '1' }}>Reserva de ingressos</h3>
+
+                                            <h3 className="mb-4 fs-3 color-primary"
+                                                style={{color: '#0a0a0a', opacity: '1'}}>Reserva de ingressos</h3>
                                             <h4 className="mb-4 fs-4">{loteAtual.nome}</h4>
                                             <p className="text-muted fs-5">{loteAtual.saldo} disponíveis</p>
-                                            {loteAtual.tipo === 'Tempo' ? <p className="text-muted fs-5">Válido até {new Date(loteAtual.dataFim).toLocaleDateString('pt-BR', {
-                                                day: '2-digit',
-                                                month: '2-digit',
-                                                year: 'numeric'
-                                            }
-                                            )}</p> : null}
+                                            {loteAtual.tipo === 'Tempo' ? <p className="text-muted fs-5">Válido
+                                                até {new Date(loteAtual.dataFim).toLocaleDateString('pt-BR', {
+                                                        day: '2-digit',
+                                                        month: '2-digit',
+                                                        year: 'numeric'
+                                                    }
+                                                )}</p> : null}
 
-                                            {loteAtual.valorUnitario === 0 ? <p className="text-muted fs-5">Gratuito</p> : <p className="text-muted fs-5">{Intl.NumberFormat('pt-BR', {
-                                                style: 'currency',
-                                                currency: 'BRL'
-                                            }).format(loteAtual.valorUnitario)}</p>}
+                                            {loteAtual.valorUnitario === 0 ?
+                                                <p className="text-muted fs-5">Gratuito</p> :
+                                                <p className="text-muted fs-5">{Intl.NumberFormat('pt-BR', {
+                                                    style: 'currency',
+                                                    currency: 'BRL'
+                                                }).format(loteAtual.valorUnitario)}</p>}
+                                            <hr/>
 
-                                            <hr />
                                             {tipoIngresso.map((tipo, index) => (
                                                 <div key={index} className="mb-3">
                                                     <div className="d-flex justify-content-between align-items-center">
@@ -373,37 +408,44 @@ const InicioReservaPage = () => {
                                                                 }).format(tipo.nome === 'Infantil' ? 5 : loteAtual.valorUnitario * tipo.desconto)}</p>
                                                         </div>
                                                         <div className="d-flex align-items-center">
-                                                            <button className="btn btn-outline-dark btn-sm" onClick={() => {
-                                                                if (valoresIngressosSelecionados[index] > 0) {
-                                                                    const valores = [...valoresIngressosSelecionados];
-                                                                    valores[index] -= 1;
-                                                                    setValoresIngressosSelecionados(valores);
-                                                                    setLoteAtual(prevState => ({
-                                                                        ...prevState,
-                                                                        saldo: Math.min(prevState.saldo + 1, loteAtual.saldo + 1) // Ensure saldo doesn't exceed loteAtual.saldo
-                                                                    }));
-                                                                }
-                                                            }}>
+
+                                                            <button className="btn btn-outline-dark btn-sm"
+                                                                    onClick={() => {
+                                                                        if (valoresIngressosSelecionados[index] > 0) {
+                                                                            const valores = [...valoresIngressosSelecionados];
+                                                                            valores[index] -= 1;
+                                                                            setValoresIngressosSelecionados(valores);
+                                                                            setLoteAtual(prevState => ({
+                                                                                ...prevState,
+                                                                                saldo: Math.min(prevState.saldo + 1, loteAtual.saldo + 1) // Ensure saldo doesn't exceed loteAtual.saldo
+                                                                            }));
+                                                                        }
+                                                                    }}>
                                                                 <i className="bi bi-patch-minus"></i>
                                                             </button>
-                                                            <span className="mx-2">{valoresIngressosSelecionados[index]}</span>
-                                                            <button className="btn btn-outline-dark btn-sm" onClick={() => {
-                                                                const totalIngressos = valoresIngressosSelecionados.reduce((a, b) => a + b, 0);
-                                                                if (loteAtual.saldo > 0 && totalIngressos < 10) {
-                                                                    const valores = [...valoresIngressosSelecionados];
-                                                                    valores[index] += 1;
-                                                                    setValoresIngressosSelecionados(valores);
-                                                                    setLoteAtual(prevState => ({
-                                                                        ...prevState,
-                                                                        saldo: Math.max(prevState.saldo - 1, 0) // Ensure saldo doesn't go below 0
-                                                                    }));
-                                                                }
-                                                            }}>
+                                                            <span
+                                                                className="mx-2">{valoresIngressosSelecionados[index]}</span>
+                                                            <button className="btn btn-outline-dark btn-sm"
+                                                                    onClick={() => {
+                                                                        const totalIngressos = valoresIngressosSelecionados.reduce((a, b) => a + b, 0);
+                                                                        if (loteAtual.saldo > 0 && totalIngressos < 10) {
+                                                                            const valores = [...valoresIngressosSelecionados];
+                                                                            valores[index] += 1;
+                                                                            setValoresIngressosSelecionados(valores);
+                                                                            setLoteAtual(prevState => ({
+                                                                                ...prevState,
+                                                                                saldo: Math.max(prevState.saldo - 1, 0) // Ensure saldo doesn't go below 0
+                                                                            }));
+                                                                        }
+                                                                    }}>
+
                                                                 <i className="bi bi-patch-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <hr />
+
+                                                    <hr/>
+
                                                 </div>
                                             ))}
 
@@ -414,7 +456,9 @@ const InicioReservaPage = () => {
                                                     currency: 'BRL'
                                                 }).format(getSum())}</h4>
                                             </div>
+
                                             <button className="btn btn-success w-100 mt-3 botaoVerde fs-5" onClick={handleOpenConfirmationModal}>Reservar Ingresso</button>
+
                                         </>) : (
                                         <p className="text-muted fs-3">Nenhum lote ativo disponível</p>
                                     )}
@@ -439,8 +483,8 @@ const InicioReservaPage = () => {
                     quantidade: valoresIngressosSelecionados[index]
                 }))}
             />
-            <Rodape />
-            <ToastContainer />
+            <Rodape/>
+            <ToastContainer/>
         </>
     );
 }
