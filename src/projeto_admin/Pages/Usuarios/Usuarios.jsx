@@ -90,7 +90,7 @@ function Usuarios() {
     };
 
     const renderizarDados = () => {
-        item.senha = "senai";
+        //item.senha = "senai";
         return filteredUsuarios.map((item) => (
             <tr key={item.idUsuario}>
                 <td>{item.nomeCompleto}</td>
