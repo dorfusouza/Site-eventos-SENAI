@@ -36,6 +36,7 @@ function Usuarios() {
         async function fetchUsuarios() {
             const response = await fetch(url + 'Usuario');
             const data = await response.json();
+            data.senha = "Digite a nova senha";
             setUsuarios(data);
             setFilteredUsuarios(data);
         }
@@ -90,7 +91,6 @@ function Usuarios() {
     };
 
     const renderizarDados = () => {
-        //item.senha = "senai";
         return filteredUsuarios.map((item) => (
             <tr key={item.idUsuario}>
                 <td>{item.nomeCompleto}</td>
