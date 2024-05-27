@@ -329,7 +329,7 @@ const InicioReservaPage = () => {
         <>
             <Cabecalho />
             <div className="container-fluid bg-light py-5">
-                <div >
+                <div className='container'>
                     {/* <div className="row mb-4">
                         <div className="col-12 text-center">
                             <img src={evento.imagem} alt="Imagem do evento" className="img-fluid" />
