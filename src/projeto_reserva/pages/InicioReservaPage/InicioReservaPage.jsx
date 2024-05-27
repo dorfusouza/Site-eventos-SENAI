@@ -382,7 +382,9 @@ const InicioReservaPage = () => {
                                     
                                     <h5 class="card-title">Como pago?</h5>
                                     <p class="card-text"><li><strong>Presencial:</strong> Vá até o SENAI e pague com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)</li></p>
-                                    <p class="card-text"><li><strong>PIX:</strong> Faça o pix para a chave: festajuninasenai2024@gmail.com e envie o comprovante via whatsapp para o número: (14) 99705-8355</li></p>
+                                    <p class="card-text"><li><strong>Forma de pagamento:</strong> Dinheiro ou PIX</li></p>
+
+                                    {/* <p class="card-text"><li><strong>PIX:</strong> Faça o pix para a chave: festajuninasenai2024@gmail.com e envie o comprovante via whatsapp para o número: (14) 99705-8355</li></p>
                                     <div className='text-center'>
                                         <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-2 text-center'
                                         href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
@@ -396,7 +398,7 @@ const InicioReservaPage = () => {
 
                                         <h5 className='card-title text-bg-warning mb-3 p-2'>ATENÇÃO: Somente após a comprovação do pagamento que seu ingresso será liberado!</h5>
 
-                                    </div> 
+                                    </div>  */}
 
                                 </div>
                             </div>
