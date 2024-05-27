@@ -8,6 +8,7 @@ import Rodape from '../../Components/Rodape/Rodape';
 import cardImage from '../../../assets/Images/card2certo.png';
 import agendaIcon from '../../../assets/Images/agenda.png';
 import localIcon from '../../../assets/Images/local.png';
+import imgBanner from '../../../assets/Images/img_banner.jpg';
 import { toast } from 'react-toastify';
 import pix from '../../../assets/Images/pix.png'
 
@@ -328,58 +329,91 @@ const InicioReservaPage = () => {
         <>
             <Cabecalho />
             <div className="container-fluid bg-light py-5">
-                <div className="container">
-                    <div className="row mb-4">
+                <div >
+                    {/* <div className="row mb-4">
                         <div className="col-12 text-center">
                             <img src={evento.imagem} alt="Imagem do evento" className="img-fluid" />
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-8">
-                            <h1 className='m-0 fs-1'>{evento.nomeEvento}</h1>
-                            <div className="d-flex align-items-center my-3">
-                                <img src={agendaIcon} alt="Agenda" className="me-2" />
-                                <p className="mb-0 fs-5">
-                                    {new Date(evento.dataEvento).toLocaleDateString('pt-BR', {
-                                        day: '2-digit',
-                                        month: '2-digit',
-                                        year: 'numeric'
-                                    })}
-                                </p>
-                            </div>
-                            <div className="d-flex align-items-center my-3">
-                                <img src={localIcon} alt="Local" className="me-2" />
-                                <p className="mb-0 fs-5">{evento.local}</p>
-                            </div>
-                            <h2>Descrição do evento</h2>
+                    </div> */}
+                    
+                    <div>
+                        <div className="col-12">
+                            <div className="card">
+                                {/* <img src={evento.imagem} alt="Imagem do evento" /> */}
+                                
+                                <img src={imgBanner} alt="Imagem do evento" className="card-img-top"/>
 
-                            <p>{evento.descricao}</p>
-                            <hr/>
+                                <div className="card-body">
+                                    <h3 className="card-title">{evento.nomeEvento}</h3>
+                                    <p className="card-text">
+
+                                        <div className="d-flex align-items-center my-3">
+                                            <img src={agendaIcon} alt="Agenda" className="me-2" height={24} />
+                                            <p className="mb-0 fs-5">
+                                                {new Date(evento.dataEvento).toLocaleDateString('pt-BR', {
+                                                    day: '2-digit',
+                                                    month: '2-digit',
+                                                    year: 'numeric'
+                                                })}
+                                            </p>
+                                        </div>
+
+                                        <div className="d-flex align-items-center my-3">
+                                            <img src={localIcon} alt="Local" className="me-2" height={24}/>
+                                            <p className="mb-0 fs-5">{evento.local}</p>
+                                        </div> 
+
+                                        <h4 className="card-title">Informações</h4>
+                                        <hr/>
+
+                                        <p>{evento.descricao}</p>
+
+                                    </p>                                
+                                </div>
+                            </div>
                         </div>
-                        <div className="col-md-8">
-                            <h2 className='fs-2'>Formas de pagamento</h2>
-                            <p className='fs-5'>Para realizar o pagamento via pix, faça o pix para a chave: 999.999.999-99 e envie o comprovante via whatsapp para o número: (14) 99705-8355</p>
-                                <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-2'
-                                   href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
-                                    <div className='d-flex align-items-center justify-content-center'
-                                         style={{fontSize: '1.3rem', gap: '10px', fontWeight: 'bold'}}>
-                                        PAGAMENTO
-                                        <img className='img-fluid' src={pix} alt='WhatsApp Logo'
-                                             style={{height: '30px'}}/>
-                                    </div>
-                                </a>
-                            <p className='fs-5'>Para realizar o pagamento presencialmente, vá até o SENAI e pague com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)</p>
+                       
+                        <div className="col-12 mt-4">
+                            <div class="card">
+                                <h5 class="card-header text-bg-primary mb-3">Como participar?</h5>
+                                <div class="card-body">
+                                    <h5 class="card-title">Reserva do Ingresso</h5>
+                                    <p class="card-text"><li>É muito simples, escolha os tipos de ingresso abaixo antes que acabe e clique no botão "Reservar Ingresso"</li></p>
+                                    
+                                    <h5 class="card-title">Como pago?</h5>
+                                    <p class="card-text"><li><strong>Presencial:</strong> Vá até o SENAI e pague com um dos atendentes (secretaria, biblioteca ou atendentes da turma de administração)</li></p>
+                                    <p class="card-text"><li><strong>PIX:</strong> Faça o pix para a chave: festajuninasenai2024@gmail.com e envie o comprovante via whatsapp para o número: (14) 99705-8355</li></p>
+                                    <div className='text-center'>
+                                        <a className='btn btn-info btn-lg text-white text-decoration-none px-4 mb-2 text-center'
+                                        href="https://wa.me/+55149970558355" target="_blank" rel="noreferrer">
+                                            <div className='d-flex align-items-center justify-content-center'
+                                                style={{fontSize: '1.3rem', gap: '10px', fontWeight: 'bold'}}>
+                                                Enviar Comprovante PIX
+                                                <img className='img-fluid' src={pix} alt='WhatsApp Logo'
+                                                    style={{height: '30px'}}/>
+                                            </div>
+                                        </a>
+
+                                        <h5 className='card-title text-bg-warning mb-3 p-2'>ATENÇÃO: Somente após a comprovação do pagamento que seu ingresso será liberado!</h5>
+
+                                    </div> 
+
+                                </div>
+                            </div>
+                           
                         </div>
-                        <div className="col-md-4 w-100">
-                            <div className="card" style={{ backgroundColor: '#EEEEEE' }}>
+                        <div className="col-12 mt-4">
+                            <div className="card">
+                                <h4 className="card-header text-bg-primary mb-3"
+                                                style={{color: '#0a0a0a', opacity: '1'}}>Reserva de ingressos</h4>
                                 <div className="card-body">
                                     {loteAtual.idLote ? (
                                         <>
 
-                                            <h3 className="mb-4 fs-3 color-primary"
-                                                style={{color: '#0a0a0a', opacity: '1'}}>Reserva de ingressos</h3>
-                                            <h4 className="mb-4 fs-4">{loteAtual.nome}</h4>
-                                            <p className="text-muted fs-5">{loteAtual.saldo} disponíveis</p>
+                                            
+
+                                            <h4 className="mb-4 fs-4">{loteAtual.nome} (<span className="text-muted">{loteAtual.saldo} Ingressos disponíveis</span>)</h4>
+                                            
                                             {loteAtual.tipo === 'Tempo' ? <p className="text-muted fs-5">Válido
                                                 até {new Date(loteAtual.dataFim).toLocaleDateString('pt-BR', {
                                                         day: '2-digit',
@@ -409,7 +443,7 @@ const InicioReservaPage = () => {
                                                         </div>
                                                         <div className="d-flex align-items-center">
 
-                                                            <button className="btn btn-outline-dark btn-sm"
+                                                            <button className="btn btn-danger"
                                                                     onClick={() => {
                                                                         if (valoresIngressosSelecionados[index] > 0) {
                                                                             const valores = [...valoresIngressosSelecionados];
@@ -421,11 +455,11 @@ const InicioReservaPage = () => {
                                                                             }));
                                                                         }
                                                                     }}>
-                                                                <i className="bi bi-patch-minus"></i>
+                                                                <i className="bi bi-dash"></i>
                                                             </button>
                                                             <span
                                                                 className="mx-2">{valoresIngressosSelecionados[index]}</span>
-                                                            <button className="btn btn-outline-dark btn-sm"
+                                                            <button className="btn btn-success"
                                                                     onClick={() => {
                                                                         const totalIngressos = valoresIngressosSelecionados.reduce((a, b) => a + b, 0);
                                                                         if (loteAtual.saldo > 0 && totalIngressos < 10) {
@@ -439,7 +473,7 @@ const InicioReservaPage = () => {
                                                                         }
                                                                     }}>
 
-                                                                <i className="bi bi-patch-plus"></i>
+                                                                <i className="bi bi-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
