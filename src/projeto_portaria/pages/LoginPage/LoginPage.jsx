@@ -24,7 +24,10 @@ function LoginPage() {
    <Cabecalho />
       <div className='container mt-5 mb-5 shadow-lg p-5 bg-body rounded' style={{ maxWidth: '400px', border: '1px solid transparent' }}>
         <div className="card d-flex flex-column align-items-center" style={{ width: "100%", maxWidth: "400px", border: '0px'}}>
-          <h1 className="mb-4 text-center">Login</h1>
+          <h1 className="mb-4 text-center">Acesso Portaria</h1>
+          <p className='lead'>Preencha os campos abaixo</p>
+
+
           <Login onLogin={handleLogin} />
 
           {isLoggingIn && <p className="text-center">Aguarde... Efetuando login</p>}

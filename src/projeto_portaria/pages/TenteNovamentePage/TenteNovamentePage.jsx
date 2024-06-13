@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import CampoTexto from "../../components/CampoTexto/CampoTexto";
 import "../../components/CampoTexto/CampoTexto.jsx";
@@ -53,7 +51,7 @@ function TenteNovamentePage() {
   const verificaCodigo = async (valido) => {
     try {
       const response = await fetch(
-        https,//www.senailp.com.br/eventos-api/api/Ingresso/Verifica/${valido},
+        https, //www.senailp.com.br/eventos-api/api/Ingresso/Verifica/${valido},
         {
           method: "POST",
           headers: {

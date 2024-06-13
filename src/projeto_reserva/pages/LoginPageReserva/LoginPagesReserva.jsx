@@ -96,7 +96,7 @@ const LoginPage = () => {
                 <div className='justify-content-center'>
                     <div className='col'>
                         <div className='text-center'>
-                            <h1 className='fs-1'>Login</h1>
+                            <h1 className='fs-1'>Acesso Reserva</h1>
                             <p className='lead'>Preencha os campos abaixo</p>
                         </div>
                         <div className='mb-3'>
