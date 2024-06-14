@@ -9,10 +9,10 @@ import QrReader from "react-qr-scanner";
 
 const QrPage = () => {
   const navigate = useNavigate();
-  const [cameraAtivada, setCameraAtivada] = useState(false);
+  const [cameraAtivada, setCameraAtivada] = useState(true);
   const [loading, setLoading] = useState(false);
   const [resultadoQrCode, setResultadoQrCode] = useState("");
-  const [facingMode, setFacingMode] = useState("environment");
+  const [facingMode, setFacingMode] = useState("environment"); // Adicionado estado para o modo de câmera
 
   const inDevelopment = localStorage.getItem("inDevelopment");
   const url = inDevelopment === "true" ? constantes.localApiUrl : constantes.apiUrl;
@@ -26,10 +26,11 @@ const QrPage = () => {
 
   const handleScan = (data) => {
     if (data) {
-      setResultadoQrCode(data);
+      //console.log(data.text)
+      setResultadoQrCode(data.text);
       setLoading(true);
       setCameraAtivada(false);
-      scanResultado(data);
+      scanResultado(data.text);
     }
   };
 
@@ -39,7 +40,7 @@ const QrPage = () => {
 
   const scanResultado = async (decodedText) => {
     try {
-      const response = await fetch(`${url}Ingresso/Verifica/${decodedText}`, {
+      const response = await fetch(url + `Ingresso/Verifica/${decodedText}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,13 +69,16 @@ const QrPage = () => {
   return (
     <>
       <Cabecalho />
-      <div className="container d-flex mb-5 mt-5 flex-column align-items-center justify-content-center pt-5 pb-5" style={{ paddingBottom: "600px" }}>
+      <div
+        className="container d-flex mb-5 mt-5 flex-column align-items-center justify-content-center pt-5 pb-5"
+        style={{ paddingBottom: "600px" }}
+      >
         <div className="col justify-content-center">
           <div className="col text-center">
-            <h2 className="p-4">Aponte para o QRCODE</h2>
+            <h1 className="p-4">Aponte o QR CODE</h1>
             <div className="bloco_czc pb-5 d-flex justify-content-center">
               <div className="camera-container">
-                <QrReader
+                <QrReader                
                   delay={300}
                   onError={handleError}
                   onScan={handleScan}
@@ -83,7 +87,7 @@ const QrPage = () => {
                     video: { facingMode: facingMode }
                   }}
                 />
-                {<div className="qr-overlay"></div>}
+                {cameraAtivada && <div className="qr-overlay"></div>}
                 {loading && (
                   <div className="loading-section">
                     <div className="loading-overlay d-flex justify-content-center align-items-center">
@@ -91,15 +95,17 @@ const QrPage = () => {
                         <span className="visually-hidden">Loading...</span>
                       </div>
                     </div>
-                    <div className="loading-text mt-3">Aguarde, verificando ingresso...</div>
+                    <div className="loading-text mt-3">
+                      Aguarde, verificando ingresso...
+                    </div>
                   </div>
                 )}
               </div>
             </div>
             <div id="resultadoQrCode" className="mt-2">{resultadoQrCode}</div>
-            <div className="camera-toggle-buttons">
-              <button onClick={() => setFacingMode("user")} className="btn btn-outline-success m-2">Câmera Frontal</button>
-              <button onClick={() => setFacingMode("environment")} className="btn btn-outline-success m-2">Câmera Traseira</button>
+            <div className="camera-toggle-buttons mt-4">
+              <button className="btn btn-primary me-2" onClick={() => setFacingMode("user")}>Usar Câmera Frontal</button>
+              <button className="btn btn-secondary" onClick={() => setFacingMode("environment")}>Usar Câmera Traseira</button>
             </div>
           </div>
         </div>
