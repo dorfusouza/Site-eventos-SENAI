@@ -3,15 +3,15 @@ import './CampoTexto.css';
 
 const CampoTexto = ({ label, place, tipo, nome, valor, aoAlterar }) => {
     return (
-        <div className='campo-texto'>
+        <div className='form-group col-6'>
             <label>{label}</label>
-            <input id='input'
+            <input
                 type={tipo} 
                 placeholder={place} 
                 name={nome} 
                 value={valor} 
                 onChange={e => aoAlterar(e.target.value)} 
-                className='campo-input' 
+                className='form-control campo-texto' 
             />
         </div>
     );

@@ -79,15 +79,15 @@ function TenteNovamentePage() {
 <div className="container d-flex mb-5 mt-5 flex-column align-items-center justify-content-center pt-5 pb-5" style={{paddingBottom: '600px'}}>
         <div className="card text-center mb-5" style={{ width: '100%', maxWidth: '600px', backgroundColor: '#f0f0f0', border:'0px' }}>
           <div className="card-body">
-            <h5 className="card-title">Leitura Inválida</h5>
-            <Link onClick={() => console.log("TESTE")} to="/portaria/qrpage" className="btn btn-primary my-3" style={{display: "block", justifyContent: "center", alignItems: "center",}}>
-              Abrir Câmera Novamente
+            <h5 className="card-title">Tentar novamente</h5>
+            <Link onClick={() => console.log("TESTE")} to="/portaria/qrpage" className="btn btn-primary m-3 col-6" >
+              Abrir Câmera
             </Link>
             <h5 className="card-ou">OU</h5>
             <div className="d-flex justify-content-center mb-3">
-              <CampoTexto place="Digite o código do convite" value={codigo} aoAlterar={setCodigo} className="w-75" />
+              <CampoTexto place="Digite o código do convite" value={codigo} aoAlterar={setCodigo}/>
             </div>
-            <button className="btn btn-success my-3" style={{ background: '#6ce354', border: '0px'}} onClick={onValidar}>Validar</button>
+            <button className="btn btn-success col-6" onClick={onValidar}>Validar</button>
           </div>
         </div>
       </div>

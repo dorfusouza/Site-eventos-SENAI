@@ -1,11 +1,6 @@
-.campo-texto {
-    margin: 30px;
-}
-
-input
-{
-  width: 320px;
-  height: 40px;
-  border-radius: 20px;
-  border: 0px;
+.campo-texto {    
+    padding: 15px;    
+    height: 40px;
+    border-radius: 20px;
+    border: 0px;
 }
