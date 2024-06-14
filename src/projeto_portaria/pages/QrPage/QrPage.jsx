@@ -66,10 +66,10 @@ const QrPage = () => {
     if (resultado) {
       window.location.href = "/portaria/confirmacao";
     } else {
-     //window.location.href = "/portaria/invalido";
+     window.location.href = "/portaria/invalido";
     }
     const timeoutId = setTimeout(() => {
-      //window.location.href = "/portaria/invalido";
+      window.location.href = "/portaria/invalido";
     }, 60000);
 
     return () => clearTimeout(timeoutId);
@@ -97,7 +97,7 @@ const QrPage = () => {
         return false;
       }
     } catch (error) {
-      //notifyError("Usuário ou senha inválidos " + error);
+      notifyError("Usuário ou senha inválidos " + error);
       return false;
     }
   };
