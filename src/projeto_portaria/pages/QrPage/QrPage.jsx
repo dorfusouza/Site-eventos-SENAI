@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Html5Qrcode, Html5QrcodeScanner } from "html5-qrcode";
 import Cabecalho from "../../components/Cabecalho/Cabecalho";
 import { isAuthenticated } from "../../components/Utils/auth.jsx";
 import { useNavigate } from "react-router-dom";
 import Rodape from "../../components/Rodape/Rodape.jsx";
-import constantes from '../../../componentes/Constantes.jsx';
-import './QrPage.css'; // Adicione este import para o CSS
+import constantes from "../../../componentes/Constantes.jsx";
+import "./QrPage.css";
+import QrReader from "react-qr-scanner";
 
 const QrPage = () => {
   const navigate = useNavigate();
-  const [errorApi, setErroApi] = useState(false);
-  const [msgApi, setmsgApi] = useState("");
-  const [cameraAtivada, setCameraAtivada] = useState(false);
+  const [cameraAtivada, setCameraAtivada] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [resultadoQrCode, setResultadoQrCode] = useState("");
 
-  const inDevelopment = localStorage.getItem('inDevelopment');
-  const url = inDevelopment === 'true' ? constantes.localApiUrl : constantes.apiUrl;
+  const inDevelopment = localStorage.getItem("inDevelopment");
+  const url = inDevelopment === "true" ? constantes.localApiUrl : constantes.apiUrl;
+
+  const videoRef = useRef(null);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -24,57 +25,23 @@ const QrPage = () => {
     }
   }, [navigate]);
 
-  const videoRef = useRef(null);
-  const scannerRef = useRef(null);
-
-  useEffect(() => {
-    if (!scannerRef.current) {
-      const html5QrCodeScanner = new Html5QrcodeScanner("reader", {
-        fps: 10,
-        qrbox: 400,
-        cameraIdOrConfig: { facingMode: "environment" } // Define a câmera traseira
-      });
-
-      scannerRef.current = html5QrCodeScanner;
-
-      html5QrCodeScanner.render(onScanSuccess, onScanError);
-      setCameraAtivada(true);
-    }
-
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current.clear();
-        scannerRef.current = null;
-        setCameraAtivada(false);
-      }
-    };
-  }, []);
-
-  const onScanSuccess = async (decodedText, decodedResult) => {
-    setLoading(true);
-    setCameraAtivada(false);
-
-    if (scannerRef.current) {
-      scannerRef.current.clear();
-      scannerRef.current = null;
-    }
-
-    const resultadoQrCode = document.getElementById("resultadoQrCode");
-    if (resultadoQrCode) {
-      resultadoQrCode.innerText = decodedText;
-    }
-
-    const resultado = await verificaQRCODE(decodedText);
-    if (resultado) {
-      window.location.href = "/portaria/confirmacao";
-    } else {
-      window.location.href = "/portaria/invalido";
+  const handleScan = (data) => {
+    if (data) {
+      console.log(data.text);
+      setResultadoQrCode(data.text);
+      setLoading(true);
+      setCameraAtivada(false);
+      scanResultado(data.text);
     }
   };
 
-  const verificaQRCODE = async (qrCodeLido) => {
+  const handleError = (err) => {
+    console.error("Erro ao acessar a câmera:", err);
+  };
+
+  const scanResultado = async (decodedText) => {
     try {
-      const response = await fetch(`${url}Ingresso/Verifica/${qrCodeLido}`, {
+      const response = await fetch(`${url}Ingresso/Verifica/${decodedText}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,41 +54,48 @@ const QrPage = () => {
 
       const data = await response.json();
 
-      return data.mensagem === "Acesso concedido!";
+      if (data.mensagem === "Acesso concedido!") {
+        navigate("/portaria/confirmacao");
+      } else {
+        navigate("/portaria/invalido");
+      }
     } catch (error) {
       console.error("Erro na verificação do QR Code:", error);
-      return false;
+      navigate("/portaria/invalido");
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const onScanError = (errorMessage) => {
-    console.error("Erro ao ler QR Code:", errorMessage);
   };
 
   return (
     <>
       <Cabecalho />
-      <div className="container d-flex mb-5 mt-5 flex-column align-items-center justify-content-center pt-5 pb-5" style={{ paddingBottom: '600px' }}>
-        <div className="row justify-content-center">
+      <div className="container d-flex mb-5 mt-5 flex-column align-items-center justify-content-center pt-5 pb-5" style={{ paddingBottom: "600px" }}>
+        <div className="container justify-content-center">
           <div className="col text-center">
             <h1 className="p-4">Aponte o QR CODE</h1>
             <div className="bloco_czc pb-5 d-flex justify-content-center">
               <div className="camera-container">
-                <div ref={videoRef} id="reader" style={{ width: "100%", height: "100%" }}></div>
+                <QrReader
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScan}
+                  style={{ width: "100%", height: "100%" }}
+                />
                 {cameraAtivada && <div className="qr-overlay"></div>}
                 {loading && (
                   <div className="loading-section">
                     <div className="loading-overlay d-flex justify-content-center align-items-center">
                       <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
-                      </div>                    
-                    </div>                  
-                    <div className="loading-text mt-3">Aguarde, verificando ingresso...</div>
+                      </div>
+                    </div>
+                    
                   </div>
                 )}
               </div>
             </div>
-            <div id="resultadoQrCode" className="mt-2"></div>
+            <div id="resultadoQrCode" className="mt-2">{resultadoQrCode}</div>
           </div>
         </div>
       </div>
