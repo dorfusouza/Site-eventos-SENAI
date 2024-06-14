@@ -37,7 +37,7 @@ const InvalidoPage = () => {
           <div className="card-body d-flex flex-column justify-content-center align-items-center" style={{ backgroundColor: "#ff9494", border: 0 }}>
             <h5 className="card-title">ERRO na Validação</h5>
             <img src={exclamacao} alt="ex" style={{ width: 70, height: 100 }} />
-            <a href="/TenteNovamente" className="btn btn-primary mt-4" style={{ backgroundColor: "#EEEEEE", color: "black", border: "black" }}>Tentar Novamente</a>
+            <a href="/portaria/TenteNovamente" className="btn btn-primary mt-4" style={{ backgroundColor: "#EEEEEE", color: "black", border: "black" }}>Tentar Novamente</a>
           </div>
         </div>
       </div>

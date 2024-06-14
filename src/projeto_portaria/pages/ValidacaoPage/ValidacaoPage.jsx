@@ -28,6 +28,7 @@ const Validacao = () => {
   const onEnviar = () => {
     console.log('TESTE');
   };
+  
   return (
     <>
  <Cabecalho />

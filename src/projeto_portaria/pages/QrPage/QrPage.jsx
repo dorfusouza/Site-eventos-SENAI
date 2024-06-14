@@ -66,16 +66,17 @@ const QrPage = () => {
     if (resultado) {
       window.location.href = "/portaria/confirmacao";
     } else {
-      window.location.href = "/portaria/invalido";
+     //window.location.href = "/portaria/invalido";
     }
     const timeoutId = setTimeout(() => {
-      window.location.href = "/portaria/invalido";
+      //window.location.href = "/portaria/invalido";
     }, 60000);
 
     return () => clearTimeout(timeoutId);
   };
 
   const verificaQRCODE = async (qrCodeLido) => {
+
     try {
       const response = await fetch(
         url + `Ingresso/Verifica/${qrCodeLido}`,

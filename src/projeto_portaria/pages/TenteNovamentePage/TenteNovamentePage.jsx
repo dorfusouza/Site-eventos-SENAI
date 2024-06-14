@@ -39,7 +39,7 @@ function TenteNovamentePage() {
       const valido = await verificaCodigo(codigo);
       console.log(valido);
       if (valido == true) {
-        navigate("/confirmacao");
+        navigate("/portaria/confirmacao");
       } else {
         notifyError("Código inválido. Tente novamente.");
       }
@@ -49,9 +49,10 @@ function TenteNovamentePage() {
   };
 
   const verificaCodigo = async (valido) => {
+    console.log(valido)
     try {
       const response = await fetch(
-        https, //www.senailp.com.br/eventos-api/api/Ingresso/Verifica/${valido},
+        https, url + `Ingresso/Verifica/${valido}`,
         {
           method: "POST",
           headers: {
@@ -79,7 +80,7 @@ function TenteNovamentePage() {
         <div className="card text-center mb-5" style={{ width: '100%', maxWidth: '600px', backgroundColor: '#f0f0f0', border:'0px' }}>
           <div className="card-body">
             <h5 className="card-title">Leitura Inválida</h5>
-            <Link onClick={() => console.log("TESTE")} to="/qrpage" className="btn btn-primary my-3" style={{display: "block", justifyContent: "center", alignItems: "center",}}>
+            <Link onClick={() => console.log("TESTE")} to="/portaria/qrpage" className="btn btn-primary my-3" style={{display: "block", justifyContent: "center", alignItems: "center",}}>
               Abrir Câmera Novamente
             </Link>
             <h5 className="card-ou">OU</h5>
