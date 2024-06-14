@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5Qrcode, Html5QrcodeScanner } from "html5-qrcode";
 import Cabecalho from "../../components/Cabecalho/Cabecalho";
 import { isAuthenticated } from "../../components/Utils/auth.jsx";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +32,7 @@ const QrPage = () => {
       const html5QrCodeScanner = new Html5QrcodeScanner("reader", {
         fps: 10,
         qrbox: 400,
+        cameraIdOrConfig: { facingMode: "environment" } // Define a câmera traseira
       });
 
       scannerRef.current = html5QrCodeScanner;
