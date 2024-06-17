@@ -11,6 +11,7 @@ const Grafico = () => {
     const [quantidadeIngressos, setQuantidadeIngressos] = useState([]);
     const [ingressos, setIngressos] = useState({});
     const [allIngressos, setAllIngressos] = useState([]);
+    const [allUseIngressos, setAllUseIngressos] = useState([]);
     const [selectedLote, setSelectedLote] = useState(null);
     const inDevelopment = localStorage.getItem('inDevelopment');
     const [selected, setSelected] = useState(false);
@@ -48,26 +49,33 @@ const Grafico = () => {
                 Colaborador: {
                     quantidade: dataArray.find(item => item.name === 'Colaborador')?.value || 0,
                     valor: dataArrayIngressos.find(ingresso => ingresso.tipo === 'Colaborador')?.valor || 0,
-                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Colaborador' && ingresso.status === 'Pendente').length
+                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Colaborador' && ingresso.status === 'Pendente').length,
+                    utilizados: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Colaborador' && ingresso.status === 'Utilizado').length
                 },
                 Aluno: {
                     quantidade: dataArray.find(item => item.name === 'Aluno')?.value || 0,
                     valor: dataArrayIngressos.find(ingresso => ingresso.tipo === 'Aluno')?.valor || 0,
-                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Aluno' && ingresso.status === 'Pendente').length
+                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Aluno' && ingresso.status === 'Pendente').length,
+                    utilizados: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Aluno' && ingresso.status === 'Utilizado').length
                 },
                 Comunidade: {
                     quantidade: dataArray.find(item => item.name === 'Comunidade')?.value || 0,
                     valor: dataArrayIngressos.find(ingresso => ingresso.tipo === 'Comunidade')?.valor || 0,
-                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Comunidade' && ingresso.status === 'Pendente').length
+                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Comunidade' && ingresso.status === 'Pendente').length,
+                    utilizados: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Comunidade' && ingresso.status === 'Utilizado').length
+
                 },
                 Infantil: {
                     quantidade: dataArray.find(item => item.name === 'Infantil')?.value || 0,
                     valor: dataArrayIngressos.find(ingresso => ingresso.tipo === 'Infantil')?.valor || 0,
-                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Infantil' && ingresso.status === 'Pendente').length
+                    pendentes: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Infantil' && ingresso.status === 'Pendente').length,
+                    utilizados: dataArrayIngressos.filter(ingresso => ingresso.tipo === 'Infantil' && ingresso.status === 'Utilizado').length
+
                 }
             };
 
             setAllIngressos(dataArrayIngressos);
+            setAllUseIngressos(dataArrayIngressos.filter(ingressos => ingressos.status === 'Utilizado').length)
             setIngressos(tipoIngressosData);
             setQuantidadeIngressos(dataArray);
             handlePieClick(dataArray[0], 0);
@@ -166,6 +174,7 @@ const Grafico = () => {
             <div className=''>
                 <h3 className='fs-4'>Informações de todos os tipos ingressos</h3>
                 <p className="fs-5"><strong>Total ingressos comprados:</strong> {allIngressos.length}</p>
+                <p className="fs-5"><strong>Total ingressos utilizados:</strong> {allUseIngressos}</p>
                 <p className="fs-5"><strong>Receita total:</strong> R$ {
                     selected ?
                         quantidadeIngressos.reduce((acc, ingresso) => acc + (ingressos[ingresso.name].quantidade - ingressos[ingresso.name].pendentes) * ingressos[ingresso.name].valor, 0)
@@ -185,6 +194,15 @@ const Grafico = () => {
                         <li className="fs-5" key={index}>{ingresso.name}: R$ {selected ? (ingressos[ingresso.name].quantidade - ingressos[ingresso.name].pendentes) * ingressos[ingresso.name].valor : ingressos[ingresso.name].quantidade * ingressos[ingresso.name].valor}</li>
                     ))}
                 </ul>
+
+                <p className='fs-5'><strong>Utilizados por tipo:</strong></p>
+                <ul>
+                    {quantidadeIngressos.map((ingresso, index) => (
+                        // <li className="fs-5" key={index}>{ingresso.name}: {} {selected ? ingressos[ingresso.name].quantidade - ingressos[ingresso.name].pendentes : ingressos[ingresso.name].quantidade}</li>
+                        <li className="fs-5" key={index}>{ingresso.name} : {ingressos[ingresso.name].utilizados}</li>
+                    ))}
+                </ul>
+                    {console.log("total: " + ingressos)}
             </div>
             </div>
             
